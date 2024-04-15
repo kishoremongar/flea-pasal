@@ -4,9 +4,14 @@ import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/notifications/styles.css';
 import { Notifications } from '@mantine/notifications';
-import StoreWrapper from '@/wrapper/storeWrapper';
 import { ColorSchemeScript, createTheme, MantineProvider } from '@mantine/core';
+import { getServerSession } from 'next-auth';
+import { authOptions } from './api/auth/[...nextauth]/route';
+import StoreWrapper from '@/wrapper/storeWrapper';
+import SessionProvider from '@/wrapper/sessionProvider';
+import UserAuthWrapper from '@/wrapper/userAuthWrapper';
 import QueryClientWrapper from '@/wrapper/queryClientWrapper';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
@@ -21,42 +26,46 @@ const theme = createTheme({
     deg: 45,
   },
   colors: {
-    'primary-orange': [
-      '#fb7500',
-      '#fb7500',
-      '#fb7500',
-      '#fb7500',
-      '#fb7500',
-      '#fb7500',
-      '#fb7500',
-      '#fb8219',
-      '#fb9032',
-      '#fc9e4c',
+    primary: [
+      '#ff4f99',
+      '#ff4f99',
+      '#ff4f99',
+      '#ff4f99',
+      '#ff4f99',
+      '#ff4f99',
+      '#ff4f99',
+      '#992f5b',
+      '#b2376b',
+      '#cc3f7a',
       '#fcac66',
-      '#fdba7f',
-      '#fdc799',
-      '#fdd5b2',
-      '#fee3cc',
+      '#ff69a8',
+      '#ff60a3',
+      '#ff72ad',
+      '#ff83b7',
     ],
   },
-  primaryColor: 'primary-orange',
+  primaryColor: 'primary',
 });
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const session = await getServerSession(authOptions);
   return (
     <html lang='en'>
       <head>
         <ColorSchemeScript />
       </head>
       <body className={inter.className}>
-        <StoreWrapper>
-          <QueryClientWrapper>
-            <MantineProvider theme={theme}>
-              <Notifications position='top-right' autoClose={4000} />
-              {children}
-            </MantineProvider>
-          </QueryClientWrapper>
-        </StoreWrapper>
+        <SessionProvider session={session}>
+          <StoreWrapper>
+            <UserAuthWrapper />
+            <QueryClientWrapper>
+              <MantineProvider theme={theme}>
+                <Notifications position='top-right' autoClose={4000} />
+                {children}
+              </MantineProvider>
+            </QueryClientWrapper>
+          </StoreWrapper>
+        </SessionProvider>
       </body>
     </html>
   );
