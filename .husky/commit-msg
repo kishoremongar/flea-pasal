@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+echo "Running commit linting"
+. "$(dirname -- "$0")/_/husky.sh"
+
+npx --no -- commitlint --edit
+echo "Finished commit linting"
