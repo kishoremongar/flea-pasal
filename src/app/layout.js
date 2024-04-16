@@ -15,8 +15,8 @@ import QueryClientWrapper from '@/wrapper/queryClientWrapper';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Collaborate 2.0',
-  description: 'New way to collaborate',
+  title: 'Thrift',
+  description: 'Stop and shop',
 };
 
 const theme = createTheme({
