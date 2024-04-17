@@ -28,10 +28,10 @@ export default function ForgotPasswordForm() {
   return (
     <>
       <div className='flex flex-col gap-y-1 text-center'>
-        <h2 className='text-primary-black text-[1.625rem] font-bold'>
+        <h2 className='text-brown3 text-[1.625rem] font-bold'>
           Forgot Password?
         </h2>
-        <h3 className='text-primary-gray text-lg font-bold'>
+        <h3 className='text-brown4 text-lg font-semibold'>
           Enter your email to get a password reset link
         </h3>
       </div>
@@ -55,8 +55,8 @@ export default function ForgotPasswordForm() {
               placeholder='youremail@example.com'
               error={errors.email?.message}
               classNames={{
-                label: '!text-base !font-bold',
-                input: '!h-[2.875rem] !bg-[#F9F9F9]',
+                label: '!text-base !font-bold text-brown3',
+                input: '!h-[2.875rem] !bg-[#F9F9F9] !text-brown3',
               }}
               onChange={(e) => {
                 field.onChange(e);
@@ -67,15 +67,14 @@ export default function ForgotPasswordForm() {
         <PrimaryButton
           loading={createOTPMutate.isPending}
           rootClassName='!h-14'
-          titleClassName='!text-[22px]'
+          titleClassName='!text-xl'
           type='submit'
-          variant='gradient'
         >
           Reset Password
         </PrimaryButton>
-        <p className='text-secondary-black text-center font-bold'>
+        <p className='text-brown2 text-center'>
           Remember your password?{' '}
-          <Link href='/auth/login' className='text-primary'>
+          <Link href='/auth/login' className='text-brown4 hover:text-primary'>
             Login
           </Link>
         </p>

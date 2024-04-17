@@ -104,10 +104,10 @@ export default function ChangePasswordForm() {
   return (
     <>
       <div className='flex flex-col gap-y-1 text-center'>
-        <h2 className='text-primary-black text-[1.625rem] font-bold'>
+        <h2 className='text-brown3 text-[1.625rem] font-bold'>
           Change Password
         </h2>
-        <h3 className='text-primary-gray text-lg font-bold'>
+        <h3 className='text-brown4 text-lg font-semibold'>
           Reset your password to regain access to your account.
         </h3>
       </div>
@@ -142,8 +142,8 @@ export default function ChangePasswordForm() {
                       reveal ? <EyeOpen /> : <EyeClose />
                     }
                     classNames={{
-                      label: '!text-base !font-bold',
-                      input: '!h-[2.875rem] !bg-[#F9F9F9]',
+                      label: '!text-base !font-bold text-brown3',
+                      input: '!h-[2.875rem] !bg-[#F9F9F9] !text-brown3',
                       visibilityToggle: '!mr-6',
                     }}
                   />
@@ -175,8 +175,8 @@ export default function ChangePasswordForm() {
               error={errors.re_enter_password?.message}
               placeholder='Enter your password'
               classNames={{
-                label: '!text-base !font-bold',
-                input: '!h-[2.875rem] !bg-[#F9F9F9]',
+                label: '!text-base !font-bold text-brown3',
+                input: '!h-[2.875rem] !bg-[#F9F9F9] !text-brown3',
                 visibilityToggle: '!mr-6',
               }}
               visibilityToggleIcon={({ reveal }) =>
@@ -191,9 +191,8 @@ export default function ChangePasswordForm() {
         <PrimaryButton
           loading={resetPasswordMutation?.isPending}
           rootClassName='!h-14'
-          titleClassName='!text-[22px]'
+          titleClassName='!text-xl'
           type='submit'
-          variant='gradient'
         >
           Update Password
         </PrimaryButton>

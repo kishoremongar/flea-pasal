@@ -6,7 +6,7 @@ export default function ResetSuccess() {
   const router = useRouter();
   return (
     <>
-      <h2 className='text-primary-black text-[1.625rem]  font-bold text-center'>
+      <h2 className='text-brown3 text-[1.625rem] font-bold text-center'>
         Password changed successfully!
       </h2>
       <section className='flex flex-col gap-y-10 bg-passwordBg items-center mb-3'>
@@ -16,7 +16,7 @@ export default function ResetSuccess() {
         <PrimaryButton
           variant='gradient'
           rootClassName='!h-14'
-          titleClassName='!text-[22px]'
+          titleClassName='!text-xl'
           onClick={() => router.push('/auth/login')}
           size='lg'
         >

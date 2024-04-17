@@ -27,8 +27,8 @@ export default function VerifyOtpForm() {
   return (
     <>
       <div className='flex flex-col gap-y-1 text-center'>
-        <h2 className='text-primary-black text-[1.625rem] font-bold'>OTP</h2>
-        <h3 className='text-primary-gray text-lg font-bold'>
+        <h2 className='text-brown3 text-[1.625rem] font-bold'>OTP</h2>
+        <h3 className='text-brown4 text-lg font-semibold'>
           A unique 4-digit code has been sent to your registered email address.
         </h3>
       </div>
@@ -40,7 +40,7 @@ export default function VerifyOtpForm() {
           classNames={{
             root: '!mx-auto !gap-x-6 mb-2 mobile:!gap-x-0',
             input:
-              '!h-[4.375rem] !w-[4.375rem] mobile:!w-12 mobile:!h-8 !bg-[#F9F9F9]',
+              '!h-[4.375rem] !w-[4.375rem] mobile:!w-12 mobile:!h-8 !bg-[#F9F9F9] !text-brown3',
           }}
           type={/^[0-9]*$/}
           inputType='tel'
@@ -50,16 +50,18 @@ export default function VerifyOtpForm() {
         />
         <PrimaryButton
           loading={verifyOtp.isPending}
-          variant='gradient'
           rootClassName='!h-14'
-          titleClassName='!text-[22px]'
+          titleClassName='!text-xl'
           onClick={handleVerifyOtp}
         >
           Verify
         </PrimaryButton>
-        <p className='text-secondary-black text-center font-bold'>
+        <p className='text-brown2 text-center'>
           Not yet received?{' '}
-          <button className='text-primary' onClick={handleReset}>
+          <button
+            className='text-brown4 hover:text-primary cursor-pointer'
+            onClick={handleReset}
+          >
             Resend OTP
           </button>
         </p>

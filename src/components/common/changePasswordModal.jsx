@@ -133,7 +133,7 @@ export function ChangePasswordModal() {
         <CloseIcon className='w-4 h-4' />
       </button>
       <div className='flex justify-center items-center gap-x-2 text-center'>
-        <h2 className='text-primary-black text-[1.625rem] font-bold'>
+        <h2 className='text-brown3 text-[1.625rem] font-bold'>
           Change Password
         </h2>
         <Tooltip
@@ -141,7 +141,7 @@ export function ChangePasswordModal() {
           w={220}
           withArrow
           transitionProps={{ duration: 200 }}
-          className='text-primary-gray p-2'
+          className='text-brown4 p-2'
           color='#fb9032'
           label='Should contain at least one lowercase, one uppercase, one numeric, one
           special character and minimum 8-16 characters.'
