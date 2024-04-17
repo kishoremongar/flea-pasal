@@ -1,7 +1,13 @@
+'use client';
+
+import HomeMainLayout from './home/homeMainLayout';
+import MainNavbar from '@/components/common/navbar';
+
 export default function Home() {
   return (
-    <main className='flex min-h-screen flex-col items-center justify-between p-24'>
-      This home page
+    <main className='flex min-h-screen flex-col'>
+      <MainNavbar />
+      <HomeMainLayout />
     </main>
   );
 }
