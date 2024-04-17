@@ -1,5 +1,5 @@
 export const apiLoader = () => (next) => (action) => {
-  const isMutation = action?.meta?.arg?.type === 'mutation' ? true : false;
+  const isMutation = action?.meta?.arg?.type === 'mutation';
   const apiFetchingStatus = action?.meta?.requestStatus;
 
   if (isMutation) {
