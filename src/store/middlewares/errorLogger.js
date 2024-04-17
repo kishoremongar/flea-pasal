@@ -47,7 +47,7 @@ export const errorLogger = () => (next) => (action) => {
     }
 
     if (status === 403 || action.payload.originalStatus === 403) {
-      toast.info(action?.payload?.data);
+      ErrorToast({ text: action?.payload?.data });
     }
     /* eslint no-console: "error" */
     console.log('ACCCC: ', action);
