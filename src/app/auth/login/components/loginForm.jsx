@@ -26,7 +26,7 @@ export default function LoginForm() {
     signIn('user-login', {
       email: data.email,
       password: data.password,
-      re_login: true,
+      // re_login: true,
       redirect: false,
     })
       .then((res) => {

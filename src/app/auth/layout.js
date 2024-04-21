@@ -15,9 +15,10 @@ export default function AuthLayout({ children }) {
     if (status === 'unauthenticated') {
       router.push(pathName === '/auth' ? '/auth/login' : pathName);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
   if (status === 'authenticated') {
-    router.push('/dashboard');
+    router.push('/');
     router.refresh();
   }
 
