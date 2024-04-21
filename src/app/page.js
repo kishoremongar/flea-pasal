@@ -5,7 +5,7 @@ import MainNavbar from '@/components/common/navbar';
 
 export default function Home() {
   return (
-    <main className='flex min-h-screen flex-col'>
+    <main className='flex min-h-screen flex-col w-full'>
       <MainNavbar />
       <HomeMainLayout />
     </main>

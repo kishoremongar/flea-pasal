@@ -1,11 +1,15 @@
 import { TextInput } from '@mantine/core';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import LogoPlain from '../../../public/assets/icons/logoPlain.svg';
 import SearchIcon from '../../../public/assets/icons/magnifying-glass.svg';
 import CartIcon from '../../../public/assets/icons/cart.svg';
 import UserIcon from '../../../public/assets/icons/user.svg';
 
 export default function MainNavbar() {
+  const { data: sessionData } = useSession();
+  // eslint-disable-next-line no-console
+  console.log(sessionData, 'session');
   return (
     <div className='flex items-center justify-between bg-primary px-24 py-5 text-white text-md tracking-normal'>
       <div className='flex items-center gap-x-16'>
@@ -29,6 +33,9 @@ export default function MainNavbar() {
         {/* <li className='cursor-pointer'>Favourites</li> */}
         <li className='cursor-pointer'>
           <CartIcon className='text-white hover:text-tertiary w-5 h-5' />
+        </li>
+        <li className='cursor-pointer'>
+          <UserIcon className='text-white hover:text-tertiary w-5 h-5' />
         </li>
         <li className='cursor-pointer'>
           <UserIcon className='text-white hover:text-tertiary w-5 h-5' />

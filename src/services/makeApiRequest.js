@@ -1,5 +1,8 @@
 import axios from 'axios';
+import { signOut } from 'next-auth/react';
 import store from '../store/store';
+import { ErrorToast } from './toasterServices';
+import apiEndPoints from './apiEndPoints';
 
 const instance = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_BACKEND_BASEURL}`,
@@ -16,30 +19,45 @@ instance.interceptors.request.use((config) => {
     config.headers.Authorization = null;
   }
 
+  document.body.style.cursor = 'wait';
   return config;
 });
 instance.interceptors.response.use(
-  (response) =>
+  (response) => {
     // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
-    response,
-  (error) => {
+    // Reset cursor to default here
+    document.body.style.cursor = 'default';
+    return response;
+  },
+  async (error) => {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
+    // Reset cursor to default here as well
+    document.body.style.cursor = 'default';
 
-    const errTxt = JSON.parse(error?.request?.response);
-    if (
-      errTxt.message === 'Token has expired' ||
-      errTxt.message === 'User not found' ||
-      errTxt.message === 'Unauthorized User' ||
-      errTxt.message === 'Token is invalid'
-    ) {
-      setTimeout(() => {
-        window.location.replace('/auth/login');
-
-        localStorage.clear();
-      }, 1000);
+    const reduxStore = store.getState();
+    if ([401, 405].includes(error?.request?.status)) {
+      try {
+        const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASEURL}${apiEndPoints.USER_LOGOUT}`;
+        const config = {
+          headers: {
+            Authorization: `Bearer ${reduxStore?.auth?.accessToken}`,
+          },
+        };
+        const res = await axios.post(apiUrl, {}, config);
+        const data = res?.data;
+        if (data?.status === 'SUCCESS') {
+          localStorage.clear();
+        }
+      } catch (error) {
+        ErrorToast({ text: 'Something went wrong.' });
+      }
+      localStorage.clear();
+      signOut({
+        redirect: true,
+        callbackUrl: '/auth/login',
+      });
     }
+
     return Promise.reject(error);
   }
 );
