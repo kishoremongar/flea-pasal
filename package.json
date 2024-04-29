@@ -17,6 +17,7 @@
     "@mantine/dates": "^7.7.1",
     "@mantine/hooks": "^7.7.1",
     "@mantine/notifications": "^7.7.1",
+    "@mantine/spotlight": "^7.7.1",
     "@reduxjs/toolkit": "^2.2.3",
     "@svgr/webpack": "^8.1.0",
     "@tanstack/eslint-plugin-query": "^5.28.11",

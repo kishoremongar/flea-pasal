@@ -7,6 +7,7 @@ const initialState = {
   database: null,
   activeSessionPopup: { status: false, helperdata: null },
   signoutModal: { status: false, helperdata: null },
+  sidebarOpened: { status: false, helperdata: null },
 };
 
 const authSlice = createSlice({
@@ -41,6 +42,9 @@ const authSlice = createSlice({
       state.signoutModal.status = false;
       state.signoutModal.helperdata = null;
     },
+    sidebarToggle(state, action) {
+      state.sidebarOpened.status = action.payload;
+    },
   },
 });
 
@@ -52,5 +56,6 @@ export const {
   closeActiveSessionPopup,
   openSignoutModal,
   closeSignoutModal,
+  sidebarToggle,
 } = authSlice.actions;
 export default authSlice.reducer;
