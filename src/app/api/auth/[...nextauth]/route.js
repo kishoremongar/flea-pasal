@@ -22,11 +22,11 @@ export const authOptions = {
           type: 'password',
           placeholder: 'Enter your password',
         },
-        re_login: {
-          label: 'relogin',
-          type: 'text',
-          placeholder: 'Do you want to relogin',
-        },
+        // re_login: {
+        //   label: 'relogin',
+        //   type: 'text',
+        //   placeholder: 'Do you want to relogin',
+        // },
       },
       async authorize(credentials) {
         try {
@@ -35,7 +35,7 @@ export const authOptions = {
             {
               email: credentials.email,
               password: credentials.password,
-              re_login: JSON.parse(credentials.re_login),
+              // re_login: JSON.parse(credentials.re_login),
             }
           );
           const user = response.data;

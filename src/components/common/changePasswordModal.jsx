@@ -78,7 +78,7 @@ export function ChangePasswordModal() {
   ];
 
   function getStrength(password) {
-    let multiplier = password?.length > 5 ? 0 : 1;
+    let multiplier = password?.length > 7 ? 0 : 1;
 
     requirements.forEach((requirement) => {
       if (!requirement.re.test(password)) {
@@ -133,7 +133,7 @@ export function ChangePasswordModal() {
         <CloseIcon className='w-4 h-4' />
       </button>
       <div className='flex justify-center items-center gap-x-2 text-center'>
-        <h2 className='text-brown3 text-[1.625rem] font-bold'>
+        <h2 className='text-primary-black text-[1.625rem] font-bold'>
           Change Password
         </h2>
         <Tooltip
@@ -141,10 +141,12 @@ export function ChangePasswordModal() {
           w={220}
           withArrow
           transitionProps={{ duration: 200 }}
-          className='text-brown4 p-2'
+          className='text-white p-2'
           color='#fb9032'
           label='Should contain at least one lowercase, one uppercase, one numeric, one
           special character and minimum 8-16 characters.'
+          events={{ touch: true }}
+          // classNames={{tooltip: ""}}
         >
           <div className='bg-[#F5F6F7] cursor-text font-bold w-4 h-4 rounded-full flex items-center justify-center'>
             <p className='text-xs'>i</p>
@@ -165,13 +167,14 @@ export function ChangePasswordModal() {
             <PasswordInput
               {...field}
               label='Old password'
+              withAsterisk
               error={
                 errors.current_password?.message ||
                 (resetPasswordMutation?.error?.response?.data?.message ===
                   'Incorrect old password' &&
                   'Incorrect old password')
               }
-              placeholder='Enter your password'
+              placeholder='Enter your old password'
               classNames={{
                 label: '!text-base !font-bold',
                 input: '!h-[2.875rem] !bg-[#F9F9F9]',
@@ -202,12 +205,20 @@ export function ChangePasswordModal() {
                 control={control}
                 rules={{
                   required: 'New password is required',
+                  minLength: {
+                    value: 8,
+                    message: 'Password must be at least 8 characters',
+                  },
+                  validate: (value) =>
+                    value !== watch('current_password') ||
+                    'New password must differ from the old password',
                 }}
                 render={({ field }) => (
                   <PasswordInput
                     {...field}
                     placeholder='Create your new password'
                     label='New password'
+                    withAsterisk
                     error={
                       errors?.new_password?.message ||
                       (resetPasswordMutation?.error?.response?.data?.message ===
@@ -249,7 +260,8 @@ export function ChangePasswordModal() {
               {...field}
               label='Confirm password'
               error={errors.re_enter_password?.message}
-              placeholder='Enter your password'
+              placeholder='Re-enter your new password'
+              withAsterisk
               classNames={{
                 label: '!text-base !font-bold',
                 input: '!h-[2.875rem] !bg-[#F9F9F9]',

@@ -6,22 +6,11 @@ export default withAuth(
   function middleware(request) {
     // console.log(request.nextUrl.pathname);
     // console.log('TOOOKWN', request.nextauth.token);
-    // if (request.nextauth.token) {
-    //   console.log('token==>', request.nextauth.token);
-    //   return NextResponse.redirect(new URL('/', request.url));
-    // }
-    // return NextResponse.rewrite(new URL('/404', request.url));
-    // const protectedRoutes = ['/', '/products', '/products:path*'];
+    //if the user is not authenticated then redirecting to the login page
     if (!request.nextauth.token) {
-      return NextResponse.redirect(new URL('/not-found', request.url));
+      const loginUrl = `${process.env.NEXT_PUBLIC_BASE_URL}auth/login`;
+      return NextResponse.redirect(new URL(loginUrl, request.url));
     }
-    // if (
-    //   request.nextUrl.pathname.startsWith('/client') &&
-    //   request.nextauth.token?.role !== 'admin' &&
-    //   request.nextauth.token?.role !== 'manager'
-    // ) {
-    //   return NextResponse.rewrite(new URL('/denied', request.url));
-    // }
   },
   {
     callbacks: {

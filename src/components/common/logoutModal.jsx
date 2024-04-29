@@ -10,13 +10,6 @@ import apiEndPoints from '../../services/apiEndPoints';
 import PrimaryButton from './primaryButton';
 import { ErrorToast } from '@/services/toasterServices';
 
-/**
- * Handles the sign-out process for the user.
- * This function is responsible for logging the user out of the application.
- * It makes a POST request to the backend API to log the user out,
- * clears the user's local storage, and then signs the user out of the application.
- * A Promise that resolves when the sign-out process is complete.
- **/
 export function LogoutModal() {
   const dispatch = useDispatch();
 
@@ -78,7 +71,7 @@ export function LogoutModal() {
       <div className='flex flex-col justify-center items-center gap-y-10 p-4'>
         <LogoutDoorIcon />
         <p className='text-center text-xl'>
-          Are you sure you want to logout of your account?{' '}
+          Are you sure, you want to log out?{' '}
         </p>
         <div className='flex gap-x-6'>
           <PrimaryButton
