@@ -6,7 +6,7 @@ export default function ResetSuccess() {
   const router = useRouter();
   return (
     <>
-      <h2 className='text-brown3 text-[1.625rem] font-bold text-center'>
+      <h2 className='text-olive text-[1.625rem] font-bold text-center'>
         Password changed successfully!
       </h2>
       <section className='flex flex-col gap-y-10 bg-passwordBg items-center mb-3'>
