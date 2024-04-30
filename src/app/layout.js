@@ -1,5 +1,5 @@
-import { Inter } from 'next/font/google';
-import '../styles/globals.css';
+import { Montserrat as montserratFont } from 'next/font/google';
+import '../styles/globals.scss';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import '@mantine/notifications/styles.css';
@@ -9,7 +9,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]/route';
 import WrapperProvider from '@/wrapper/wrapperProvider';
 
-const inter = Inter({ subsets: ['latin'] });
+const montserrat = montserratFont({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'Thrift',
@@ -23,7 +23,7 @@ export default async function RootLayout({ children }) {
       <head>
         <ColorSchemeScript />
       </head>
-      <body className={inter.className}>
+      <body className={montserrat.className}>
         <WrapperProvider session={session}>{children}</WrapperProvider>
       </body>
     </html>

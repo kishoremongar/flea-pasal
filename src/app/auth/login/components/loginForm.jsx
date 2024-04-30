@@ -66,8 +66,8 @@ export default function LoginForm() {
   return (
     <>
       <div className='flex flex-col gap-y-1 text-center'>
-        <h2 className='text-brown3 text-[1.625rem] font-bold'>Login</h2>
-        <h3 className='text-brown4 text-lg font-semibold'>Access to thrift</h3>
+        <h2 className='text-tertiary text-[1.625rem] font-bold'>Login</h2>
+        <h3 className='text-olive text-lg font-semibold'>Access to thrift</h3>
       </div>
       <form
         onSubmit={handleSubmit(handleSignIn)}
@@ -86,8 +86,8 @@ export default function LoginForm() {
               placeholder='youremail@example.com'
               error={errors.email?.message}
               classNames={{
-                label: '!text-base text-brown3',
-                input: '!h-[2.875rem] !bg-[#F9F9F9] !text-brown3',
+                label: '!text-base text-olive',
+                input: '!h-[2.875rem] !bg-[#F9F9F9] !text-olive',
               }}
               onChange={(e) => {
                 field.onChange(e);
@@ -104,10 +104,10 @@ export default function LoginForm() {
           render={({ field }) => (
             <div className='flex flex-col'>
               <div className='flex justify-between items-center'>
-                <p className='text-brown3'>Password</p>
+                <p className='text-olive font-medium'>Password</p>
                 <Link
                   href='/auth/forgot-password'
-                  className='text-brown4 hover:text-primary text-xs md:text-base text-center cursor-pointer'
+                  className='text-olive hover:text-primary text-xs md:text-base text-center cursor-pointer'
                 >
                   Forgot password?{' '}
                 </Link>
@@ -117,8 +117,8 @@ export default function LoginForm() {
                 error={errors.password?.message}
                 placeholder='Enter your password'
                 classNames={{
-                  label: '!text-base text-brown3',
-                  input: '!h-[2.875rem] !bg-[#F9F9F9] !text-brown3',
+                  label: '!text-base text-olive',
+                  input: '!h-[2.875rem] !bg-[#F9F9F9] !text-olive',
                   visibilityToggle: '!mr-6',
                 }}
                 visibilityToggleIcon={({ reveal }) =>
@@ -134,14 +134,14 @@ export default function LoginForm() {
         <PrimaryButton
           loading={signinLoading}
           rootClassName='!h-14'
-          titleClassName='!text-xl'
+          titleClassName='!text-lg'
           type='submit'
         >
           Login
         </PrimaryButton>
-        <div className='text-brown2 text-center'>
+        <div className='text-olive text-center'>
           Don&apos;t have an account?{' '}
-          <Link href='/auth/sign-up' className='text-brown4 hover:text-primary'>
+          <Link href='/auth/sign-up' className='text-olive hover:text-primary'>
             Sign up
           </Link>
         </div>

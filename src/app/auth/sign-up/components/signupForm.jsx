@@ -29,8 +29,8 @@ export default function SignupForm() {
   return (
     <>
       <div className='flex flex-col text-center'>
-        <h2 className='text-brown3 text-[1.625rem] font-bold'>Sign up</h2>
-        <h3 className='text-brown4 text-md font-semibold'>
+        <h2 className='text-tertiary text-[1.625rem] font-bold'>Sign up</h2>
+        <h3 className='text-olive text-md font-semibold'>
           It&apos;s quick and easy.
         </h3>
       </div>
@@ -51,8 +51,8 @@ export default function SignupForm() {
               placeholder='Your name'
               error={errors?.full_name?.message}
               classNames={{
-                label: '!text-base text-brown3 text-brown3',
-                input: '!h-[2.875rem] !bg-[#F9F9F9] text-brown3 !text-brown3',
+                label: '!text-base text-olive text-olive',
+                input: '!h-[2.875rem] !bg-[#F9F9F9] text-olive !text-olive',
               }}
               onChange={(e) => {
                 field.onChange(e);
@@ -73,8 +73,8 @@ export default function SignupForm() {
               placeholder='youremail@example.com'
               error={errors?.email?.message}
               classNames={{
-                label: '!text-base text-brown3',
-                input: '!h-[2.875rem] !bg-[#F9F9F9] !text-brown3',
+                label: '!text-base text-olive',
+                input: '!h-[2.875rem] !bg-[#F9F9F9] !text-olive',
               }}
               onChange={(e) => {
                 field.onChange(e);
@@ -94,8 +94,8 @@ export default function SignupForm() {
               error={errors?.password?.message}
               placeholder='Enter your password'
               classNames={{
-                label: '!text-base text-brown3',
-                input: '!h-[2.875rem] !bg-[#F9F9F9] !text-brown3',
+                label: '!text-base text-olive',
+                input: '!h-[2.875rem] !bg-[#F9F9F9] !text-olive',
                 visibilityToggle: '!mr-6',
               }}
               label='Password'
@@ -121,8 +121,8 @@ export default function SignupForm() {
               placeholder='Confirm your password'
               label='Confirm password'
               classNames={{
-                label: '!text-base text-brown3',
-                input: '!h-[2.875rem] !bg-[#F9F9F9] !text-brown3',
+                label: '!text-base text-olive',
+                input: '!h-[2.875rem] !bg-[#F9F9F9] !text-olive',
                 visibilityToggle: '!mr-6',
               }}
               visibilityToggleIcon={({ reveal }) =>
@@ -137,14 +137,14 @@ export default function SignupForm() {
         <PrimaryButton
           // loading={signinLoading}
           rootClassName='!h-14'
-          titleClassName='!text-xl'
+          titleClassName='!text-lg'
           type='submit'
         >
           Sign up
         </PrimaryButton>
         <div href='/auth/login' className='text-brown2 text-center'>
           Already have an account?{' '}
-          <Link href='/auth/login' className='text-brown4 hover:text-primary'>
+          <Link href='/auth/login' className='text-olive hover:text-primary'>
             Login
           </Link>
         </div>

@@ -16,11 +16,12 @@ export default function MainNavbar({ pathName }) {
 
   useEffect(() => {
     dispatch(sidebarToggle(opened));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [opened]);
 
   return (
     <div className='flex flex-col'>
-      <div className='flex items-center justify-between bg-primary min-h-16 md:min-h-[4.75rem] px-4 md:px-8 py-4 md:py-6 text-white text-md tracking-normal'>
+      <div className='flex items-center justify-between bg-secondary min-h-16 md:min-h-[4.75rem] px-4 md:px-8 py-4 md:py-6 text-white text-md tracking-normal'>
         <div className='flex items-center gap-x-4 md:gap-x-10'>
           <Burger
             color='white'
@@ -49,7 +50,9 @@ export default function MainNavbar({ pathName }) {
           </li>
           {/* <li className='cursor-pointer'>Favourites</li> */}
           <li className='cursor-pointer'>
-            <CartIcon className='text-white hover:text-tertiary w-4 h-4 sm:w-5 sm:h-5' />
+            <Link href='/cart'>
+              <CartIcon className='text-white hover:text-tertiary w-4 h-4 sm:w-5 sm:h-5' />
+            </Link>
           </li>
           <li className='cursor-pointer'>
             <UserIcon className='text-white hover:text-tertiary w-4 h-4 sm:w-5 sm:h-5' />

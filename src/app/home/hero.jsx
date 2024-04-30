@@ -16,16 +16,20 @@ import HeroSlide3 from '@@/assets/images/hero_slide3.webp';
 export default function LandingHero() {
   const swiperData = [
     {
+      id: 1,
       image: HeroSlide1,
       title: 'The joy of dressing is an Art.',
       subtitle: '🌍 Vintage - Thrifted - New Clothes',
     },
     {
+      id: 2,
       image: HeroSlide2,
-      title: 'Clothes mean nothing until someone lives in them.',
+      // title: 'Clothes mean nothing until someone lives in them.',
+      title: 'Fashion with a History.',
       subtitle: '🌍 Vintage - Thrifted - New Clothes',
     },
     {
+      id: 3,
       image: HeroSlide3,
       title: 'Reduce, Reuse, Recycle',
       subtitle: '🌍 Vintage - Thrifted - New Clothes',
@@ -42,18 +46,26 @@ export default function LandingHero() {
         }}
         navigation={true}
         modules={[Pagination, Navigation, Autoplay, Thumbs]}
-        className='mySwiper max-h-[calc(100vh-76px)] text-white'
-        // autoplay={{
-        //   delay: 2500,
-        //   disableOnInteraction: true,
-        // }}
+        className='heroSwipperMain max-h-[calc(100vh-76px)] text-white'
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: true,
+        }}
       >
         {swiperData?.map((item) => (
-          <SwiperSlide key={item?.image}>
-            <Image className='bg-cover brightness-50' src={item?.image} />
-            <div className='absolute left-0 right-0 top-[30%]'>
-              <p className='customH1'>{item?.title}</p>
-              <p className='customH4 text-2xl'>{item?.subtitle}</p>
+          <SwiperSlide key={item?.id}>
+            <Image
+              className='bg-cover brightness-50 relative'
+              src={item?.image}
+              alt={item?.title}
+            />
+            <div className='absolute top-[30%] right-0 left-0 flex flex-col justify-center items-center text-white'>
+              <p className='font-extrabold text-6xl text-center'>
+                {item?.title}
+              </p>
+              <p className='font-light text-center text-2xl'>
+                {item?.subtitle}
+              </p>
             </div>
           </SwiperSlide>
         ))}

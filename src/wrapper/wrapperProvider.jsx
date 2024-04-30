@@ -4,6 +4,7 @@ import { createTheme, MantineProvider } from '@mantine/core';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Notifications } from '@mantine/notifications';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { usePathname } from 'next/navigation';
 import store from '@/store/store';
 import SpotlightSearch from '@/components/common/spotlightSearch';
 import NavContainer from '@/app/home/navContainer';
@@ -26,20 +27,23 @@ export default function WrapperProvider({ session, children }) {
     },
     colors: {
       primary: [
-        '#f8f3f2',
-        '#e8e5e4',
-        '#d4c8c4',
-        '#bfa9a1',
-        '#af8e84',
-        '#a57d71',
-        '#a17466',
-        '#8d6255',
-        '#7e574a',
-        '#704a3d',
+        '#fff4e8',
+        '#efe6de',
+        '#d8ccc3',
+        '#c0b0a3',
+        '#ac9789',
+        '#a08877',
+        '#A69080',
+        '#876e5c',
+        '#79614f',
+        '#6c523f',
       ],
     },
     primaryColor: 'primary',
   });
+
+  const pathname = usePathname();
+  const isAuthNestedRoute = pathname.startsWith('/auth');
   return (
     <SessionProvider session={session}>
       <ReduxProvider store={store}>
@@ -47,7 +51,11 @@ export default function WrapperProvider({ session, children }) {
           <MantineProvider theme={theme}>
             <Notifications position='top-right' autoClose={4000} />
             <SpotlightSearch />
-            <NavContainer>{children}</NavContainer>
+            {isAuthNestedRoute ? (
+              <>{children}</>
+            ) : (
+              <NavContainer>{children}</NavContainer>
+            )}
           </MantineProvider>
         </QueryClientProvider>
       </ReduxProvider>
