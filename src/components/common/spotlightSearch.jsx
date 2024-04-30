@@ -1,4 +1,6 @@
-import { Spotlight } from '@mantine/spotlight';
+import { Spotlight, spotlight } from '@mantine/spotlight';
+import SearchIcon from '../../../public/assets/icons/magnifying-glass.svg';
+import BackIcon from '../../../public/assets/icons/arrow-left.svg';
 
 export default function SpotlightSearch() {
   const actions = [
@@ -50,15 +52,16 @@ export default function SpotlightSearch() {
         actions={actions}
         nothingFound='Nothing found...'
         highlightQuery
-        // searchProps={{
-        //   leftSection: (
-        //     <IconSearch
-        //       style={{ width: rem(20), height: rem(20) }}
-        //       stroke={1.5}
-        //     />
-        //   ),
-        //   placeholder: 'Search...',
-        // }}
+        searchProps={{
+          leftSection: (
+            <BackIcon
+              className='text-primary !w-4 !h-4'
+              onClick={spotlight.close}
+            />
+          ),
+          placeholder: 'Search...',
+          rightSection: <SearchIcon className='text-primary !w-4 !h-4' />,
+        }}
       />
     </div>
   );

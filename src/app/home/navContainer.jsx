@@ -58,6 +58,7 @@ export default function NavContainer({ children }) {
           </Transition>
           <div className='absolute'>{children}</div>
         </div>
+        <div className='hidden md:block'>{children}</div>
       </main>
     </div>
   );
