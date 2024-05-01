@@ -1,3 +1,4 @@
+import Categories from './categories';
 import LandingHero from './hero';
 
 export default function HomeMainLayout() {
@@ -8,7 +9,3 @@ export default function HomeMainLayout() {
     </div>
   );
 }
-
-const Categories = () => {
-  return <div className='min-h-screen text-center'>Shop by categories</div>;
-};

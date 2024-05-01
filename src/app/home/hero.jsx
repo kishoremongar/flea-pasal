@@ -48,7 +48,7 @@ export default function LandingHero() {
         modules={[Pagination, Navigation, Autoplay, Thumbs]}
         className='heroSwipperMain max-h-[calc(100vh-76px)] text-white'
         autoplay={{
-          delay: 2500,
+          delay: 5000,
           disableOnInteraction: true,
         }}
       >
@@ -59,7 +59,7 @@ export default function LandingHero() {
               src={item?.image}
               alt={item?.title}
             />
-            <div className='absolute top-[30%] right-0 left-0 flex flex-col justify-center items-center text-white'>
+            <div className='absolute top-[30%] right-0 left-0 flex flex-col justify-center items-center text-off-white'>
               <p className='font-extrabold text-6xl text-center'>
                 {item?.title}
               </p>
