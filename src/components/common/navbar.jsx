@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useDisclosure } from '@mantine/hooks';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useSession } from 'next-auth/react';
 import LogoPlain from '../../../public/assets/icons/logoPlain.svg';
 import SearchIcon from '../../../public/assets/icons/magnifying-glass.svg';
 import CartIcon from '../../../public/assets/icons/cart.svg';
@@ -13,6 +14,7 @@ import { sidebarToggle } from '@/store/slices/auth';
 export default function MainNavbar({ pathName }) {
   const [opened, { toggle }] = useDisclosure();
   const dispatch = useDispatch();
+  const { status } = useSession();
 
   useEffect(() => {
     dispatch(sidebarToggle(opened));
@@ -55,7 +57,11 @@ export default function MainNavbar({ pathName }) {
             </Link>
           </li>
           <li className='cursor-pointer'>
-            <UserIcon className='text-white hover:text-tertiary w-4 h-4 sm:w-5 sm:h-5' />
+            <Link
+              href={status === 'unauthenticated' ? '/auth/login' : '/profile'}
+            >
+              <UserIcon className='text-white hover:text-tertiary w-4 h-4 sm:w-5 sm:h-5' />
+            </Link>
           </li>
         </ul>
       </div>

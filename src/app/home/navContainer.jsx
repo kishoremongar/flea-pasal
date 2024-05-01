@@ -14,7 +14,7 @@ export default function NavContainer({ children }) {
 
   return (
     <div>
-      <main className='flex min-h-screen flex-col'>
+      <main className='flex min-h-screen flex-col bg-off-white'>
         <MainNavbar pathName={pathName?.split('/')?.slice(1, 2)?.[0]} />
         <div className='flex relative md:hidden'>
           <Transition

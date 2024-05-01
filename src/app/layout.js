@@ -1,4 +1,4 @@
-import { Montserrat as montserratFont } from 'next/font/google';
+import { Poppins as poppinsFont } from 'next/font/google';
 import '../styles/globals.scss';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
@@ -9,11 +9,17 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]/route';
 import WrapperProvider from '@/wrapper/wrapperProvider';
 
-const montserrat = montserratFont({ subsets: ['latin'] });
+const poppinsList = poppinsFont({
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  variable: '--poppins-font',
+  style: ['normal'],
+  fallback: 'Roboto',
+});
 
 export const metadata = {
-  title: 'Thrift',
-  description: 'Stop and shop',
+  title: 'FleaPasal',
+  description: 'Friendly Sustainable Style',
 };
 
 export default async function RootLayout({ children }) {
@@ -23,7 +29,7 @@ export default async function RootLayout({ children }) {
       <head>
         <ColorSchemeScript />
       </head>
-      <body className={montserrat.className}>
+      <body className={poppinsList.className}>
         <WrapperProvider session={session}>{children}</WrapperProvider>
       </body>
     </html>

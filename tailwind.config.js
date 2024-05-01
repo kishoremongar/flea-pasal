@@ -41,6 +41,38 @@ module.exports = {
         '2xl': '1536px',
         // => @media (min-width: 1536px)
       },
+      animation: {
+        'bounce-once': 'bounce 1.4s 0.5',
+        wiggle: 'wiggle 1s ease-in-out infinite',
+        expand: 'expand 0.3s',
+      },
+      keyframes: {
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-2deg)' },
+          '50%': { transform: 'rotate(2deg)' },
+        },
+        expand: {
+          '0%, 100%': { transform: 'scaleX(0)' },
+          '50%': { transform: 'scaleX(1)' },
+        },
+      },
+      fontFamily: {
+        heebo: ['Heebo', 'sans-serif'],
+        roboto: ['Roboto', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
+        lato: ['Lato', 'sans-serif'],
+        montserrat: ['Montserrat', 'sans-serif'],
+        libreFranklin: ['Libre Franklin', 'sans-serif'],
+      },
+      boxShadow: {
+        catShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+        card: '0px 4px 6px 2px rgba(187, 170, 204, 0.15);',
+        cardHover: '0px 4px 4px 0px rgba(245, 242, 248, 1)',
+        support: ' 0px 0px 4px 0px rgba(0, 0, 0, 0.25)',
+        dropDown:
+          '0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.20);',
+        compare: '-0.874px 3.496px 6.991px 1.748px rgba(68, 52, 84, 0.20);',
+      },
     },
   },
   plugins: [],
