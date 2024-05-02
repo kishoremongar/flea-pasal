@@ -24,6 +24,10 @@ module.exports = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        heroShoesBg:
+          "url('https://res.cloudinary.com/fushigina-shinobi/image/upload/f_auto,q_auto/v1/FleaPasal/py9prw3y3jdbzzz1ksf3')",
+        heroBooksBg:
+          "url('https://res.cloudinary.com/fushigina-shinobi/image/upload/f_auto,q_auto/v1/FleaPasal/dghb82mrn2yi78e3nnyh')",
       },
       screens: {
         mobile: '320px',

@@ -1,4 +1,4 @@
-import { Burger } from '@mantine/core';
+import { Burger, HoverCard } from '@mantine/core';
 import { spotlight } from '@mantine/spotlight';
 import Link from 'next/link';
 import { useDisclosure } from '@mantine/hooks';
@@ -72,25 +72,71 @@ export default function MainNavbar({ pathName }) {
 export const NavItem = ({ alterClass, pathName }) => {
   const data = [
     { label: 'Home', navigateTo: '/', activeClassName: 'home' },
-    { label: 'Catalogs', navigateTo: '/catalogs', activeClassName: 'catalogs' },
+    {
+      label: 'Pasal',
+      navigateTo: '/pasal',
+      activeClassName: 'pasal',
+      subLabel: [
+        { id: 1, label: 'Apparel', linkTo: '/pasal/apparel' },
+        { id: 2, label: 'Shoes', linkTo: '/pasal/shoes' },
+        { id: 3, label: 'Krafts', linkTo: '/pasal/krafts' },
+        { id: 4, label: 'Books', linkTo: '/pasal/books' },
+      ],
+    },
     { label: 'About', navigateTo: '/about', activeClassName: 'about' },
     { label: 'Support', navigateTo: '/support', activeClassName: 'support' },
   ];
   return (
     <div className={alterClass}>
-      {data?.map((item) => (
-        <Link
-          href={item?.navigateTo}
-          key={item.label}
-          className={`underline-offset-4 hover:underline relative inline-block transition duration-200 ease-in-out ${
-            pathName === ''
-              ? item?.activeClassName === 'home' && 'underline'
-              : pathName?.startsWith(item?.activeClassName) && 'underline'
-          }`}
-        >
-          {item.label}
-        </Link>
-      ))}
+      {data?.map((item) =>
+        item?.label === 'Pasal' ? (
+          <HoverCard
+            shadow='md'
+            transition='pop'
+            classNames={{
+              dropdown: '!bg-off-white text-primary-black border-blue-500',
+            }}
+            key={item.label}
+          >
+            <HoverCard.Target>
+              <p
+                className={`cursor-context-menu underline-offset-4 hover:underline relative inline-block transition duration-200 ease-in-out ${
+                  pathName?.startsWith(item?.activeClassName) && 'underline'
+                }`}
+              >
+                {item?.label}
+              </p>
+            </HoverCard.Target>
+            <HoverCard.Dropdown>
+              <div className='flex flex-col gap-y-2'>
+                {item?.subLabel?.map((sub) => (
+                  <Link
+                    key={sub?.id}
+                    href={sub?.linkTo}
+                    className={`cursor-pointer underline-offset-4 hover:underline relative inline-block transition duration-200 ease-in-out ${
+                      pathName?.startsWith(item?.activeClassName) && 'underline'
+                    }`}
+                  >
+                    {sub?.label}
+                  </Link>
+                ))}
+              </div>
+            </HoverCard.Dropdown>
+          </HoverCard>
+        ) : (
+          <Link
+            href={item?.navigateTo}
+            key={item.label}
+            className={`underline-offset-4 hover:underline relative inline-block transition duration-200 ease-in-out ${
+              pathName === ''
+                ? item?.activeClassName === 'home' && 'underline'
+                : pathName?.startsWith(item?.activeClassName) && 'underline'
+            }`}
+          >
+            {item.label}
+          </Link>
+        )
+      )}
     </div>
   );
 };
