@@ -1,31 +1,27 @@
-# Next App Setup
 
-This setup uses pre-commit hook with the help of husky to run lint and test before committing. Also additionally commitlint is used to check commit message.
+# E-Commerce Application
 
-# Run `npm install` to install dependencies
+Showcases collections of used clothes, shoes, books and handicraft items. Where the admin(sellers) can only mutate the products and customer(buyer) can add to cart, checkout and pay as well. Admin dashboard, User Settings and notification with SSE.
 
-Using npm package to handle the packages.
 
-# Server
+## Authors
 
-npm run dev
+- [@kishoremongar](https://github.com/kishoremongar)
 
-# Test run separately
 
-npm test or npm run test
+## Acknowledgements
 
-# Lint run separately
+ - [Commit conventions](https://www.conventionalcommits.org)
 
-npm run lint
 
-# Commit lint
+## Demo
 
-Please refer to the link for general standard on how to write commit message https://www.conventionalcommits.org/en/v1.0.0
+Currently in development.
 
-# Build
 
-npm run build
+## Tech Stack
 
-# Run Build Server
+**Client:** Next.js 14, Next-Auth 4, Redux, Tanstack Query, Jest, TailwindCSS, Mantine UI.
 
-npm run start
+**Server:** Node.js, Express.js, MongoDB, Mongoose.
+
