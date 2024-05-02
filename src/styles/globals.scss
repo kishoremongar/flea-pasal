@@ -53,12 +53,8 @@ body {
   object-fit: cover;
 }
 
-.heroSwipperMain {
-  .swiper-button-next,
-  .swiper-button-prev {
-    color: white;
-  }
+.heroSwipperMain, .productSwipper {
   .swiper-pagination-bullet {
-    background-color: white;
+    background: #fff;
   }
 }

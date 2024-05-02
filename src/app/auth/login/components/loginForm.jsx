@@ -22,7 +22,6 @@ export default function LoginForm() {
 
   const handleSignIn = (data) => {
     setSigninLoading(true);
-
     signIn('user-login', {
       email: data.email,
       password: data.password,
