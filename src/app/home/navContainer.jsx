@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import MainNavbar, { NavItem } from '@/components/common/navbar';
+import { FooterLayout } from '@/components/common/footer';
 
 export default function NavContainer({ children }) {
   const isSidebarOpened = useSelector(
@@ -59,6 +60,7 @@ export default function NavContainer({ children }) {
           <div className='absolute'>{children}</div>
         </div>
         <div className='hidden md:block'>{children}</div>
+        <FooterLayout />
       </main>
     </div>
   );
