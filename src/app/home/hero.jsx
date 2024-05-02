@@ -1,12 +1,9 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
-
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
-import 'swiper/css/free-mode';
-import 'swiper/css/thumbs';
-// import required modules
+import 'swiper/scss';
+import 'swiper/scss/pagination';
+import 'swiper/scss/navigation';
+import 'swiper/scss/free-mode';
+import 'swiper/scss/thumbs';
 import { Autoplay, Navigation, Pagination, Thumbs } from 'swiper/modules';
 import Image from 'next/image';
 import HeroSlide1 from '@@/assets/images/hero_slide1.webp';
@@ -50,6 +47,11 @@ export default function LandingHero() {
         autoplay={{
           delay: 5000,
           disableOnInteraction: true,
+        }}
+        lazy={true}
+        style={{
+          '--swiper-navigation-color': '#fff',
+          '--swiper-pagination-color': '#fff',
         }}
       >
         {swiperData?.map((item) => (
