@@ -59,16 +59,12 @@ export function FooterLayout() {
   return (
     <footer
       className={classes.footer}
-      style={{ backgroundColor: '#3E362E', color: '#b6a497' }}
+      style={{ backgroundColor: '#93785B', color: 'white' }}
     >
       <Container className={classes.inner}>
         <div className={classes.logo}>
           <MainLogo />
-          <Text
-            size='xs'
-            className={classes.description}
-            style={{ color: '#b6a497' }}
-          >
+          <Text size='xs' className={classes.description}>
             Eco-friendly styling, sustainable yet <br /> stylish and a fashion
             statement.
           </Text>
@@ -76,9 +72,7 @@ export function FooterLayout() {
         <div className={classes.groups}>{groups}</div>
       </Container>
       <Container className={classes.afterFooter}>
-        <Text size='sm' style={{ color: '#b6a497' }}>
-          © {currentYear} All rights reserved.
-        </Text>
+        <Text size='sm'>© {currentYear} All rights reserved.</Text>
 
         <Group
           gap={0}

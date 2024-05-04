@@ -15,7 +15,7 @@ export default function NavContainer({ children }) {
 
   return (
     <div>
-      <main className='flex min-h-screen flex-col bg-off-white'>
+      <main className='flex min-h-screen flex-col bg-off-white flex-auto'>
         <MainNavbar pathName={pathName?.split('/')?.slice(1, 2)?.[0]} />
         <div className='flex relative md:hidden'>
           <Transition
@@ -57,7 +57,7 @@ export default function NavContainer({ children }) {
               );
             }}
           </Transition>
-          <div className='absolute'>{children}</div>
+          <div className='flex flex-auto absolute w-full'>{children}</div>
         </div>
         <div className='hidden md:block'>{children}</div>
         <FooterLayout />

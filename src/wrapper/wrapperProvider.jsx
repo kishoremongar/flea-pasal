@@ -1,6 +1,7 @@
 'use client';
 import { SessionProvider } from 'next-auth/react';
 import { createTheme, MantineProvider } from '@mantine/core';
+import NextTopLoader from 'nextjs-toploader';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Notifications } from '@mantine/notifications';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -51,6 +52,7 @@ export default function WrapperProvider({ session, children }) {
           <MantineProvider theme={theme}>
             <Notifications position='top-right' autoClose={4000} />
             <SpotlightSearch />
+            <NextTopLoader showSpinner={false} />
             {isAuthNestedRoute ? (
               <>{children}</>
             ) : (
