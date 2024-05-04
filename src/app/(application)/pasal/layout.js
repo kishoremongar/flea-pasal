@@ -30,18 +30,18 @@ export default function PasalLayout({ children }) {
     )
   );
   return (
-    <div className='p-10'>
+    <div className='pt-[4.75rem] p-5 sm:p-7 md:p-10 flex flex-auto w-full flex-col gap-y-4'>
       <Breadcrumbs
-        className='text-olive'
+        className='text-olive text-sm sm:text-base'
         classNames={{ separator: '!text-olive' }}
       >
         {breadCrumbItems}
       </Breadcrumbs>
-      <div className='grid grid-cols-12 p-6'>
-        <div className='col-span-3'>
+      <div className='grid grid-cols-1 bg-yello-500 sm:grid-cols-12 p-0 md:p-6 sm:gap-x-4'>
+        <div className='sm:block hidden col-span-3'>
           <SidebarFilter />
         </div>
-        <div className='col-span-9'>{children}</div>
+        <div className='sm:col-span-9'>{children}</div>
       </div>
     </div>
   );

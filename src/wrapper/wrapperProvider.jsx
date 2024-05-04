@@ -8,7 +8,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
 import store from '@/store/store';
 import SpotlightSearch from '@/components/common/spotlightSearch';
-import NavContainer from '@/app/home/navContainer';
+import { FooterLayout } from '@/components/common/footer';
+import MainNavbar from '@/components/common/navbar';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,7 +57,11 @@ export default function WrapperProvider({ session, children }) {
             {isAuthNestedRoute ? (
               <>{children}</>
             ) : (
-              <NavContainer>{children}</NavContainer>
+              <>
+                <MainNavbar />
+                {children}
+                <FooterLayout />
+              </>
             )}
           </MantineProvider>
         </QueryClientProvider>

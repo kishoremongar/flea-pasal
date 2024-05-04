@@ -49,18 +49,20 @@ export default function ProductCards({ product }) {
         </Swiper>
       </div>
       <div className='px-4 py-3'>
-        <span className='text-gray-400 mr-3 uppercase text-xs'>
+        <span className='text-gray-400 mr-3 uppercase text-xxs sm:text-xs'>
           {product?.company}
         </span>
-        <p className='text-lg text-black truncate block capitalize'>
+        <p className='text-sm sm:text-lg text-black truncate block capitalize'>
           {product?.name}
         </p>
         <div className='flex items-center'>
-          <p className='text-lg font-semibold text-black cursor-auto my-3'>
+          <p className='text-sm sm:text-lg font-semibold text-black cursor-auto my-3'>
             &#8377;{product?.price}
           </p>
           <del>
-            <p className='text-sm text-gray-600 cursor-auto ml-2'>&#8377;500</p>
+            <p className='text-xs sm:text-sm text-gray-600 cursor-auto ml-2'>
+              &#8377;500
+            </p>
           </del>
           <div className='ml-auto cursor-pointer'>
             <AddBag className='hover:text-primary' />

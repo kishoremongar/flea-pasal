@@ -1,6 +1,9 @@
 import { Container, Group, Text } from '@mantine/core';
 import Link from 'next/link';
-import MainLogo from '../../../public/assets/icons/logo.svg';
+import MainLogo from '../../../public/assets/icons/logoPlain.svg';
+import PinterestLogo from '../../../public/assets/icons/pinterest.svg';
+import FacebookLogo from '../../../public/assets/icons/facebook.svg';
+import InstagramLogo from '../../../public/assets/icons/instagram.svg';
 import classes from '../style-modules/footerLinks.module.css';
 
 const data = [
@@ -59,11 +62,11 @@ export function FooterLayout() {
   return (
     <footer
       className={classes.footer}
-      style={{ backgroundColor: '#93785B', color: 'white' }}
+      style={{ backgroundColor: '#b6a497', color: 'white' }}
     >
       <Container className={classes.inner}>
         <div className={classes.logo}>
-          <MainLogo />
+          <MainLogo className='text-white' />
           <Text size='xs' className={classes.description}>
             Eco-friendly styling, sustainable yet <br /> stylish and a fashion
             statement.
@@ -75,20 +78,20 @@ export function FooterLayout() {
         <Text size='sm'>© {currentYear} All rights reserved.</Text>
 
         <Group
-          gap={0}
+          gap={10}
           className={classes.social}
           justify='flex-end'
           wrap='nowrap'
-          classNames={{ root: '!text-secondary' }}
+          color='#fff'
         >
           <Link href='#' target='_blank'>
-            Instagram
+            <InstagramLogo className=' hover:text-primary-black w-6 h-6' />
           </Link>
           <Link href='#' target='_blank'>
-            Pinterest
+            <PinterestLogo className=' hover:text-primary-black w-6 h-6' />
           </Link>
           <Link href='#' target='_blank'>
-            Twitter
+            <FacebookLogo className=' hover:text-primary-black w-6 h-6' />
           </Link>
         </Group>
       </Container>

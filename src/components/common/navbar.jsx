@@ -1,20 +1,24 @@
-import { Burger, HoverCard } from '@mantine/core';
+import { Burger, HoverCard, Transition } from '@mantine/core';
 import { spotlight } from '@mantine/spotlight';
 import Link from 'next/link';
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useViewportSize } from '@mantine/hooks';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSession } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 import LogoPlain from '../../../public/assets/icons/logoPlain.svg';
 import SearchIcon from '../../../public/assets/icons/magnifying-glass.svg';
 import CartIcon from '../../../public/assets/icons/cart.svg';
 import UserIcon from '../../../public/assets/icons/user.svg';
 import { sidebarToggle } from '@/store/slices/auth';
 
-export default function MainNavbar({ pathName }) {
+export default function MainNavbar() {
   const [opened, { toggle }] = useDisclosure();
   const dispatch = useDispatch();
   const { status } = useSession();
+  const pathName = usePathname();
+  const getPath = pathName?.split('/')?.slice(1, 2)?.[0];
+  const { height } = useViewportSize();
 
   useEffect(() => {
     dispatch(sidebarToggle(opened));
@@ -22,8 +26,8 @@ export default function MainNavbar({ pathName }) {
   }, [opened]);
 
   return (
-    <div className='flex flex-col'>
-      <div className='flex items-center justify-between bg-secondary min-h-16 md:min-h-[4.75rem] px-4 md:px-8 py-4 md:py-6 text-white text-md tracking-normal'>
+    <div className='flex flex-col fixed top-0 z-50 w-full text-white text-md tracking-normal'>
+      <div className='flex items-center w-full justify-between bg-secondary min-h-16 md:min-h-[4.75rem] px-4 md:px-8 py-4 md:py-6'>
         <div className='flex items-center gap-x-4 md:gap-x-10'>
           <Burger
             color='white'
@@ -36,7 +40,7 @@ export default function MainNavbar({ pathName }) {
           <Link href='/'>
             <LogoPlain className='w-20 sm:w-24 md:w-32 -mt-1 cursor-pointer' />
           </Link>
-          <NavItem alterClass='gap-x-6 md:flex hidden' pathName={pathName} />
+          <NavItem alterClass='gap-x-6 md:flex hidden' pathName={getPath} />
         </div>
         <ul className='flex items-center gap-x-6'>
           <li>
@@ -64,6 +68,14 @@ export default function MainNavbar({ pathName }) {
             </Link>
           </li>
         </ul>
+      </div>
+      <div className='flex md:hidden'>
+        <MobileSideBar
+          status={status}
+          opened={opened}
+          pathName={getPath}
+          height={height}
+        />
       </div>
     </div>
   );
@@ -94,9 +106,10 @@ export const NavItem = ({ alterClass, pathName }) => {
             shadow='md'
             transition='pop'
             classNames={{
-              dropdown: '!bg-off-white text-primary-black border-blue-500',
+              dropdown: '!bg-secondary text-white border-none',
             }}
             key={item.label}
+            withArrow
           >
             <HoverCard.Target>
               <p
@@ -138,5 +151,50 @@ export const NavItem = ({ alterClass, pathName }) => {
         )
       )}
     </div>
+  );
+};
+
+const MobileSideBar = ({ status, opened, pathName, height }) => {
+  const sidebarHeight = height - 64;
+  return (
+    <Transition
+      mounted={opened}
+      transition='slide-right'
+      duration={400}
+      timingFunction='ease'
+    >
+      {(styles) => {
+        return (
+          <div
+            style={{ ...styles, height: sidebarHeight }}
+            className={`py-4 w-9/12 bg-secondary flex flex-col justify-between px-10 text-white`}
+          >
+            <NavItem
+              alterClass='gap-x-6 gap-y-4 justify-center md:hidden flex flex-col'
+              pathName={pathName}
+            />
+            {status === 'unauthenticated' && (
+              <div className='flex flex-col gap-y-4 w-full text-white'>
+                <Link
+                  href='/auth/login'
+                  className='text-center bg-primary py-2 rounded-md w-full text-base'
+                >
+                  Sign up
+                </Link>
+                <div
+                  href='/auth/login'
+                  className='text-brown2 text-center text-sm'
+                >
+                  Already have an account?{' '}
+                  <Link href='/auth/login' className='text-white'>
+                    Login
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      }}
+    </Transition>
   );
 };
