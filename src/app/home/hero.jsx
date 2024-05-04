@@ -33,7 +33,7 @@ export default function LandingHero() {
     },
   ];
   return (
-    <div>
+    <div className='flex flex-auto w-full'>
       <Swiper
         slidesPerView={1}
         spaceBetween={30}
@@ -43,7 +43,7 @@ export default function LandingHero() {
         }}
         navigation={true}
         modules={[Pagination, Navigation, Autoplay, Thumbs]}
-        className='heroSwipperMain max-h-[calc(100vh-76px)] text-white'
+        className='heroSwipperMain h-full sm:max-h-[calc(100vh-76px)] text-white'
         autoplay={{
           delay: 5000,
           disableOnInteraction: true,
@@ -52,6 +52,7 @@ export default function LandingHero() {
         style={{
           '--swiper-navigation-color': '#fff',
           '--swiper-pagination-color': '#fff',
+          '--swiper-navigation-size': '22px',
         }}
       >
         {swiperData?.map((item) => (
@@ -61,11 +62,11 @@ export default function LandingHero() {
               src={item?.image}
               alt={item?.title}
             />
-            <div className='absolute top-[30%] right-0 left-0 flex flex-col justify-center items-center text-off-white'>
-              <p className='font-extrabold text-6xl text-center'>
+            <div className='absolute top-[40%] lg:top-[30%] right-0 left-0 flex flex-col justify-center items-center text-off-white'>
+              <p className='font-extrabold text-xl sm:text-4xl lg:text-6xl text-center'>
                 {item?.title}
               </p>
-              <p className='font-light text-center text-2xl'>
+              <p className='font-light text-center text-xs sm:text-xl lg:text-2xl'>
                 {item?.subtitle}
               </p>
             </div>

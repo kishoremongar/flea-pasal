@@ -77,6 +77,9 @@ module.exports = {
           '0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.20);',
         compare: '-0.874px 3.496px 6.991px 1.748px rgba(68, 52, 84, 0.20);',
       },
+      fontSize: {
+        xxs: '10px',
+      },
     },
   },
   plugins: [],

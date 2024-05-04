@@ -1,13 +1,15 @@
 'use client';
 import { SessionProvider } from 'next-auth/react';
 import { createTheme, MantineProvider } from '@mantine/core';
+import NextTopLoader from 'nextjs-toploader';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Notifications } from '@mantine/notifications';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
 import store from '@/store/store';
 import SpotlightSearch from '@/components/common/spotlightSearch';
-import NavContainer from '@/app/home/navContainer';
+import { FooterLayout } from '@/components/common/footer';
+import MainNavbar from '@/components/common/navbar';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -51,10 +53,15 @@ export default function WrapperProvider({ session, children }) {
           <MantineProvider theme={theme}>
             <Notifications position='top-right' autoClose={4000} />
             <SpotlightSearch />
+            <NextTopLoader showSpinner={false} />
             {isAuthNestedRoute ? (
               <>{children}</>
             ) : (
-              <NavContainer>{children}</NavContainer>
+              <>
+                <MainNavbar />
+                {children}
+                <FooterLayout />
+              </>
             )}
           </MantineProvider>
         </QueryClientProvider>

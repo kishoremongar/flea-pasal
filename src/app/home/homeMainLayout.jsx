@@ -3,7 +3,7 @@ import LandingHero from './hero';
 
 export default function HomeMainLayout() {
   return (
-    <div>
+    <div className='pt-[calc(76px-1rem)]'>
       <LandingHero />
       <Categories />
     </div>
