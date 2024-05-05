@@ -3,7 +3,7 @@ import { spotlight } from '@mantine/spotlight';
 import Link from 'next/link';
 import { useDisclosure, useViewportSize } from '@mantine/hooks';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import LogoPlain from '../../../public/assets/icons/logoPlain.svg';
@@ -89,10 +89,10 @@ export const NavItem = ({ alterClass, pathName }) => {
       navigateTo: '/pasal',
       activeClassName: 'pasal',
       subLabel: [
-        { id: 1, label: 'Apparel', linkTo: '/pasal/apparel' },
-        { id: 2, label: 'Shoes', linkTo: '/pasal/shoes' },
-        { id: 3, label: 'Krafts', linkTo: '/pasal/krafts' },
-        { id: 4, label: 'Books', linkTo: '/pasal/books' },
+        { id: 1, label: 'Apparel', linkTo: '/apparel' },
+        { id: 2, label: 'Shoes', linkTo: '/shoes' },
+        { id: 3, label: 'Krafts', linkTo: '/krafts' },
+        { id: 4, label: 'Books', linkTo: '/books' },
       ],
     },
     { label: 'About', navigateTo: '/about', activeClassName: 'about' },
@@ -156,6 +156,7 @@ export const NavItem = ({ alterClass, pathName }) => {
 
 const MobileSideBar = ({ status, opened, pathName, height }) => {
   const sidebarHeight = height - 64;
+  const userData = useSelector((store) => store.auth.user);
   return (
     <Transition
       mounted={opened}
@@ -191,6 +192,9 @@ const MobileSideBar = ({ status, opened, pathName, height }) => {
                   </Link>
                 </div>
               </div>
+            )}
+            {status === 'authenticated' && (
+              <p className=' text-white capitalize'>Hello {userData?.name}</p>
             )}
           </div>
         );

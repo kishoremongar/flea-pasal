@@ -19,6 +19,7 @@ export default function ProductCards({ product }) {
           pagination={{
             clickable: true,
           }}
+          loop={true}
           creativeEffect={{
             prev: {
               shadow: true,
@@ -52,7 +53,7 @@ export default function ProductCards({ product }) {
         <span className='text-gray-400 mr-3 uppercase text-xxs sm:text-xs'>
           {product?.company}
         </span>
-        <p className='text-sm sm:text-lg text-black truncate block capitalize'>
+        <p className='text-sm font-bold sm:text-lg text-black truncate block capitalize'>
           {product?.name}
         </p>
         <div className='flex items-center'>

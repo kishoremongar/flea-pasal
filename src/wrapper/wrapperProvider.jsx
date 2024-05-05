@@ -6,6 +6,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { Notifications } from '@mantine/notifications';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
+import UserAuthWrapper from './userAuthWrapper';
 import store from '@/store/store';
 import SpotlightSearch from '@/components/common/spotlightSearch';
 import { FooterLayout } from '@/components/common/footer';
@@ -51,6 +52,7 @@ export default function WrapperProvider({ session, children }) {
       <ReduxProvider store={store}>
         <QueryClientProvider client={queryClient}>
           <MantineProvider theme={theme}>
+            <UserAuthWrapper />
             <Notifications position='top-right' autoClose={4000} />
             <SpotlightSearch />
             <NextTopLoader showSpinner={false} />

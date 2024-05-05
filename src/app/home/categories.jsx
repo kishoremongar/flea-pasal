@@ -22,7 +22,7 @@ export default function Categories() {
             </p>
           </div>
           <Link
-            href='/pasal/apparel'
+            href='/apparel'
             className='text-center text-white bg-primary hover:bg-primary/75 w-fit py-2 px-8 rounded-md text-sm sm:text-base'
           >
             View apparel
@@ -38,7 +38,7 @@ export default function Categories() {
             Find your sole mate here.
           </p>
           <Link
-            href='/pasal/shoes'
+            href='/shoes'
             className='text-center bg-primary hover:bg-primary/75 w-fit py-2 px-8 rounded-md text-sm sm:text-base'
           >
             View shoes
@@ -63,7 +63,7 @@ export default function Categories() {
             </p>
           </div>
           <Link
-            href='/pasal/krafts'
+            href='/krafts'
             className='text-center text-white bg-primary hover:bg-primary/75 w-fit py-2 px-8 rounded-md text-sm sm:text-base'
           >
             View krafts
@@ -79,7 +79,7 @@ export default function Categories() {
             Time-tested tales in every bind
           </p>
           <Link
-            href='/pasal/books'
+            href='/books'
             className='text-center bg-primary hover:bg-primary/75 w-fit py-2 px-8 rounded-md text-sm sm:text-base'
           >
             View books

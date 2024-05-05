@@ -10,10 +10,10 @@ const data = [
   {
     title: 'Pasal',
     links: [
-      { label: 'Apparel', link: '/pasal/apparel' },
-      { label: 'Shoes', link: '/pasal/shoes' },
-      { label: 'Krafts', link: '/pasal/krafts' },
-      { label: 'Books', link: '/pasal/books' },
+      { label: 'Apparel', link: '/apparel' },
+      { label: 'Shoes', link: '/shoes' },
+      { label: 'Krafts', link: '/krafts' },
+      { label: 'Books', link: '/books' },
     ],
   },
   {
