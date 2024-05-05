@@ -25,6 +25,12 @@ const orderRouter = require('./routes/orderRoutes');
 
 const connectDB = require('./db/connect');
 
+// const corsOptions = {
+//   origin: ['*'], // Add your frontend URLs here
+//   credentials: true, // Allow cookies and headers to be sent from frontend
+//   optionsSuccessStatus: 204,
+// };
+
 app.use(morgan('tiny'));
 
 app.set('trust proxy', 1);
@@ -36,6 +42,7 @@ app.use(
 );
 app.use(helmet());
 app.use(cors());
+// app.use(cors(corsOptions));
 app.use(xss());
 app.use(mongoSanitize());
 
