@@ -98,7 +98,6 @@ const login = async (req, res) => {
   let refreshToken = '';
   // check for existing token
   const existingToken = await Token.findOne({ user: user._id });
-
   if (existingToken) {
     const { isValid } = existingToken;
     if (!isValid) {
@@ -106,7 +105,7 @@ const login = async (req, res) => {
     }
     refreshToken = existingToken.refreshToken;
     attachCookiesToResponse({ res, user: tokenUser, refreshToken });
-    res.status(StatusCodes.OK).json({ user: tokenUser });
+    res.status(StatusCodes.OK).json({ ...tokenUser });
     return;
   }
 
@@ -117,8 +116,17 @@ const login = async (req, res) => {
 
   await Token.create(userToken);
 
+  // const flattenedUser = {
+  //   user: {
+  //     name: user.name,
+  //     userId: user._id,
+  //     role: user.role,
+  //   },
+  //   refreshToken: refreshToken,
+  // };
+
   attachCookiesToResponse({ res, user: tokenUser });
-  res.status(StatusCodes.OK).json({ user: tokenUser });
+  res.status(StatusCodes.OK).json({ ...tokenUser });
 };
 
 const logout = async (req, res) => {
