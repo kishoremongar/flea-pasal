@@ -2,21 +2,22 @@
 
 import { Breadcrumbs } from '@mantine/core';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 import SidebarFilter from './_components/sidebarFilter';
 
 export default function PasalLayout({ children }) {
   const pathName = usePathname();
+  const params = useParams();
 
   const breadCrumbItems = [
     { id: 1, title: 'Home', href: '/' },
     {
       id: 2,
       title: pathName.split('/')?.[1],
-      href: '#',
+      href: `/${pathName.split('/')?.[1]}`,
     },
   ].map((item) =>
-    item?.title === 'Home' ? (
+    item?.title === 'Home' || params?.productId ? (
       <Link
         href={item.href}
         key={item?.id}
@@ -37,10 +38,18 @@ export default function PasalLayout({ children }) {
         {breadCrumbItems}
       </Breadcrumbs>
       <div className='grid grid-cols-1 sm:grid-cols-12 p-0 md:p-6 sm:gap-x-4'>
-        <div className='sm:block hidden col-span-3'>
-          <SidebarFilter />
+        {!params?.productId && (
+          <div className='sm:block hidden col-span-3'>
+            <SidebarFilter />
+          </div>
+        )}
+        <div
+          className={`${
+            params?.productId ? 'sm:col-span-12' : 'sm:col-span-9'
+          }`}
+        >
+          {children}
         </div>
-        <div className='sm:col-span-9'>{children}</div>
       </div>
     </div>
   );

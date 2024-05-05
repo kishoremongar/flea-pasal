@@ -9,7 +9,7 @@ export default function ApparelPage() {
   return (
     <div className='grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4'>
       {getAllApparel?.products?.map((product) => (
-        <ProductCards key={product?.id} product={product} />
+        <ProductCards key={product?.id} product={product} pasal='apparel' />
       ))}
     </div>
   );
