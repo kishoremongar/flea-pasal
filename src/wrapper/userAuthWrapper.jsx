@@ -3,17 +3,14 @@
 import { useSession } from 'next-auth/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { addTokens, addUser, removeTokens } from '../store/slices/auth';
+// import { useRouter } from 'next/navigation';
 // import { isTokenExpired } from '@/utils/isTokenExpired';
 
 export default function UserAuthWrapper() {
-  const { data: sessionData, status } = useSession({
-    required: true,
-    onUnauthenticated: () => router.push('/auth/login'),
-  });
+  const { data: sessionData, status } = useSession();
   const dispatch = useDispatch();
-  const router = useRouter();
+  // const router = useRouter();
   const accessToken = useSelector((state) => state.auth.accessToken);
 
   useEffect(() => {
@@ -27,7 +24,7 @@ export default function UserAuthWrapper() {
       dispatch(addUser(sessionData.user));
     } else if (status === 'unauthenticated') {
       dispatch(removeTokens());
-      router.push('/auth/login');
+      // router.push('/auth/login');
     }
 
     // if (isTokenExpired(sessionData?.accessToken)) {

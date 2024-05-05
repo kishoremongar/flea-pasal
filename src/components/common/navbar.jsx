@@ -1,9 +1,9 @@
-import { Burger, HoverCard, Transition } from '@mantine/core';
+import { Accordion, Burger, HoverCard, Menu, Transition } from '@mantine/core';
 import { spotlight } from '@mantine/spotlight';
 import Link from 'next/link';
 import { useDisclosure, useViewportSize } from '@mantine/hooks';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import LogoPlain from '../../../public/assets/icons/logoPlain.svg';
@@ -15,11 +15,12 @@ import { sidebarToggle } from '@/store/slices/auth';
 export default function MainNavbar() {
   const [opened, { toggle }] = useDisclosure();
   const dispatch = useDispatch();
-  const { status } = useSession();
+  const { status, data: userData } = useSession();
   const pathName = usePathname();
   const getPath = pathName?.split('/')?.slice(1, 2)?.[0];
-  const { height } = useViewportSize();
-
+  const { width, height } = useViewportSize();
+  const [popoverOpened, setPopoverOpened] = useState(false);
+  const mobileScreen = width < 768;
   useEffect(() => {
     dispatch(sidebarToggle(opened));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -40,7 +41,12 @@ export default function MainNavbar() {
           <Link href='/'>
             <LogoPlain className='w-20 sm:w-24 md:w-32 -mt-1 cursor-pointer' />
           </Link>
-          <NavItem alterClass='gap-x-6 md:flex hidden' pathName={getPath} />
+          <NavItem
+            alterClass='gap-x-6 md:flex hidden'
+            pathName={getPath}
+            toggle={toggle}
+            mobileScreen={mobileScreen}
+          />
         </div>
         <ul className='flex items-center gap-x-6'>
           <li>
@@ -50,7 +56,7 @@ export default function MainNavbar() {
               className='mobile-xl:block hidden w-40 md:w-36 lg:w-52'
             /> */}
             <SearchIcon
-              className='cursor-pointer text-white w-4 h-4 sm:w-5 sm:h-5'
+              className='cursor-pointer hover:text-tertiary text-white w-4 h-4 sm:w-5 sm:h-5'
               onClick={spotlight.open}
             />
           </li>
@@ -61,11 +67,43 @@ export default function MainNavbar() {
             </Link>
           </li>
           <li className='cursor-pointer'>
-            <Link
-              href={status === 'unauthenticated' ? '/auth/login' : '/profile'}
-            >
-              <UserIcon className='text-white hover:text-tertiary w-4 h-4 sm:w-5 sm:h-5' />
-            </Link>
+            {status === 'unauthenticated' ? (
+              <Link href='/auth/login'>
+                <UserIcon className='text-white hover:text-tertiary w-4 h-4 sm:w-5 sm:h-5' />
+              </Link>
+            ) : (
+              <Menu
+                opened={popoverOpened}
+                onChange={setPopoverOpened}
+                position='bottom-end'
+                shadow='md'
+                offset={2}
+                classNames={{
+                  dropdown: '!bg-secondary !border-0',
+                  itemLabel: '!text-white !hover:text-tertiary',
+                  item: 'hover:!bg-transparent',
+                }}
+              >
+                <Menu.Target>
+                  <UserIcon className='text-white hover:text-tertiary w-4 h-4 sm:w-5 sm:h-5' />
+                </Menu.Target>
+                <Menu.Dropdown>
+                  {userData?.user?.role === 'admin' ? (
+                    <Menu.Item>Dashboard</Menu.Item>
+                  ) : (
+                    <>
+                      <Menu.Item>Orders</Menu.Item>
+                      <Menu.Divider />
+                      <Menu.Item>Profile</Menu.Item>
+                    </>
+                  )}
+                  <Menu.Divider />
+                  <Menu.Item>Change Password</Menu.Item>
+                  <Menu.Divider />
+                  <Menu.Item>Logout</Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            )}
           </li>
         </ul>
       </div>
@@ -75,13 +113,15 @@ export default function MainNavbar() {
           opened={opened}
           pathName={getPath}
           height={height}
+          toggle={toggle}
+          mobileScreen={mobileScreen}
         />
       </div>
     </div>
   );
 }
 
-export const NavItem = ({ alterClass, pathName }) => {
+export const NavItem = ({ alterClass, pathName, toggle, mobileScreen }) => {
   const data = [
     { label: 'Home', navigateTo: '/', activeClassName: 'home' },
     {
@@ -89,73 +129,143 @@ export const NavItem = ({ alterClass, pathName }) => {
       navigateTo: '/pasal',
       activeClassName: 'pasal',
       subLabel: [
-        { id: 1, label: 'Apparel', linkTo: '/pasal/apparel' },
-        { id: 2, label: 'Shoes', linkTo: '/pasal/shoes' },
-        { id: 3, label: 'Krafts', linkTo: '/pasal/krafts' },
-        { id: 4, label: 'Books', linkTo: '/pasal/books' },
+        {
+          id: 1,
+          label: 'Apparel',
+          linkTo: '/apparel',
+          activeClassName: 'apparel',
+        },
+        { id: 2, label: 'Shoes', linkTo: '/shoes', activeClassName: 'shoes' },
+        {
+          id: 3,
+          label: 'Krafts',
+          linkTo: '/krafts',
+          activeClassName: 'krafts',
+        },
+        { id: 4, label: 'Books', linkTo: '/books', activeClassName: 'books' },
       ],
     },
     { label: 'About', navigateTo: '/about', activeClassName: 'about' },
     { label: 'Support', navigateTo: '/support', activeClassName: 'support' },
   ];
-  return (
-    <div className={alterClass}>
-      {data?.map((item) =>
-        item?.label === 'Pasal' ? (
-          <HoverCard
-            shadow='md'
-            transition='pop'
-            classNames={{
-              dropdown: '!bg-secondary text-white border-none',
-            }}
-            key={item.label}
-            withArrow
-          >
-            <HoverCard.Target>
+
+  const closeSidebar = mobileScreen ? () => toggle() : () => {};
+  const isPasalActive = ['apparel', 'shoes', 'books', 'krafts'].includes(
+    pathName
+  );
+
+  const navComponent = data?.map((item) => {
+    const isPasal = item?.label === 'Pasal';
+    const isMobilePasal = isPasal && mobileScreen;
+    const isDesktopPasal = isPasal && !mobileScreen;
+
+    if (isDesktopPasal) {
+      return (
+        <HoverCard
+          shadow='lg'
+          transition='pop'
+          classNames={{
+            dropdown: '!bg-secondary !text-white !border-none',
+          }}
+          key={item.label}
+          offset={2}
+        >
+          <HoverCard.Target>
+            <p
+              className={`cursor-context-menu underline-offset-4 hover:underline relative inline-block transition duration-200 ease-in-out ${
+                isPasalActive && 'underline'
+              }`}
+            >
+              {item.label}
+            </p>
+          </HoverCard.Target>
+          <HoverCard.Dropdown>
+            <div className='flex flex-col gap-y-2'>
+              {item.subLabel?.map((sub) => (
+                <Link
+                  key={sub?.id}
+                  href={sub?.linkTo}
+                  className={`cursor-pointer underline-offset-4 hover:underline relative inline-block transition duration-200 ease-in-out ${
+                    pathName === sub?.activeClassName && 'underline'
+                  }`}
+                  onClick={closeSidebar}
+                >
+                  {sub.label}
+                </Link>
+              ))}
+            </div>
+          </HoverCard.Dropdown>
+        </HoverCard>
+      );
+    } else if (isMobilePasal) {
+      return (
+        <Accordion
+          key={item.label}
+          variant='default'
+          classNames={{
+            control: '!p-0 !text-white active:!bg-secondary !w-[40%]',
+            label: 'flex-[0.5]',
+          }}
+          defaultValue={isPasalActive ? 'pasal' : ''}
+        >
+          <Accordion.Item value='pasal' className='!border-none'>
+            <Accordion.Control>
               <p
                 className={`cursor-context-menu underline-offset-4 hover:underline relative inline-block transition duration-200 ease-in-out ${
-                  pathName?.startsWith(item?.activeClassName) && 'underline'
+                  isPasalActive && 'underline'
                 }`}
               >
-                {item?.label}
+                {item.label}
               </p>
-            </HoverCard.Target>
-            <HoverCard.Dropdown>
+            </Accordion.Control>
+            <Accordion.Panel>
               <div className='flex flex-col gap-y-2'>
-                {item?.subLabel?.map((sub) => (
+                {item.subLabel?.map((sub) => (
                   <Link
                     key={sub?.id}
                     href={sub?.linkTo}
                     className={`cursor-pointer underline-offset-4 hover:underline relative inline-block transition duration-200 ease-in-out ${
-                      pathName?.startsWith(item?.activeClassName) && 'underline'
+                      pathName === sub?.activeClassName && 'underline'
                     }`}
+                    onClick={closeSidebar}
                   >
-                    {sub?.label}
+                    {sub.label}
                   </Link>
                 ))}
               </div>
-            </HoverCard.Dropdown>
-          </HoverCard>
-        ) : (
-          <Link
-            href={item?.navigateTo}
-            key={item.label}
-            className={`underline-offset-4 hover:underline relative inline-block transition duration-200 ease-in-out ${
-              pathName === ''
-                ? item?.activeClassName === 'home' && 'underline'
-                : pathName?.startsWith(item?.activeClassName) && 'underline'
-            }`}
-          >
-            {item.label}
-          </Link>
-        )
-      )}
-    </div>
-  );
+            </Accordion.Panel>
+          </Accordion.Item>
+        </Accordion>
+      );
+    }
+    return (
+      <Link
+        href={item?.navigateTo}
+        key={item.label}
+        className={`underline-offset-4 hover:underline relative inline-block transition duration-200 ease-in-out ${
+          pathName === ''
+            ? item?.activeClassName === 'home' && 'underline'
+            : pathName?.startsWith(item?.activeClassName) && 'underline'
+        }`}
+        onClick={closeSidebar}
+      >
+        {item.label}
+      </Link>
+    );
+  });
+  return <div className={alterClass}>{navComponent}</div>;
 };
 
-const MobileSideBar = ({ status, opened, pathName, height }) => {
+const MobileSideBar = ({
+  status,
+  opened,
+  pathName,
+  height,
+  toggle,
+  mobileScreen,
+}) => {
   const sidebarHeight = height - 64;
+  const userData = useSelector((store) => store.auth.user);
   return (
     <Transition
       mounted={opened}
@@ -172,6 +282,8 @@ const MobileSideBar = ({ status, opened, pathName, height }) => {
             <NavItem
               alterClass='gap-x-6 gap-y-4 justify-center md:hidden flex flex-col'
               pathName={pathName}
+              toggle={toggle}
+              mobileScreen={mobileScreen}
             />
             {status === 'unauthenticated' && (
               <div className='flex flex-col gap-y-4 w-full text-white'>
@@ -191,6 +303,11 @@ const MobileSideBar = ({ status, opened, pathName, height }) => {
                   </Link>
                 </div>
               </div>
+            )}
+            {status === 'authenticated' && (
+              <p className=' text-white capitalize text-center'>
+                Hello {userData?.name}
+              </p>
             )}
           </div>
         );

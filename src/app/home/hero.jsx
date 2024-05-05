@@ -9,6 +9,7 @@ import Image from 'next/image';
 import HeroSlide1 from '@@/assets/images/hero_slide1.webp';
 import HeroSlide2 from '@@/assets/images/hero_slide2.webp';
 import HeroSlide3 from '@@/assets/images/hero_slide3.webp';
+import { useViewportSize } from '@mantine/hooks';
 
 export default function LandingHero() {
   const swiperData = [
@@ -32,6 +33,7 @@ export default function LandingHero() {
       subtitle: '🌍 Vintage - Thrifted - New Clothes',
     },
   ];
+  const { width } = useViewportSize();
   return (
     <div className='flex flex-auto w-full'>
       <Swiper
@@ -43,16 +45,16 @@ export default function LandingHero() {
         }}
         navigation={true}
         modules={[Pagination, Navigation, Autoplay, Thumbs]}
-        className='heroSwipperMain h-full sm:max-h-[calc(100vh-76px)] text-white'
+        className='heroSwipperMain h-full sm:max-h-[calc(100vh-60px)] text-white'
         autoplay={{
           delay: 5000,
           disableOnInteraction: true,
         }}
-        lazy={true}
+        lazy={'true'}
         style={{
           '--swiper-navigation-color': '#fff',
           '--swiper-pagination-color': '#fff',
-          '--swiper-navigation-size': '22px',
+          '--swiper-navigation-size': width > 640 ? '52px' : '22px',
         }}
       >
         {swiperData?.map((item) => (

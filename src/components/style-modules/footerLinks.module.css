@@ -4,6 +4,10 @@
   padding-bottom: calc(var(--mantine-spacing-xl) * 2);
   border-top: rem(1px) solid
     light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+
+  @media (max-width: 640px) {
+    padding: 3rem 0;
+  }
 }
 
 .logo {

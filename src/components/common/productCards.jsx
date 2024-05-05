@@ -5,8 +5,9 @@ import 'swiper/scss';
 import 'swiper/scss/effect-creative';
 import 'swiper/scss/pagination';
 import AddBag from '@@/assets/icons/addBag.svg';
+import Link from 'next/link';
 
-export default function ProductCards({ product }) {
+export default function ProductCards({ product, pasal }) {
   return (
     <div
       className='bg-white shadow-md hover:shadow-xl duration-300 rounded-md'
@@ -19,6 +20,7 @@ export default function ProductCards({ product }) {
           pagination={{
             clickable: true,
           }}
+          loop={true}
           creativeEffect={{
             prev: {
               shadow: true,
@@ -52,9 +54,12 @@ export default function ProductCards({ product }) {
         <span className='text-gray-400 mr-3 uppercase text-xxs sm:text-xs'>
           {product?.company}
         </span>
-        <p className='text-sm sm:text-lg text-black truncate block capitalize'>
+        <Link
+          className='text-sm font-bold sm:text-lg text-black truncate block capitalize'
+          href={`/${pasal}/${product?.id}`}
+        >
           {product?.name}
-        </p>
+        </Link>
         <div className='flex items-center'>
           <p className='text-sm sm:text-lg font-semibold text-black cursor-auto my-3'>
             &#8377;{product?.price}
