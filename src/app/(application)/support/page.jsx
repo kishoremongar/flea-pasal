@@ -1,3 +1,5 @@
+import SupportMain from './_components/supportMain';
+
 export default function SupportPage() {
-  return <div>Support page</div>;
+  return <SupportMain />;
 }
