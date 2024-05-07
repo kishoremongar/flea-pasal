@@ -26,6 +26,9 @@
 
 body {
   scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+	-webkit-tap-highlight-color: transparent;
+	-webkit-font-smoothing: antialiased;
 }
 
 .swiper {
@@ -66,3 +69,234 @@ body {
 .swiper-button-prev {
   font-size: 16px;
 }
+
+
+//support 
+
+// .container {
+// 	max-width: 1145px;
+// 	margin: {
+// 		right: auto;
+// 		left: auto;
+// 	}
+// }
+
+// .search {
+// 	padding: 40px 50px;
+// 	max-width: 700px;
+// 	margin-left: 70px;
+// 	border-radius: 5px;
+// 	text-align: left;
+// 	text-align: center;
+
+// 	@media (max-width: 768px) {
+// 		max-width: unset;
+// 		margin-left: 0;
+// 		border-radius: 0;
+
+// 	}
+	
+// 	@media (max-width: 810px) {
+// 		max-width: unset;
+// 		margin-left: 0;
+// 	}
+	
+// 	&-title {
+// 		margin: 0;
+// 		color: #BBBBD7;
+// 		font-weight: 400;
+// 		font-size: 36px;
+// 		text-align: left;
+// 	}
+	
+// 	&-form {
+// 		position: relative;
+// 		margin-top: 25px;
+// 	}
+	
+// 	&-input {
+// 		width: 100%;
+// 		padding: 25px 25px 25px 70px;
+// 		border-radius: 5px;
+// 		border: solid 1px #454564;
+
+// 		font-family: inherit;
+// 		font-size: 18px;
+// 		font-weight: 400;
+// 		color: #000;
+
+// 		&:focus {
+// 			outline: none;
+// 			border-color: rgba(255, 255, 255, .8);
+// 			transition: border-color 250ms;
+// 		}
+
+// 		&::placeholder {
+// 			color: inherit;
+// 		}
+// 	}
+
+// 	&-icon {
+// 		position: absolute;
+// 		z-index: 2;
+// 		left: 25px;
+// 		top: 50%;
+// 		width: 22px;
+// 		height: 22px;
+// 		margin-top: -11px;
+// 		fill: rgba(255, 255, 255, .5);
+// 	}
+// }
+
+// .main {
+// 	display: flex;
+// 	flex-direction: row;
+// 	align-items: flex-start;
+// 	justify-content: space-between;
+// 	margin-top: 70px;
+	
+// 	@media (max-width: 768px) {
+// 		margin-top: 0;
+// 		flex-direction: column;
+// 		justify-content: flex-start;
+// 	}
+// }
+
+// .menu {
+// 	width: 280px;
+// 	padding: 30px;
+// 	margin-right: 30px;
+// 	background-color: #1b1b30;
+// 	border-radius: 10px;
+	
+// 	@media (max-width: 768px) {
+// 		width: 100%;
+// 		margin-right: 0;
+// 		border-radius: 0;
+// 	}
+	
+// 	&-title {
+// 		font-weight: 700;
+// 		font-size: 18px;
+// 		color: #bbbbd7;
+// 	}
+	
+// 	&-links {
+// 		margin-top: 20px;
+// 		padding-bottom: 25px;
+// 		border-bottom: 2px solid #141428;
+// 	} 
+	
+// 	&-link {
+// 		display: block;
+// 		padding: {
+// 			top: 7px;
+// 			bottom: 7px;
+// 		}
+// 		color: #786cd5;
+// 		font-size: 16px;
+// 		text-decoration: none;
+		
+// 		&:hover {
+// 			color: #fff;
+// 			transition: color 250ms;
+// 		}
+// 	}
+// }
+
+// .support {
+// 	margin-top: 25px;
+	
+// 	&-title {
+// 		color: #bbbbd7;
+// 		font-size: 18px;
+// 	}
+	
+// 	&-text {
+// 		margin-top: 15px;
+// 		color: #bbbbd7;
+// 		font-size: 16px;
+// 		line-height: 22px;
+// 	}
+	
+// 	&-button {
+// 		display: flex;
+// 		flex-direction: row;
+// 		align-items: center;
+// 		justify-content: center;
+// 		margin-top: 20px;
+// 		height: 56px;
+// 		border-radius: 5px;
+// 		background-color: #786cd5;
+// 		font-size: 16px;
+//   	font-weight: bold;
+// 		text-decoration: none;
+// 		color: #fff;
+// 	}
+// }
+
+// .content {
+// 	width: 100%;
+// 	max-width: 735px;
+	
+// 	@media (max-width: 768px) {
+// 		width: 100%;
+// 		border-top: 1px solid rgba(255, 255, 255, .1);
+// 	}
+	
+// 	&-item {
+// 		position: relative;
+// 		padding: 30px;
+// 		margin-top: 10px;
+// 		background-color: #1b1b30;
+		
+// 		&:first-child {
+// 			margin-top: 0;
+// 		}
+		
+// 		@media (max-width: 768px) {
+// 			margin-top: 0;
+// 			border-bottom: 1px solid rgba(255, 255, 255, .1);
+// 		}
+// 	}
+	
+// 	&-title {
+// 		display: flex;
+// 		flex-direction: row;
+// 		align-items: center;
+// 		justify-content: space-between;
+// 		color: #bbbbd7;
+// 		font-size: 18px;
+// 		font-weight: 700;
+// 		line-height: 24px;
+		
+// 		.badge {
+// 			margin-left: 15px;
+// 		}
+// 	}
+	
+// 	&-description {
+// 		max-width: 545px;
+// 		margin-top: 20px;
+// 		line-height: 22px;
+// 		font-size: 16px;
+// 		color: #bbbbd7;
+// 	}
+// }
+
+// .badge {
+// 	padding: 8px 18px;
+// 	border-radius: 50px;
+// 	font-size: 16px;
+// 	font-weight: 400;
+	
+// 	&-primary {
+// 		color: #ff7e9c;
+// 		background-color: rgba(252, 124, 154, .1);
+// 	}
+	
+// 	&-secondary {
+// 		color: #7ea1ff;
+// 		background-color: rgba(124, 152, 252, .1);
+// 	}
+// }

@@ -30,7 +30,7 @@ export default function PasalLayout({ children }) {
     )
   );
   return (
-    <div className='pt-[4.75rem] md:pt-24 p-5 sm:p-7 md:p-10 flex flex-auto w-full flex-col gap-y-4'>
+    <div className='flex flex-auto w-full flex-col gap-y-4'>
       <Breadcrumbs
         className='text-olive text-sm sm:text-base'
         classNames={{ separator: '!text-olive' }}
