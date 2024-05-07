@@ -1,27 +1,34 @@
 'use client';
+import { useParams } from 'next/navigation';
+import { ColorSwatch } from '@mantine/core';
+import useGetSingleProduct from '../_hooks/getSingleProduct';
 import GalleryCarousel from './galleryCarousel';
 import PrimaryButton from '@/components/common/primaryButton';
 
 export default function SingleProduct() {
+  const params = useParams();
+  const { data: getSingleProduct } = useGetSingleProduct(params.productId);
   return (
     <div className='antialiased max-w-7xl mx-auto'>
       <div className='flex flex-col md:flex-row -mx-4'>
         <div className='md:flex-1 px-4 rounded-lg w-full md:w-10'>
-          <GalleryCarousel />
+          <GalleryCarousel imageArray={getSingleProduct?.product?.image} />
         </div>
         <div className='md:flex-1 px-4 text-olive'>
           <h2 className='mb-2 leading-tight tracking-tight font-bold text-2xl md:text-3xl'>
-            Lorem ipsum dolor, sit amet consectetur, adipisicing elit.
+            {getSingleProduct?.product?.name}
           </h2>
           <div className='flex items-center gap-x-4 text-secondary text-sm'>
-            <p>ABC Company</p>
-            <p>3.75k reviews</p>
+            <p>{getSingleProduct?.product?.company}</p>
+            <p>{getSingleProduct?.product?.averageRating}/5</p>
           </div>
           <div className='flex items-center space-x-4 my-4'>
             <div>
               <div className='rounded-lg bg-gray-100 flex py-2 px-3'>
                 <span className='text-olive mr-1 mt-1'>&#8377;</span>
-                <span className='font-bold text-olive text-3xl'>2500</span>
+                <span className='font-bold text-olive text-3xl'>
+                  {getSingleProduct?.product?.price}
+                </span>
               </div>
             </div>
             <div className='flex-1'>
@@ -29,8 +36,15 @@ export default function SingleProduct() {
               <p className='text-gray-400 text-sm'>Inclusive of all Taxes.</p>
             </div>
           </div>
-          <div>Sizes:</div>
-          <div>Colors:</div>
+          <div className='flex flex-col gap-y-2'>
+            <div>Sizes: {getSingleProduct?.product?.size}</div>
+            <div className='flex gap-x-2 items-center'>
+              Colors:{' '}
+              {getSingleProduct?.product?.colors?.map((col) => (
+                <ColorSwatch component='button' color={col} key={col} />
+              ))}
+            </div>
+          </div>
           <div className='flex py-4 space-x-4'>
             <div className='relative'>
               <div className='text-center left-0 pt-2 right-0 absolute block text-xs uppercase text-gray-400 tracking-wide font-semibold'>
@@ -66,12 +80,7 @@ export default function SingleProduct() {
               Add to Cart
             </PrimaryButton>
           </div>
-          <p>
-            Lorem ipsum, dolor sit, amet consectetur adipisicing elit. Vitae
-            exercitationem porro saepe ea harum corrupti vero id laudantium
-            enim, libero blanditiis expedita cupiditate a est.
-          </p>
-          <p>Product details</p>
+          <p>{getSingleProduct?.product?.description}</p>
         </div>
       </div>
     </div>
