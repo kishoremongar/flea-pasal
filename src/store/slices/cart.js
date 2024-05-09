@@ -13,7 +13,8 @@ const initialState = {
 
 const loadCartDataFromLocalStorage = () => {
   try {
-    const cartData = localStorage.getItem('cartData');
+    const cartData =
+      typeof window !== 'undefined' && localStorage.getItem('cartData');
     if (cartData) {
       return JSON.parse(cartData);
     }

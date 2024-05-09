@@ -5,21 +5,27 @@ import EmptyCart from '@@/assets/icons/emptyCart.svg';
 import { useSelector } from 'react-redux';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import CartProduct from './cartProduct';
 import PrimaryButton from '@/components/common/primaryButton';
 
 export default function ShoppingCartMain() {
-  const cartItemData = useSelector((store) => store?.cartItems?.cartData);
+  const cartData = useSelector((store) => store?.cartItems?.cartData);
+  const [cartItemData, setCartItemData] = useState([]);
   const { data: userData, status } = useSession();
   const router = useRouter();
   const deliveryFee = cartItemData?.itemTotalAmount > 1000 ? 0 : 149;
-  const itemTotalAmount = cartItemData?.itemTotalAmount.toFixed(2);
+  const itemTotalAmount = cartItemData?.itemTotalAmount?.toFixed(2);
   const totalAmount =
     itemTotalAmount > 1000
       ? cartItemData?.totalAmount - 149
       : cartItemData?.totalAmount;
   const isLoggedIn = status === 'authenticated';
   const isCartEmpty = cartItemData?.helperData?.length === 0;
+
+  useEffect(() => {
+    setCartItemData(cartData);
+  }, [cartData]);
 
   return (
     <div className='flex-auto'>

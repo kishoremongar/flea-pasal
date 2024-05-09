@@ -30,9 +30,14 @@ export default function MainNavbar() {
   const { width, height } = useViewportSize();
   const [popoverOpened, setPopoverOpened] = useState(false);
   const mobileScreen = width < 768;
+  const [cartTotal, setCartTotal] = useState(0);
   const totalCartItems = useSelector(
     (store) => store?.cartItems?.cartData?.helperData
   )?.length;
+
+  useEffect(() => {
+    setCartTotal(totalCartItems);
+  }, [totalCartItems]);
 
   useEffect(() => {
     dispatch(sidebarToggle(opened));
@@ -78,8 +83,8 @@ export default function MainNavbar() {
             <Link href='/cart'>
               <Indicator
                 inline
-                disabled={totalCartItems === 0}
-                label={totalCartItems}
+                disabled={cartTotal === 0}
+                label={cartTotal}
                 size={16}
               >
                 <CartIcon className='text-white hover:text-tertiary w-4 h-4 sm:w-5 sm:h-5' />
