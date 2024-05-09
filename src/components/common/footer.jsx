@@ -1,3 +1,5 @@
+'use client';
+
 import { Container, Group, Text } from '@mantine/core';
 import Link from 'next/link';
 import MainLogo from '../../../public/assets/icons/logoPlain.svg';

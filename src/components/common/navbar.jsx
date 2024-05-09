@@ -1,4 +1,13 @@
-import { Accordion, Burger, HoverCard, Menu, Transition } from '@mantine/core';
+'use client';
+
+import {
+  Accordion,
+  Burger,
+  HoverCard,
+  Indicator,
+  Menu,
+  Transition,
+} from '@mantine/core';
 import { spotlight } from '@mantine/spotlight';
 import Link from 'next/link';
 import { useDisclosure, useViewportSize } from '@mantine/hooks';
@@ -21,6 +30,10 @@ export default function MainNavbar() {
   const { width, height } = useViewportSize();
   const [popoverOpened, setPopoverOpened] = useState(false);
   const mobileScreen = width < 768;
+  const totalCartItems = useSelector(
+    (store) => store?.cartItems?.cartData?.helperData
+  )?.length;
+
   useEffect(() => {
     dispatch(sidebarToggle(opened));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -63,7 +76,14 @@ export default function MainNavbar() {
           {/* <li className='cursor-pointer'>Favourites</li> */}
           <li className='cursor-pointer'>
             <Link href='/cart'>
-              <CartIcon className='text-white hover:text-tertiary w-4 h-4 sm:w-5 sm:h-5' />
+              <Indicator
+                inline
+                disabled={totalCartItems === 0}
+                label={totalCartItems}
+                size={16}
+              >
+                <CartIcon className='text-white hover:text-tertiary w-4 h-4 sm:w-5 sm:h-5' />
+              </Indicator>
             </Link>
           </li>
           <li className='cursor-pointer'>
