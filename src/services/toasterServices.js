@@ -7,22 +7,24 @@ const SuccessToast = ({ text = '' }) => {
     title: 'Success',
     message: text,
     icon: <SuccessCheck />,
+    color: '#ffffff',
     classNames: {
       icon: '!bg-white',
-      root: 'bg-secondary',
-      title: '!text-primary',
+      root: '!bg-black',
     },
+    className: 'success-toast',
   });
 };
 const ErrorToast = ({ text = 'Something went wrong' }) => {
   notifications.show({
     title: 'Error',
     message: text,
+    color: '#ffffff',
     icon: <CancelRed />,
     classNames: {
       icon: '!bg-white border-2 border-primary',
-      title: '!text-[#ef4444]',
     },
+    className: 'error-toast',
   });
 };
 
