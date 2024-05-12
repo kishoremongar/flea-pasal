@@ -63,6 +63,7 @@ export default function LandingHero() {
               className='bg-cover brightness-50 relative'
               src={item?.image}
               alt={item?.title}
+              priority
             />
             <div className='absolute top-[40%] lg:top-[30%] right-0 left-0 flex flex-col justify-center items-center text-off-white'>
               <p className='font-extrabold text-xl sm:text-4xl lg:text-6xl text-center'>
