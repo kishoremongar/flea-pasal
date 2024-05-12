@@ -55,14 +55,17 @@ export default function ShoppingCartMain() {
                 <h3 className='text-primary-black text-xl mt-4 font-bold'>
                   Order Summary
                 </h3>
-                {cartItemData?.helperData &&
-                  cartItemData?.helperData?.map((item) => (
-                    <CartProduct product={item} key={item?.id} />
-                  ))}
+                {cartItemData?.helperData?.map((item) => (
+                  <CartProduct product={item} key={item?.id} />
+                ))}
               </div>
               <div className='flex justify-center'>
                 <PrimaryButton
-                  onClick={isLoggedIn ? () => {} : router.push('/auth/login')}
+                  onClick={
+                    isLoggedIn
+                      ? () => router.push('/cart/checkout')
+                      : router.push('/auth/login')
+                  }
                   rootClassName='!h-14'
                   titleClassName='!text-base'
                 >
@@ -109,7 +112,11 @@ export default function ShoppingCartMain() {
                   <PrimaryButton
                     rootClassName='!h-14'
                     titleClassName='!text-base'
-                    onClick={isLoggedIn ? () => {} : router.push('/auth/login')}
+                    onClick={
+                      isLoggedIn
+                        ? () => router.push('/cart/checkout')
+                        : router.push('/auth/login')
+                    }
                   >
                     {isLoggedIn ? 'Proceed to checkout' : 'Login'}
                   </PrimaryButton>
