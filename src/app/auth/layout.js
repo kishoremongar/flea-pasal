@@ -1,6 +1,6 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import Logo from '../../../public/assets/icons/logo.svg';
@@ -10,10 +10,17 @@ export default function AuthLayout({ children }) {
   const { status } = useSession();
   const router = useRouter();
   const pathName = usePathname();
+  const searchParams = useSearchParams();
+  const verifyToken = searchParams.get('token');
+  const verifyEmail = searchParams.get('email');
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push(pathName === '/auth' ? '/auth/login' : pathName);
+      if (pathName === '/auth/verify-email') {
+        router.push(`${pathName}?token=${verifyToken}&email=${verifyEmail}`);
+      } else {
+        router.push(pathName === '/auth' ? '/auth/login' : pathName);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);

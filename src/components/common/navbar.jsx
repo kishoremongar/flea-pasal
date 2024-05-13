@@ -12,13 +12,13 @@ import { spotlight } from '@mantine/spotlight';
 import Link from 'next/link';
 import { useDisclosure, useViewportSize } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
-import LogoPlain from '../../../public/assets/icons/logoPlain.svg';
-import SearchIcon from '../../../public/assets/icons/magnifying-glass.svg';
-import CartIcon from '../../../public/assets/icons/cart.svg';
-import UserIcon from '../../../public/assets/icons/user.svg';
+import LogoPlain from '@@/assets/icons/logoPlain.svg';
+import SearchIcon from '@@/assets/icons/magnifying-glass.svg';
+import CartIcon from '@@/assets/icons/cart.svg';
 import { sidebarToggle } from '@/store/slices/auth';
 
 export default function MainNavbar() {
@@ -34,6 +34,10 @@ export default function MainNavbar() {
   const totalCartItems = useSelector(
     (store) => store?.cartItems?.cartData?.helperData
   )?.length;
+  const [mouseHoverProfile, setMouseHoverProfile] = useState(false);
+  const profileSvg = mouseHoverProfile
+    ? '/assets/icons/userCopyhover.svg'
+    : '/assets/icons/userCopy.svg';
 
   useEffect(() => {
     setCartTotal(totalCartItems);
@@ -87,14 +91,23 @@ export default function MainNavbar() {
                 label={cartTotal}
                 size={16}
               >
-                <CartIcon className='text-white hover:text-tertiary w-4 h-4 sm:w-5 sm:h-5' />
+                <CartIcon className='text-white hover:text-tertiary w-4 h-4 sm:w-5 sm:h-5 -mb-1' />
               </Indicator>
             </Link>
           </li>
           <li className='cursor-pointer'>
             {status === 'unauthenticated' ? (
               <Link href='/auth/login'>
-                <UserIcon className='text-white hover:text-tertiary w-4 h-4 sm:w-5 sm:h-5' />
+                <Image
+                  src={profileSvg}
+                  alt='profile'
+                  width='0'
+                  height='0'
+                  onMouseEnter={() => setMouseHoverProfile(true)}
+                  onMouseLeave={() => setMouseHoverProfile(false)}
+                  sizes='100vw'
+                  className='w-4 h-4 sm:w-5 sm:h-5 profileSvg'
+                />
               </Link>
             ) : (
               <Menu
@@ -106,11 +119,20 @@ export default function MainNavbar() {
                 classNames={{
                   dropdown: '!bg-secondary !border-0',
                   itemLabel: '!text-white !hover:text-tertiary',
-                  item: 'hover:!bg-transparent',
+                  item: 'hover:!bg-tertiary',
                 }}
               >
                 <Menu.Target>
-                  <UserIcon className='text-white hover:text-tertiary w-4 h-4 sm:w-5 sm:h-5' />
+                  <Image
+                    src={profileSvg}
+                    alt='profile'
+                    width='0'
+                    height='0'
+                    onMouseEnter={() => setMouseHoverProfile(true)}
+                    onMouseLeave={() => setMouseHoverProfile(false)}
+                    sizes='100vw'
+                    className='w-4 h-4 sm:w-5 sm:h-5 profileSvg'
+                  />
                 </Menu.Target>
                 <Menu.Dropdown>
                   {userData?.user?.role === 'admin' ? (
