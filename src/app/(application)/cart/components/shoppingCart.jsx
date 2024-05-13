@@ -28,18 +28,20 @@ export default function ShoppingCartMain() {
   }, [cartData]);
 
   return (
-    <div className='flex-auto'>
-      <div className='container mx-auto grid grid-cols-3 grid-flow-row gap-4 h-full p-10'>
+    <div className='flex w-full flex-auto pt-3 sm:pt-16 md:pt-0'>
+      <div className='mx-auto grid grid-cols-1 md:grid-cols-3 grid-flow-row gap-4 h-full w-full'>
         <div
           className={`bg-white rounded shadow p-8 ${
-            isCartEmpty ? 'col-span-3 text-center' : 'col-span-2'
+            isCartEmpty ? 'col-span-3 text-center' : 'col-auto md:col-span-2'
           }`}
         >
           {isCartEmpty ? (
             <div className='flex flex-col gap-y-4 justify-center items-center'>
-              <EmptyCart className='w-2/6 h-2/6' />
+              <EmptyCart className='mobile-xl:w-2/6 mobile-xl:h-2/6' />
               <p className='text-sm md:text-xl font-medium text-primary'>
-                Empty cart, please add some products.
+                Empty cart!!!
+                <br />
+                Please add some products.
               </p>
             </div>
           ) : (
@@ -67,7 +69,7 @@ export default function ShoppingCartMain() {
                       : router.push('/auth/login')
                   }
                   rootClassName='!h-14'
-                  titleClassName='!text-base'
+                  titleClassName='!text-sm sm:!text-base'
                 >
                   {isLoggedIn ? 'Proceed to checkout' : 'Login'}
                 </PrimaryButton>
@@ -76,42 +78,36 @@ export default function ShoppingCartMain() {
           )}
         </div>
         {!isCartEmpty && (
-          <div className='col-span-1 flex flex-col w-full h-full bg-white rounded shadow'>
-            <div className='w-full px-8 py-6 p-2'>
-              <h3 className='text-primary-black text-2xl mt-4 font-bold'>
+          <div className='col-auto md:col-span-1 flex flex-col w-full h-full bg-white rounded shadow font-bold'>
+            <div className='w-full px-8 py-6 flex flex-col gap-y-4'>
+              <h3 className='text-primary-black text-xl lg:text-2xl mt-4'>
                 Price Breakdown
               </h3>
               <div className='flex flex-col gap-y-3'>
-                <div className='flex justify-between'>
-                  <div className='text-xl text-orange-900 font-bold'>
-                    Amount
-                  </div>
-                  <div className='text-xl text-right font-bold '>
+                <div className='flex justify-between text-lg lg:text-xl'>
+                  <div className='text-orange-900'>Amount</div>
+                  <div className='text-right'>
                     &#8377;
                     {itemTotalAmount}
                   </div>
                 </div>
-                <div className='flex justify-between'>
-                  <div className='text-xl text-orange-900 font-bold'>
-                    Delivery fee
-                  </div>
-                  <div className='text-xl text-right font-bold'>
-                    &#8377;{deliveryFee}
-                  </div>
+                <div className='flex justify-between text-lg lg:text-xl'>
+                  <div className='text-orange-900'>Delivery fee</div>
+                  <div className='text-right'>&#8377;{deliveryFee}</div>
                 </div>
                 <div className='bg-primary h-[2px] w-full'></div>
                 <div className='flex justify-between'>
-                  <div className='text-xl text-orange-900 font-bold'>
+                  <div className='text-lg lg:text-xl text-orange-900'>
                     Total Amount
                   </div>
-                  <div className='text-2xl text-orange-900 font-bold'>
+                  <div className='text-xl lg:text-2xl text-orange-900'>
                     &#8377;{totalAmount}
                   </div>
                 </div>
                 <div className='flex justify-center'>
                   <PrimaryButton
                     rootClassName='!h-14'
-                    titleClassName='!text-base'
+                    titleClassName='!text-sm sm:!text-base'
                     onClick={
                       isLoggedIn
                         ? () => router.push('/cart/checkout')
@@ -125,7 +121,7 @@ export default function ShoppingCartMain() {
             </div>
             <div className='px-10 py-6 w-full flex items-center capitalize flex-wrap justify-center'>
               <div className='pr-8'>
-                <h3 className='text-2xl mt-4 font-bold text-olive'>
+                <h3 className='text-xl lg:text-2xl mt-4 text-olive'>
                   Thank You{isLoggedIn && `, ${userData?.user?.name}`}
                 </h3>
                 {/* <h4 className='text-sm text-gray-600 font-bold'>ORDER #5624</h4> */}

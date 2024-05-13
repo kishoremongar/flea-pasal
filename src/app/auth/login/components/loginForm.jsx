@@ -25,20 +25,22 @@ export default function LoginForm() {
     signIn('user-login', {
       email: data.email,
       password: data.password,
-      // re_login: true,
+      re_login: false,
       redirect: false,
     })
       .then((res) => {
-        if (res.error) {
-          if (res.error.startsWith('Cannot read properties of undefined')) {
+        if (res?.error) {
+          if (res?.error?.startsWith('Cannot read properties of undefined')) {
             ErrorToast({ text: 'Something went wrong' });
             return;
           }
-          const errData = JSON.parse(res.error);
-          if (errData?.message.password) {
+          const errData = JSON.parse(res?.error);
+          if (errData?.message?.password) {
             setError('password', { message: 'Password is incorrect' });
-          } else if (errData?.message.email) {
+          } else if (errData?.message?.email) {
             setError('email', { message: 'Email is incorrect' });
+          } else if (errData?.msg) {
+            ErrorToast({ text: errData?.msg });
           }
           // if (errData?.message === 'user have active session') {
           //   open active session tab

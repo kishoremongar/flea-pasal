@@ -107,28 +107,30 @@ export default function ProductCards({ product, pasal }) {
         >
           {product?.name}
         </Link>
-        <div className='flex items-center'>
-          <p className='text-sm sm:text-lg font-semibold text-olive cursor-auto my-3'>
-            &#8377;{product?.price}
-          </p>
-          <del>
-            <p className='text-xs sm:text-sm text-gray-600 cursor-auto ml-2'>
-              &#8377;500
+        <div className='flex sm:flex-row flex-col sm:items-center items-start w-full'>
+          <div className='flex items-center'>
+            <p className='text-sm sm:text-lg font-semibold text-olive cursor-auto my-3'>
+              &#8377;{product?.price}
             </p>
-          </del>
+            <del>
+              <p className='text-xs sm:text-sm text-gray-600 cursor-auto ml-2'>
+                &#8377;500
+              </p>
+            </del>
+          </div>
           {quantityCount > 0 && (
-            <div className='ml-auto flex items-center w-fit'>
+            <div className='sm:ml-auto mb-4 sm:mb-0 flex items-center sm:w-fit w-full'>
               <button
-                className='bg-tertiary text-white font-bold px-2 rounded-l'
+                className='bg-tertiary text-white font-bold px-2 rounded-l w-full'
                 onClick={() => handleValue('decrement')}
               >
                 -
               </button>
-              <span className='bg-gray-200 px-2 text-primary-black'>
+              <span className='bg-gray-200 px-2 text-primary-black w-full text-center'>
                 {quantityCount}
               </span>
               <button
-                className='bg-tertiary text-white font-bold px-2 rounded-r'
+                className='bg-tertiary text-white font-bold px-2 rounded-r w-full'
                 onClick={() => handleValue('increment')}
               >
                 +
@@ -139,17 +141,17 @@ export default function ProductCards({ product, pasal }) {
 
         <PrimaryButton
           onClick={handleAddToCart}
+          rightSection={
+            quantityCount > 0 ? (
+              <ArrowRightIcon className='w-4 h-4' />
+            ) : (
+              <AddBag className='w-4 h-4' />
+            )
+          }
           rootClassName='!w-full !group'
-          titleClassName='!flex !gap-x-4 !items-center'
+          titleClassName='!text-xs sm:!text-base'
         >
-          <p className='pt-[2px]'>
-            {quantityCount > 0 ? 'Proceed to checkout' : 'Add to cart'}
-          </p>
-          {quantityCount > 0 ? (
-            <ArrowRightIcon className='w-4 h-4' />
-          ) : (
-            <AddBag className='w-4 h-4' />
-          )}
+          {quantityCount > 0 ? 'Checkout' : 'Add to cart'}
         </PrimaryButton>
       </div>
     </div>

@@ -1,5 +1,9 @@
-import Categories from './categories';
+import dynamic from 'next/dynamic';
 import LandingHero from './hero';
+
+const Categories = dynamic(() => import('./categories'), {
+  ssr: false,
+});
 
 export default function HomeMainLayout() {
   return (
