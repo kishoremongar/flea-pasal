@@ -26,14 +26,7 @@ const stripeRouter = require('./routes/paymentRoutes');
 
 const connectDB = require('./db/connect');
 
-// const corsOptions = {
-//   origin: ['*'], // Add your frontend URLs here
-//   credentials: true, // Allow cookies and headers to be sent from frontend
-//   optionsSuccessStatus: 204,
-// };
-
-app.use(morgan('tiny'));
-
+// Middleware setup
 app.set('trust proxy', 1);
 app.use(
   rateLimiter({
@@ -43,26 +36,21 @@ app.use(
 );
 app.use(helmet());
 app.use(cors());
-// app.use(function (req, res, next) {
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-//   res.setHeader(
-//     'Access-Control-Allow-Methods',
-//     'GET, POST, PUT, DELETE, PATCH'
-//   );
-//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-//   res.setHeader('Access-Control-Allow-Credentials', true);
-//   next();
-// });
-// app.use(cors(corsOptions));
 app.use(xss());
 app.use(mongoSanitize());
 
+// Logging middleware
+app.use(morgan('tiny'));
+
+// Body parsing middleware
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
 
+// Static files middleware
 app.use(express.static('./public'));
 app.use(fileUpload());
 
+// Routes setup
 app.get('/', (req, res) => {
   res.status(200).send('e-commerce api');
 });
@@ -74,18 +62,20 @@ app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/orders', orderRouter);
 app.use('/api/v1/payment', stripeRouter);
 
+// Error handling middleware
 app.use(pageNotFound);
 app.use(errorHandle);
 
+// Server start
 const port = process.env.PORT || 8000;
 const startServer = async () => {
   try {
     await connectDB(process.env.DB_URL);
-    app.listen(port, '0.0.0.0', () => {
-      console.log(`new server listening in ${port}...`);
+    app.listen(port, () => {
+      console.log(`Server listening on port ${port}...`);
     });
   } catch (error) {
-    console.log(error);
+    console.error('Error starting server:', error);
   }
 };
 
