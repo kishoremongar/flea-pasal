@@ -11,7 +11,7 @@ import PrimaryButton from '@/components/common/primaryButton';
 
 export default function ShoppingCartMain() {
   const cartData = useSelector((store) => store?.cartItems?.cartData);
-  const [cartItemData, setCartItemData] = useState([]);
+  const [cartItemData, setCartItemData] = useState({});
   const { data: userData, status } = useSession();
   const router = useRouter();
   const deliveryFee = cartItemData?.itemTotalAmount > 1000 ? 0 : 149;
@@ -24,7 +24,14 @@ export default function ShoppingCartMain() {
   const isCartEmpty = cartItemData?.helperData?.length === 0;
 
   useEffect(() => {
-    setCartItemData(cartData);
+    const fallbackVal = {
+      status: false,
+      helperData: [],
+      addLimit: 4,
+      totalAmount: 0,
+      itemTotalAmount: 0,
+    };
+    setCartItemData(cartData ?? fallbackVal);
   }, [cartData]);
 
   return (
@@ -63,10 +70,10 @@ export default function ShoppingCartMain() {
               </div>
               <div className='flex justify-center'>
                 <PrimaryButton
-                  onClick={
-                    isLoggedIn
-                      ? () => router.push('/cart/checkout')
-                      : router.push('/auth/login')
+                  type='button'
+                  disabled={isLoggedIn}
+                  onClick={() =>
+                    router.push(isLoggedIn ? '/cart/checkout' : '/auth/login')
                   }
                   rootClassName='!h-14'
                   titleClassName='!text-sm sm:!text-base'
@@ -108,10 +115,10 @@ export default function ShoppingCartMain() {
                   <PrimaryButton
                     rootClassName='!h-14'
                     titleClassName='!text-sm sm:!text-base'
-                    onClick={
-                      isLoggedIn
-                        ? () => router.push('/cart/checkout')
-                        : router.push('/auth/login')
+                    type='button'
+                    disabled={isLoggedIn}
+                    onClick={() =>
+                      router.push(isLoggedIn ? '/cart/checkout' : '/auth/login')
                     }
                   >
                     {isLoggedIn ? 'Proceed to checkout' : 'Login'}
