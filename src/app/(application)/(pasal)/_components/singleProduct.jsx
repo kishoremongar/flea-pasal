@@ -1,5 +1,5 @@
 'use client';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { ColorSwatch } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,10 +19,15 @@ export default function SingleProduct() {
   );
   const [quantityCount, setQuantityCount] = useState(0);
   const addLimit = 4;
+  const router = useRouter();
 
   const handleAddToCart = () => {
-    dispatch(setCartItem(getSingleProduct?.product));
-    setQuantityCount(1);
+    if (quantityCount === 0) {
+      dispatch(setCartItem(getSingleProduct?.product));
+      setQuantityCount(1);
+    } else {
+      router.push('/cart');
+    }
   };
 
   const handleValue = (actionType) => {
@@ -53,7 +58,6 @@ export default function SingleProduct() {
     } else {
       setQuantityCount(0);
     }
-     
   }, [cartItems, getSingleProduct?.product]);
 
   return (
