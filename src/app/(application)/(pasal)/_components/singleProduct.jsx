@@ -1,13 +1,65 @@
 'use client';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { ColorSwatch } from '@mantine/core';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import AddBag from '@@/assets/icons/addBag.svg';
+import ArrowRightIcon from '@@/assets/icons/arrow-right.svg';
 import useGetSingleProduct from '../_hooks/getSingleProduct';
 import GalleryCarousel from './galleryCarousel';
 import PrimaryButton from '@/components/common/primaryButton';
+import { decrementCartItem, setCartItem } from '@/store/slices/cart';
 
 export default function SingleProduct() {
+  const dispatch = useDispatch();
   const params = useParams();
   const { data: getSingleProduct } = useGetSingleProduct(params.productId);
+  const cartItems = useSelector(
+    (store) => store?.cartItems?.cartData?.helperData
+  );
+  const [quantityCount, setQuantityCount] = useState(0);
+  const addLimit = 4;
+  const router = useRouter();
+
+  const handleAddToCart = () => {
+    if (quantityCount === 0) {
+      dispatch(setCartItem(getSingleProduct?.product));
+      setQuantityCount(1);
+    } else {
+      router.push('/cart');
+    }
+  };
+
+  const handleValue = (actionType) => {
+    const actions = {
+      increment: () => {
+        if (quantityCount < addLimit) {
+          dispatch(setCartItem(getSingleProduct?.product));
+          setQuantityCount((prevCount) => prevCount + 1);
+        }
+      },
+      decrement: () => {
+        if (quantityCount > 0) {
+          dispatch(decrementCartItem(getSingleProduct?.product));
+          setQuantityCount((prevCount) => prevCount - 1);
+        }
+      },
+    };
+
+    actions[actionType]();
+  };
+
+  useEffect(() => {
+    const existingProduct = cartItems.find(
+      (item) => item.id === getSingleProduct?.product?.id
+    );
+    if (existingProduct) {
+      setQuantityCount(existingProduct.quantity);
+    } else {
+      setQuantityCount(0);
+    }
+  }, [cartItems, getSingleProduct?.product]);
+
   return (
     <div className='antialiased max-w-7xl mx-auto'>
       <div className='flex flex-col md:flex-row -mx-4'>
@@ -46,39 +98,41 @@ export default function SingleProduct() {
             </div>
           </div>
           <div className='flex py-4 space-x-4'>
-            <div className='relative'>
-              <div className='text-center left-0 pt-2 right-0 absolute block text-xs uppercase text-gray-400 tracking-wide font-semibold'>
-                Qty
-              </div>
-              <select className='cursor-pointer appearance-none rounded-xl border border-gray-200 pl-4 pr-8 h-14 flex items-end pb-1'>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-              </select>
-              <svg
-                className='w-5 h-5 text-gray-400 absolute right-0 bottom-0 mb-2 mr-2'
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                stroke='currentColor'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth='2'
-                  d='M8 9l4-4 4 4m0 6l-4 4-4-4'
-                />
-              </svg>
-            </div>
             <PrimaryButton
               type='button'
               rootClassName='!h-14 !w-full sm:!w-2/6'
-              titleClassName='!text-white'
+              rightSection={
+                quantityCount > 0 ? (
+                  <ArrowRightIcon className='w-4 h-4' />
+                ) : (
+                  <AddBag className='w-4 h-4' />
+                )
+              }
+              onClick={handleAddToCart}
+              // rootClassName='!w-full !group'
+              titleClassName='!text-xs sm:!text-base'
             >
-              Add to Cart
+              {quantityCount > 0 ? 'Checkout' : 'Add to cart'}
             </PrimaryButton>
+            {quantityCount > 0 && (
+              <div className='flex items-center w-fit'>
+                <button
+                  className='bg-tertiary text-white font-bold px-2 rounded-l w-full h-full'
+                  onClick={() => handleValue('decrement')}
+                >
+                  -
+                </button>
+                <span className='bg-gray-200 px-2 text-primary-black w-full text-center h-full flex items-center'>
+                  {quantityCount}
+                </span>
+                <button
+                  className='bg-tertiary text-white font-bold px-2 rounded-r w-full h-full'
+                  onClick={() => handleValue('increment')}
+                >
+                  +
+                </button>
+              </div>
+            )}
           </div>
           <p>{getSingleProduct?.product?.description}</p>
         </div>

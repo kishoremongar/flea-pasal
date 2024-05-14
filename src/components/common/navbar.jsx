@@ -12,13 +12,13 @@ import { spotlight } from '@mantine/spotlight';
 import Link from 'next/link';
 import { useDisclosure, useViewportSize } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import LogoPlain from '@@/assets/icons/logoPlain.svg';
 import SearchIcon from '@@/assets/icons/magnifying-glass.svg';
 import CartIcon from '@@/assets/icons/cart.svg';
+import UserIcon from '@@/assets/icons/user.svg';
 import { sidebarToggle } from '@/store/slices/auth';
 
 export default function MainNavbar() {
@@ -34,10 +34,6 @@ export default function MainNavbar() {
   const totalCartItems = useSelector(
     (store) => store?.cartItems?.cartData?.helperData
   )?.length;
-  const [mouseHoverProfile, setMouseHoverProfile] = useState(false);
-  const profileSvg = mouseHoverProfile
-    ? '/assets/icons/userCopyhover.svg'
-    : '/assets/icons/userCopy.svg';
 
   useEffect(() => {
     setCartTotal(totalCartItems);
@@ -98,16 +94,7 @@ export default function MainNavbar() {
           <li className='cursor-pointer'>
             {status === 'unauthenticated' ? (
               <Link href='/auth/login'>
-                <Image
-                  src={profileSvg}
-                  alt='profile'
-                  width='0'
-                  height='0'
-                  onMouseEnter={() => setMouseHoverProfile(true)}
-                  onMouseLeave={() => setMouseHoverProfile(false)}
-                  sizes='100vw'
-                  className='w-4 h-4 sm:w-5 sm:h-5 profileSvg'
-                />
+                <UserIcon className='text-white hover:text-tertiary w-4 h-4 sm:w-5 sm:h-5' />
               </Link>
             ) : (
               <Menu
@@ -123,16 +110,9 @@ export default function MainNavbar() {
                 }}
               >
                 <Menu.Target>
-                  <Image
-                    src={profileSvg}
-                    alt='profile'
-                    width='0'
-                    height='0'
-                    onMouseEnter={() => setMouseHoverProfile(true)}
-                    onMouseLeave={() => setMouseHoverProfile(false)}
-                    sizes='100vw'
-                    className='w-4 h-4 sm:w-5 sm:h-5 profileSvg'
-                  />
+                  <div>
+                    <UserIcon className='text-white hover:text-tertiary w-4 h-4 sm:w-5 sm:h-5' />
+                  </div>
                 </Menu.Target>
                 <Menu.Dropdown>
                   {userData?.user?.role === 'admin' ? (
