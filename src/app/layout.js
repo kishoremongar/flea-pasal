@@ -19,7 +19,7 @@ const poppinsList = poppinsFont({
 
 export const metadata = {
   title: 'FleaPasal',
-  description: 'Friendly Sustainable Style',
+  description: 'Friendly Sustainable Style.',
 };
 
 export default async function RootLayout({ children }) {
