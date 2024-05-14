@@ -34,7 +34,7 @@ const register = async (req, res) => {
     verificationToken,
   });
 
-  const origin = 'http://localhost:3000';
+  const origin = 'https://flea-pasal.vercel.app';
   // const forwardedHost = req.get("x-forwarded-host");
   // const forwardedProtocol = req.get("x-forwarded-proto");
 
@@ -181,7 +181,7 @@ const forgotPassword = async (req, res) => {
   if (user) {
     const passwordToken = crypto.randomBytes(70).toString('hex');
     // send email
-    const origin = 'http://localhost:3000';
+    const origin = 'https://flea-pasal.vercel.app';
 
     await sendResetPasswordEmail({
       name: user.name,
