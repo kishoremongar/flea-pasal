@@ -11,6 +11,7 @@ import ArrowRightIcon from '@@/assets/icons/arrow-right.svg';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
 import PrimaryButton from './primaryButton';
 import { decrementCartItem, setCartItem } from '@/store/slices/cart';
 
@@ -21,10 +22,15 @@ export default function ProductCards({ product, pasal }) {
   );
   const [quantityCount, setQuantityCount] = useState(0);
   const addLimit = 4;
+  const router = useRouter();
 
   const handleAddToCart = () => {
-    dispatch(setCartItem(product));
-    setQuantityCount(1);
+    if (quantityCount === 0) {
+      dispatch(setCartItem(product));
+      setQuantityCount(1);
+    } else {
+      router.push('/cart');
+    }
   };
 
   const handleValue = (actionType) => {
