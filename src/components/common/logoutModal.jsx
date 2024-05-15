@@ -3,18 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { signOut } from 'next-auth/react';
 import { useState } from 'react';
-import { closeSignoutModal } from '../../store/slices/auth';
-import LogoutDoorIcon from '../../../public/assets/icons/logoutDoor.svg';
-import CloseIcon from '../../../public/assets/icons/closeCross.svg';
-import apiEndPoints from '../../services/apiEndPoints';
+import LogoutIcon from '@@/assets/icons/logout.svg';
+import CloseIcon from '@@/assets/icons/closeCross.svg';
 import PrimaryButton from './primaryButton';
-import { ErrorToast } from '@/services/toasterServices';
+import { closeSignoutModal } from '@/store/slices/auth';
+import apiEndPoints from '@/services/apiEndPoints';
+import { ErrorToast, SuccessToast } from '@/services/toasterServices';
 
-export function LogoutModal() {
+export default function LogoutModal() {
   const dispatch = useDispatch();
 
   const isModalOpen = useSelector((state) => state.auth.signoutModal?.status);
-  const accessToken = useSelector((state) => state.auth.accessToken);
+  const accessToken = useSelector((state) => state.auth?.accessToken);
   const [logoutLoading, setLogoutLoading] = useState(false);
 
   const handleClose = () => {
@@ -32,17 +32,17 @@ export function LogoutModal() {
       };
       const res = await axios.post(apiUrl, {}, config);
       const data = res?.data;
-      if (data?.status === 'SUCCESS') {
-        localStorage.clear();
+      if (data?.msg) {
         setLogoutLoading(false);
+        dispatch(closeSignoutModal());
+        SuccessToast({ text: data?.msg });
       }
     } catch (error) {
       setLogoutLoading(false);
-      ErrorToast({ text: 'Something went wrong.' });
+      ErrorToast({ text: error?.response?.data?.msg });
     }
     signOut({
-      redirect: true,
-      callbackUrl: '/auth/login',
+      redirect: false,
     });
   };
 
@@ -52,7 +52,7 @@ export function LogoutModal() {
       onClose={handleClose}
       size='sm'
       centered
-      overlayProps={{ blur: 25, opacity: 0.3 }}
+      overlayProps={{ blur: 5 }}
       withCloseButton={false}
       classNames={{
         title: 'w-full',
@@ -69,16 +69,14 @@ export function LogoutModal() {
         <CloseIcon className='w-4 h-4' />
       </button>
       <div className='flex flex-col justify-center items-center gap-y-10 p-4'>
-        <LogoutDoorIcon />
-        <p className='text-center text-xl'>
-          Are you sure, you want to log out?{' '}
+        <LogoutIcon />
+        <p className='text-center text-xl text-olive'>
+          Are you sure, you want to log out?
         </p>
         <div className='flex gap-x-6'>
           <PrimaryButton
             variant='filled'
-            rootClassName={{
-              root: '!bg-light-secondary hover:!bg-light-secondary/75 text-light-primary font-normal',
-            }}
+            rootClassName='!font-normal'
             size='lg'
             onClick={handleSignOut}
             loading={logoutLoading}
@@ -90,9 +88,7 @@ export function LogoutModal() {
             onClick={handleClose}
             size='lg'
             disabled={logoutLoading}
-            rootClassName={{
-              root: 'text-light-primary font-normal !border-light-secondary',
-            }}
+            rootClassName='!font-normal'
           >
             Cancel
           </PrimaryButton>
