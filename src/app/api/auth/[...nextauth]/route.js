@@ -6,6 +6,7 @@ import apiEndPoints from '../../../../services/apiEndPoints';
 export const authOptions = {
   pages: {
     signIn: '/auth/login',
+    signOut: '/auth/logout',
   },
   providers: [
     CredentialsProvider({
@@ -61,6 +62,7 @@ export const authOptions = {
   },
   callbacks: {
     jwt: async ({ token, user }) => {
+      //{ name: 'thapa', email: undefined, picture: undefined, sub: undefined } in the token
       if (user) {
         token.accessToken = user.token;
         if (user) token.role = user.role;
@@ -86,4 +88,4 @@ export const authOptions = {
 
 const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST, handler as DELETE };

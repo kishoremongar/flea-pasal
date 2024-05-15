@@ -12,7 +12,6 @@ export default function UserAuthWrapper() {
   const dispatch = useDispatch();
   // const router = useRouter();
   const accessToken = useSelector((state) => state.auth.accessToken);
-
   useEffect(() => {
     if (status === 'authenticated' && !accessToken) {
       dispatch(

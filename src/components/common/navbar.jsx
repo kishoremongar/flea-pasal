@@ -14,12 +14,16 @@ import { useDisclosure, useViewportSize } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSession } from 'next-auth/react';
+import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import LogoPlain from '@@/assets/icons/logoPlain.svg';
 import SearchIcon from '@@/assets/icons/magnifying-glass.svg';
 import CartIcon from '@@/assets/icons/cart.svg';
 import UserIcon from '@@/assets/icons/user.svg';
-import { sidebarToggle } from '@/store/slices/auth';
+import PrimaryButton from './primaryButton';
+import { openSignoutModal, sidebarToggle } from '@/store/slices/auth';
+
+const LogoutModal = dynamic(() => import('./logoutModal'));
 
 export default function MainNavbar() {
   const [opened, { toggle }] = useDisclosure();
@@ -34,6 +38,10 @@ export default function MainNavbar() {
   const totalCartItems = useSelector(
     (store) => store?.cartItems?.cartData?.helperData
   )?.length;
+
+  const handleLogout = () => {
+    dispatch(openSignoutModal());
+  };
 
   useEffect(() => {
     setCartTotal(totalCartItems);
@@ -127,7 +135,7 @@ export default function MainNavbar() {
                   <Menu.Divider />
                   <Menu.Item>Change Password</Menu.Item>
                   <Menu.Divider />
-                  <Menu.Item>Logout</Menu.Item>
+                  <Menu.Item onClick={handleLogout}>Logout</Menu.Item>
                 </Menu.Dropdown>
               </Menu>
             )}
@@ -142,8 +150,10 @@ export default function MainNavbar() {
           height={height}
           toggle={toggle}
           mobileScreen={mobileScreen}
+          handleLogout={handleLogout}
         />
       </div>
+      <LogoutModal />
     </div>
   );
 }
@@ -230,8 +240,9 @@ export const NavItem = ({ alterClass, pathName, toggle, mobileScreen }) => {
           key={item.label}
           variant='default'
           classNames={{
-            control: '!p-0 !text-white active:!bg-secondary !w-[40%]',
-            label: 'flex-[0.5]',
+            control:
+              '!p-0 !text-white active:!bg-secondary !justify-end !w-1/2',
+            label: '!p-0',
           }}
           defaultValue={isPasalActive ? 'pasal' : ''}
         >
@@ -290,6 +301,7 @@ const MobileSideBar = ({
   height,
   toggle,
   mobileScreen,
+  handleLogout,
 }) => {
   const sidebarHeight = height - 64;
   const userData = useSelector((store) => store.auth.user);
@@ -332,9 +344,17 @@ const MobileSideBar = ({
               </div>
             )}
             {status === 'authenticated' && (
-              <p className=' text-white capitalize text-center'>
-                Hello {userData?.name}
-              </p>
+              <div className='flex flex-col gap-y-4 w-full'>
+                <p className=' text-white capitalize text-center'>
+                  Hello {userData?.name}
+                </p>
+                <PrimaryButton
+                  titleClassName='!text-base !font-light'
+                  onClick={handleLogout}
+                >
+                  Logout
+                </PrimaryButton>
+              </div>
             )}
           </div>
         );
