@@ -62,11 +62,11 @@ export const authOptions = {
   },
   callbacks: {
     jwt: async ({ token, user }) => {
-      //{ name: 'thapa', email: undefined, picture: undefined, sub: undefined } in the token
       if (user) {
         token.accessToken = user.token;
-        if (user) token.role = user.role;
-        // token.refreshToken = user.refresh;
+        token.role = user.role;
+        token.email = user.email;
+        token.refreshToken = user.refreshToken;
         token.user = user;
       }
 
@@ -76,8 +76,11 @@ export const authOptions = {
     session: async ({ session, token }) => {
       if (token) {
         session.accessToken = token.accessToken;
-        if (session?.user) session.user.role = token.role;
-        // session.refreshToken = token.refreshToken;
+        if (session?.user) {
+          session.user.role = token.role;
+          session.user.email = token.email;
+        }
+        session.refreshToken = token.refreshToken;
         session.user = token.user;
       }
 

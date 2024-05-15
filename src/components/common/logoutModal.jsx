@@ -8,7 +8,7 @@ import CloseIcon from '@@/assets/icons/closeCross.svg';
 import PrimaryButton from './primaryButton';
 import { closeSignoutModal } from '@/store/slices/auth';
 import apiEndPoints from '@/services/apiEndPoints';
-import { ErrorToast } from '@/services/toasterServices';
+import { ErrorToast, SuccessToast } from '@/services/toasterServices';
 
 export default function LogoutModal() {
   const dispatch = useDispatch();
@@ -32,11 +32,10 @@ export default function LogoutModal() {
       };
       const res = await axios.post(apiUrl, {}, config);
       const data = res?.data;
-      // console.log('logout data', data);
       if (data?.msg) {
         setLogoutLoading(false);
         dispatch(closeSignoutModal());
-        ErrorToast({ text: data?.msg });
+        SuccessToast({ text: data?.msg });
       }
     } catch (error) {
       setLogoutLoading(false);
