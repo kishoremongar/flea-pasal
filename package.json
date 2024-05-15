@@ -1,12 +1,12 @@
 {
-  "name": "06-jobs-api",
+  "name": "flea-pasal",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "node app.js"
   },
-  "author": "",
+  "author": "kishore-mongar",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
