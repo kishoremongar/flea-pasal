@@ -1,15 +1,15 @@
 const User = require("../models/user");
-const Token = require("../models/Token");
+const BlacklistedToken = require("../models/BlacklistedToken");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
 const {
-  attachCookiesToResponse,
   createTokenUser,
   sendVerificationEmail,
   sendResetPasswordEmail,
   createHash,
 } = require("../utils");
 const crypto = require("crypto");
+const { createTokens } = require("../utils/jwt");
 
 const register = async (req, res) => {
   const { email, name, password } = req.body;
@@ -107,7 +107,6 @@ const login = async (req, res) => {
   if (!user.isVerified) {
     throw new CustomError.UnauthenticatedError("Please verify your email");
   }
-
   const tokenUser = createTokenUser(user);
 
   if (!tokenUser) {
@@ -115,54 +114,35 @@ const login = async (req, res) => {
       "Token user data is missing or invalid"
     );
   }
-  // create refresh token
-  let refreshToken = "";
-  // check for existing token
-  const existingToken = await Token.findOne({ user: user._id });
 
-  if (existingToken) {
-    const { isValid } = existingToken;
+  // Create access token and refresh token
+  const { accessToken, refreshToken } = createTokens({ payload: tokenUser });
 
-    if (!isValid) {
-      throw new CustomError.UnauthenticatedError("Invalid Credentials");
-    }
-    refreshToken = existingToken.refreshToken;
-    attachCookiesToResponse({ res, user: tokenUser, refreshToken });
-    res.status(StatusCodes.OK).json({ ...tokenUser, token: refreshToken });
-    return;
-  }
-  refreshToken = crypto.randomBytes(40).toString("hex");
-  const userAgent = req.headers["user-agent"];
-  const ip = req.ip;
-  const userToken = { refreshToken, ip, userAgent, user: user._id };
+  const responseData = {
+    name: user.name,
+    role: user.role,
+    email: user.email,
+    token: accessToken,
+    refreshToken,
+  };
 
-  await Token.create(userToken);
-
-  // const flattenedUser = {
-  //   user: {
-  //     name: user.name,
-  //     userId: user._id,
-  //     role: user.role,
-  //   },
-  //   refreshToken: refreshToken,
-  // };
-  attachCookiesToResponse({ res, user: tokenUser, refreshToken });
-  res.status(StatusCodes.OK).json({ ...tokenUser, token: refreshToken });
+  res.status(200).json(responseData);
 };
 
 const logout = async (req, res) => {
-  const name = req?.user?.name;
-  await Token.findOneAndDelete({ user: req.user.userId });
-  console.log("req", req?.user);
-  res.cookie("accessToken", "logout", {
-    httpOnly: true,
-    expires: new Date(Date.now()),
-  });
-  res.cookie("refreshToken", "logout", {
-    httpOnly: true,
-    expires: new Date(Date.now()),
-  });
-  res.status(StatusCodes.OK).json({ msg: `${name} is logged out!` });
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith("Bearer ")) {
+    throw new CustomError.UnauthenticatedError("Authentication invalid");
+  }
+  const token = authHeader.split(" ")[1];
+  try {
+    const expiresAt = Math.floor(Date.now() / 1000);
+    await BlacklistedToken.create({ token, expiresAt });
+
+    res.status(200).json({ msg: "Logout successful" });
+  } catch (error) {
+    throw new CustomError.UnauthenticatedError("Authentication invalid");
+  }
 };
 
 const forgotPassword = async (req, res) => {
@@ -235,3 +215,101 @@ module.exports = {
   forgotPassword,
   resetPassword,
 };
+
+// Logging out based on cookies
+// const logout = async (req, res) => {
+//   const { refreshToken } = req.body;
+//   if (!refreshToken) {
+//     throw new CustomError.BadRequestError('Refresh token is required');
+//   }
+//   const foundToken = await Token.findOne({ refreshToken });
+//   if (!foundToken) {
+//     throw new CustomError.UnauthenticatedError('Invalid refresh token');
+//   }
+//   await Token.findOneAndDelete({ refreshToken });
+//   res.cookie('accessToken', 'logout', {
+//     httpOnly: true,
+//     expires: new Date(Date.now()),
+//   });
+//   res.cookie('refreshToken', 'logout', {
+//     httpOnly: true,
+//     expires: new Date(Date.now()),
+//   });
+//   res.status(StatusCodes.OK).json({ msg: 'Successfully logged out', name });
+// };
+
+// Login with assignedCookies
+// const login = async (req, res) => {
+//   const { email, password, re_login } = req.body;
+//   if (re_login) {
+//     await logout(req, res);
+//   }
+
+//   if (!email || !password) {
+//     let errorMessage = "Please provide ";
+//     if (!email && !password) {
+//       errorMessage += "an email and a password";
+//     } else if (!email) {
+//       errorMessage += "an email";
+//     } else {
+//       errorMessage += "a password";
+//     }
+//     throw new CustomError.BadRequestError(errorMessage);
+//   }
+//   const user = await User.findOne({ email });
+
+//   if (!user) {
+//     throw new CustomError.UnauthenticatedError("Wrong email provided.");
+//   }
+
+//   const isPasswordCorrect = await user.comparePassword(password);
+
+//   if (!isPasswordCorrect) {
+//     throw new CustomError.UnauthenticatedError("Wrong password provided.");
+//   }
+
+//   if (!user.isVerified) {
+//     throw new CustomError.UnauthenticatedError("Please verify your email");
+//   }
+
+//   const tokenUser = createTokenUser(user);
+
+//   if (!tokenUser) {
+//     throw new CustomError.BadRequestError(
+//       "Token user data is missing or invalid"
+//     );
+//   }
+//   // create refresh token
+//   let refreshToken = "";
+//   // check for existing token
+//   const existingToken = await Token.findOne({ user: user._id });
+
+//   if (existingToken) {
+//     const { isValid } = existingToken;
+
+//     if (!isValid) {
+//       throw new CustomError.UnauthenticatedError("Invalid Credentials");
+//     }
+//     refreshToken = existingToken.refreshToken;
+//     attachCookiesToResponse({ res, user: tokenUser, refreshToken });
+//     res.status(StatusCodes.OK).json({ ...tokenUser, token: refreshToken });
+//     return;
+//   }
+//   refreshToken = crypto.randomBytes(40).toString("hex");
+//   const userAgent = req.headers["user-agent"];
+//   const ip = req.ip;
+//   const userToken = { refreshToken, ip, userAgent, user: user._id };
+
+//   await Token.create(userToken);
+
+//   // const flattenedUser = {
+//   //   user: {
+//   //     name: user.name,
+//   //     userId: user._id,
+//   //     role: user.role,
+//   //   },
+//   //   refreshToken: refreshToken,
+//   // };
+//   attachCookiesToResponse({ res, user: tokenUser, refreshToken });
+//   res.status(StatusCodes.OK).json({ ...tokenUser, token: refreshToken });
+// };

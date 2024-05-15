@@ -1,0 +1,5 @@
+{
+  "html.completion.attributeDefaultValue": "doublequotes",
+  "prettier.jsxSingleQuote": false,
+  "prettier.singleQuote": false
+}
