@@ -3,8 +3,8 @@
 import { TextInput } from '@mantine/core';
 import { Controller, useForm } from 'react-hook-form';
 import Link from 'next/link';
-import PrimaryButton from '../../../../components/common/primaryButton';
-import usePostCreateOTP from '../hooks/usePostCreateOTP';
+import usePostCreateOTP from '../_hooks/usePostCreateOTP';
+import PrimaryButton from '@/components/common/primaryButton';
 
 export default function ForgotPasswordForm() {
   const {

@@ -25,9 +25,9 @@ export default function VerifyEmailPage() {
       <VerifyEmailBg className='w-full h-full' />
       {emailMutate?.isSuccess ? (
         <>
-          <p>Your email is verified</p>
+          <p>Your email is verified!!!</p>
           <PrimaryButton
-            rootClassName='!w-fit'
+            rootClassName='!w-2/3 md:!w-2/4'
             onClick={() => router.push('/auth/login')}
           >
             Login

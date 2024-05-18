@@ -8,12 +8,12 @@ import {
 } from '@mantine/core';
 import { Controller, useForm } from 'react-hook-form';
 import { useState } from 'react';
-import EyeClose from '../../../../../public/assets/icons/eyeCloseSecondary.svg';
-import EyeOpen from '../../../../../public/assets/icons/eyeOpenSecondary.svg';
-import IconCheck from '../../../../../public/assets/icons/correct-success.svg';
-import IconX from '../../../../../public/assets/icons/cross-red.svg';
-import PrimaryButton from '../../../../components/common/primaryButton';
-import usePostChangePassword from '../hooks/usePostChangePassword';
+import EyeClose from '@@/assets/icons/eyeCloseSecondary.svg';
+import EyeOpen from '@@/assets/icons/eyeOpenSecondary.svg';
+import IconCheck from '@@/assets/icons/correct-success.svg';
+import IconX from '@@/assets/icons/cross-red.svg';
+import usePostChangePassword from '../_hooks/usePostChangePassword';
+import PrimaryButton from '@/components/common/primaryButton';
 
 export default function ChangePasswordForm() {
   const {
