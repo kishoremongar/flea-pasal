@@ -32,8 +32,9 @@ export default function MainNavbar() {
   const pathName = usePathname();
   const getPath = pathName?.split('/')?.slice(1, 2)?.[0];
   const { width, height } = useViewportSize();
+  const [mobileScreen, setMobileScreen] = useState(false);
   const [popoverOpened, setPopoverOpened] = useState(false);
-  const mobileScreen = width < 768;
+  // const mobileScreen = width < 768;
   const [cartTotal, setCartTotal] = useState(0);
   const totalCartItems = useSelector(
     (store) => store?.cartItems?.cartData?.helperData
@@ -51,6 +52,14 @@ export default function MainNavbar() {
     dispatch(sidebarToggle(opened));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [opened]);
+
+  useEffect(() => {
+    if (width < 768) {
+      setMobileScreen(true);
+    } else {
+      setMobileScreen(false);
+    }
+  }, [width]);
 
   return (
     <div className='flex flex-col fixed top-0 z-50 w-full text-white text-md tracking-normal'>

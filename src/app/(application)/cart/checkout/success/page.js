@@ -2,8 +2,12 @@
 
 import Link from 'next/link';
 import ConfirmPayment from '@@/assets/icons/confirm_order.svg';
+import { useEffect } from 'react';
 
 export default function PaymentSuccessPage() {
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
   return (
     <div className='flex flex-col gap-y-4 justify-center items-center flex-auto h-auto w-full'>
       <ConfirmPayment className='mobile-xl:w-3/6 mobile-xl:h-3/6' />

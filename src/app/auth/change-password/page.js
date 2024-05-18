@@ -1,8 +1,8 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import ChangePasswordForm from './components/changePasswordForm';
-import ResetSuccess from './components/resetSuccess';
+import ChangePasswordForm from './_components/changePasswordForm';
+import ResetSuccess from './_components/resetSuccess';
 
 export default function ChangePasswordPage() {
   const searchParams = useSearchParams();

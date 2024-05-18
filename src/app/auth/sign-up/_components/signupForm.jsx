@@ -3,10 +3,11 @@
 import { PasswordInput, TextInput } from '@mantine/core';
 import { Controller, useForm } from 'react-hook-form';
 import Link from 'next/link';
-import EyeClose from '../../../../../public/assets/icons/eyeCloseSecondary.svg';
-import EyeOpen from '../../../../../public/assets/icons/eyeOpenSecondary.svg';
-import PrimaryButton from '../../../../components/common/primaryButton';
-import usePostSignUp from '../hooks/usePostVerifyOtp';
+import EyeClose from '@@/assets/icons/eyeCloseSecondary.svg';
+import EyeOpen from '@@/assets/icons/eyeOpenSecondary.svg';
+import usePostSignUp from '../_hooks/usePostVerifyOtp';
+import PrimaryButton from '@/components/common/primaryButton';
+import PasswordChecker from '@/components/common/passwordChecker';
 
 export default function SignupForm() {
   const {
@@ -14,6 +15,7 @@ export default function SignupForm() {
     handleSubmit,
     reset,
     formState: { errors },
+    watch,
   } = useForm({
     defaultValues: {
       name: '',
@@ -88,37 +90,62 @@ export default function SignupForm() {
             />
           )}
         />
-        <Controller
-          name='password'
-          control={control}
-          rules={{
-            required: 'Password is required',
-          }}
-          render={({ field }) => (
-            <PasswordInput
-              {...field}
-              error={errors?.password?.message}
-              placeholder='Enter your password'
-              classNames={{
-                label: '!text-base text-olive',
-                input: '!h-[2.875rem] !bg-[#F9F9F9] !text-olive',
-                visibilityToggle: '!mr-6',
-              }}
-              label='Password'
-              visibilityToggleIcon={({ reveal }) =>
-                reveal ? <EyeOpen /> : <EyeClose />
-              }
-              onChange={(e) => {
-                field.onChange(e);
-              }}
-            />
-          )}
-        />
+        <PasswordChecker mainWatch={watch('password')}>
+          <Controller
+            name='password'
+            control={control}
+            rules={{
+              required: 'Password is required',
+              minLength: {
+                value: 8,
+                message: 'Password must be at least 8 characters',
+              },
+              validate: {
+                hasNumber: (value) => {
+                  return /\d/.test(value) || 'Number required';
+                },
+                hasLowercase: (value) => {
+                  return /[a-z]/.test(value) || 'Lowercase letter required';
+                },
+                hasUppercase: (value) => {
+                  return /[A-Z]/.test(value) || 'Uppercase letter required';
+                },
+                hasSpecialChar: (value) => {
+                  return (
+                    /[$&+,:;=?@#|'<>.^*()%!-]/.test(value) ||
+                    'Special symbol required'
+                  );
+                },
+              },
+            }}
+            render={({ field }) => (
+              <PasswordInput
+                {...field}
+                error={errors?.password?.message}
+                placeholder='Enter your password'
+                classNames={{
+                  label: '!text-base text-olive',
+                  input: '!h-[2.875rem] !bg-[#F9F9F9] !text-olive',
+                  visibilityToggle: '!mr-6',
+                }}
+                label='Password'
+                visibilityToggleIcon={({ reveal }) =>
+                  reveal ? <EyeOpen /> : <EyeClose />
+                }
+                onChange={(e) => {
+                  field.onChange(e);
+                }}
+              />
+            )}
+          />
+        </PasswordChecker>
         <Controller
           name='re_enter_password'
           control={control}
           rules={{
             required: 'Confrim password is required',
+            validate: (value) =>
+              value === watch('password') || "Passwords don't match",
           }}
           render={({ field }) => (
             <PasswordInput

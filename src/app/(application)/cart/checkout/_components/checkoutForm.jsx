@@ -65,7 +65,7 @@ export default function CheckoutForm() {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: 'https://flea-pasal.vercel.app/cart/checkout/success',
+        return_url: `${process.env.NEXT_PUBLIC_BASE_URL}cart/checkout/success`,
         payment_method: 'card',
       },
     });

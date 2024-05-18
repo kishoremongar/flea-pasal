@@ -5,10 +5,10 @@ import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
-import EyeClose from '../../../../../public/assets/icons/eyeCloseSecondary.svg';
-import EyeOpen from '../../../../../public/assets/icons/eyeOpenSecondary.svg';
-import PrimaryButton from '../../../../components/common/primaryButton';
-import { ErrorToast } from '../../../../services/toasterServices';
+import EyeClose from '@@/assets/icons/eyeCloseSecondary.svg';
+import EyeOpen from '@@/assets/icons/eyeOpenSecondary.svg';
+import PrimaryButton from '@/components/common/primaryButton';
+import { ErrorToast } from '@/services/toasterServices';
 
 export default function LoginForm() {
   const {
@@ -140,7 +140,7 @@ export default function LoginForm() {
         >
           Login
         </PrimaryButton>
-        <div className='text-olive text-center'>
+        <div className='text-brown2 text-center'>
           Don&apos;t have an account?{' '}
           <Link href='/auth/sign-up' className='text-olive hover:text-primary'>
             Sign up
