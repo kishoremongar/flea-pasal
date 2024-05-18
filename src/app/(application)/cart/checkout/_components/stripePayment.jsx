@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import { useSelector } from 'react-redux';
+import LoadingCheckout from '@@/assets/icons/loadingBg.svg';
 import usePostStripePayment from '../_hooks/usePostStripePayment';
 import CheckoutForm from './checkoutForm';
 
-// Make sure to call loadStripe outside of a component’s render to avoid
-// recreating the Stripe object on every render.
-// This is your test publishable API key.
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
@@ -19,7 +17,6 @@ export default function StripePayment() {
   const deliveryFee = cartData?.itemTotalAmount > 1000 ? 0 : 149;
 
   const stripePaymentMutation = usePostStripePayment(setClientSecret);
-
   useEffect(() => {
     if (!cartData) return;
     stripePaymentMutation.mutate({
@@ -44,11 +41,18 @@ export default function StripePayment() {
   };
 
   return (
-    <div className='flex items-center justify-center'>
-      {clientSecret && (
+    <div className='flex items-center justify-center flex-auto w-full h-auto'>
+      {clientSecret ? (
         <Elements options={options} stripe={stripePromise}>
           <CheckoutForm />
         </Elements>
+      ) : (
+        <div className='flex flex-col gap-y-4 items-center justify-center w-full pt-10 pb-6'>
+          <LoadingCheckout className='mobile-xl:w-2/4 mobile-xl:h-2/4' />
+          <p className='text-center text-sm sm:text-xl animate-pulse text-olive'>
+            Please wait, this will take a few seconds...
+          </p>
+        </div>
       )}
     </div>
   );

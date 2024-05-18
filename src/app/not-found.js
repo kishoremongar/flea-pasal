@@ -1,26 +1,26 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { Button } from '@mantine/core';
+import PrimaryButton from '@/components/common/primaryButton';
 
 export default function NotFound() {
   const router = useRouter();
   return (
-    <div className='min-h-screen flex flex-col items-center justify-center gap-y-4'>
-      <div className='text-light-black-primary text-sm flex flex-col items-center'>
-        <p>Oops!</p>
-        <p>Page not found.</p>
+    <div className='min-h-screen flex flex-col items-center justify-center flex-auto gap-y-4'>
+      <div className='text-light-black-primary text-center text-sm flex flex-col items-center w-full'>
+        <div className='bg-404Bg w-full h-[25rem] bg-center'>
+          <h1 className='text-center text-5xl md:text-7xl text-olive'>404</h1>
+        </div>
+        <div className='text-secondary -mt-6'>
+          <h3 className='text-xl md:text-3xl'>{`Look like you're lost`}</h3>
+          <p>the page you are looking for is not avaible!</p>
+        </div>
       </div>
-
-      <Button
+      <PrimaryButton
         onClick={() => router.push('/')}
-        size='lg'
-        classNames={{
-          label: `text-light-primary dark:text-dark-primary text-lg font-normal`,
-          root: `!bg-light-secondary dark:bg-dark-secondary hover:!bg-light-secondary/75 rounded-md !px-16 h-16`,
-        }}
+        titleClassName='!text-sm md:!text-base !font-normal'
       >
         Return Home
-      </Button>
+      </PrimaryButton>
     </div>
   );
 }

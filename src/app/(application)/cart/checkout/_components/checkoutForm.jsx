@@ -4,7 +4,9 @@ import {
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js';
-import { ErrorToast } from '@/services/toasterServices';
+import StripeLogo from '@@/assets/icons/stripe.svg';
+import { ErrorToast, SuccessToast } from '@/services/toasterServices';
+import PrimaryButton from '@/components/common/primaryButton';
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -12,6 +14,7 @@ export default function CheckoutForm() {
 
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [paymentElementLoaded, setPaymentElementLoaded] = useState(false);
 
   useEffect(() => {
     if (!stripe) {
@@ -25,10 +28,12 @@ export default function CheckoutForm() {
     if (!clientSecret) {
       return;
     }
+
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
       switch (paymentIntent.status) {
         case 'succeeded':
-          setMessage('Payment succeeded!');
+          localStorage.clear();
+          SuccessToast('Payment successful.');
           break;
         case 'processing':
           setMessage('Your payment is processing.');
@@ -36,7 +41,12 @@ export default function CheckoutForm() {
         case 'requires_payment_method':
           setMessage('Your payment was not successful, please try again.');
           break;
+        case 'requires_action':
+          ErrorToast({ text: 'Please use a different card.' });
+          setMessage('International transactions are not supported.');
+          break;
         default:
+          ErrorToast({ text: 'Something went wrong.' });
           setMessage('Something went wrong.');
           break;
       }
@@ -47,8 +57,6 @@ export default function CheckoutForm() {
     e.preventDefault();
 
     if (!stripe || !elements) {
-      // Stripe.js hasn't yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
 
@@ -57,19 +65,16 @@ export default function CheckoutForm() {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        // Make sure to change this to your payment completion page
-        return_url: 'http://localhost:3000/cart/checkout/success',
-        payment_method: 'pm_card_visa',
+        return_url: 'https://flea-pasal.vercel.app/cart/checkout/success',
+        payment_method: 'card',
       },
     });
 
-    // This point will only be reached if there is an immediate error when
-    // confirming the payment. Otherwise, your customer will be redirected to
-    // your `return_url`. For some payment methods like iDEAL, your customer will
-    // be redirected to an intermediate site first to authorize the payment, then
-    // redirected to the `return_url`.
-    if (error.type === 'card_error' || error.type === 'validation_error') {
+    if (['card_error', 'validation_error'].includes(error?.type)) {
       setMessage(error.message);
+      ErrorToast({ text: error.message });
+    } else if (error?.type === 'invalid_request_error') {
+      setMessage('International transactions are not supported.');
       ErrorToast({ text: error.message });
     } else {
       setMessage('An unexpected error occurred.');
@@ -82,19 +87,43 @@ export default function CheckoutForm() {
   };
 
   return (
-    <form id='payment-form' onSubmit={handleSubmit}>
-      <PaymentElement id='payment-element' options={paymentElementOptions} />
-      <button
-        disabled={isLoading || !stripe || !elements}
-        id='submit'
-        className='!bg-primary !text-white !font-bold !py-2 !px-4 !rounded-md'
-      >
-        <span id='button-text'>
-          {isLoading ? <div className='spinner' id='spinner'></div> : 'Pay now'}
-        </span>
-      </button>
-      {/* Show any error or success messages */}
-      {message && <div id='payment-message'>{message}</div>}
+    <form
+      onSubmit={handleSubmit}
+      className='flex justify-center items-center min-h-[55vh]'
+    >
+      <div className='flex md:flex-row flex-col gap-y-6 md:gap-x-10 flex-auto items-center'>
+        {paymentElementLoaded && (
+          <StripeLogo className='mobile-xl:w-2/4 mobile-xl:h-2/4' />
+        )}
+        <div className='flex flex-col gap-y-8 justify-center items-center  mx-auto my-0'>
+          <PaymentElement
+            options={paymentElementOptions}
+            onLoaderStart={() => setPaymentElementLoaded(false)}
+            onReady={() => setPaymentElementLoaded(true)}
+          />
+          {paymentElementLoaded && (
+            <PrimaryButton
+              disabled={isLoading || !stripe || !elements}
+              type='submit'
+              titleClassName='!font-normal'
+              loading={isLoading}
+              loaderProps={{ type: 'dots' }}
+              rootClassName='!w-full'
+            >
+              {isLoading ? (
+                <div className='spinner loader'>Loading...</div>
+              ) : (
+                'Pay now'
+              )}
+            </PrimaryButton>
+          )}
+          {message && (
+            <div className='text-xs md:text-sm font-medium text-primary'>
+              {message}
+            </div>
+          )}
+        </div>
+      </div>
     </form>
   );
 }

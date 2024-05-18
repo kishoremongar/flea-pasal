@@ -71,7 +71,7 @@ export default function ShoppingCartMain() {
               <div className='flex justify-center'>
                 <PrimaryButton
                   type='button'
-                  disabled={isLoggedIn}
+                  // disabled={isLoggedIn}
                   onClick={() =>
                     router.push(isLoggedIn ? '/cart/checkout' : '/auth/login')
                   }
@@ -116,7 +116,7 @@ export default function ShoppingCartMain() {
                     rootClassName='!h-14'
                     titleClassName='!text-sm sm:!text-base'
                     type='button'
-                    disabled={isLoggedIn}
+                    // disabled={isLoggedIn}
                     onClick={() =>
                       router.push(isLoggedIn ? '/cart/checkout' : '/auth/login')
                     }
