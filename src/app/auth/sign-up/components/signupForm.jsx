@@ -37,7 +37,7 @@ export default function SignupForm() {
         <h3 className='text-olive text-md font-semibold'>
           {registerMutation.isSuccess
             ? 'Please check your email to verify'
-            : 'It&apos;s quick and easy.'}
+            : `It's quick and easy.`}
         </h3>
       </div>
       <form

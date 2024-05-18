@@ -21,7 +21,7 @@ export default function VerifyEmailPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className='text-olive text-center flex flex-col gap-y-3'>
+    <div className='text-olive text-center items-center flex flex-col gap-y-3'>
       <VerifyEmailBg className='w-full h-full' />
       {emailMutate?.isSuccess ? (
         <>

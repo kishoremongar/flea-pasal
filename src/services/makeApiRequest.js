@@ -35,7 +35,7 @@ instance.interceptors.response.use(
     document.body.style.cursor = 'default';
 
     const reduxStore = store.getState();
-    if ([401, 405].includes(error?.request?.status)) {
+    if ([405].includes(error?.request?.status)) {
       try {
         const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASEURL}${apiEndPoints.USER_LOGOUT}`;
         const config = {

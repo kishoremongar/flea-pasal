@@ -1,10 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
-import LoadingOverlay from '@/components/common/loadingOverlay';
+import PageLoadingOverlay from '@/components/common/pageLoadingOverlay';
 
 const ShoppingCartMain = dynamic(() => import('./components/shoppingCart'), {
   ssr: false,
-  loading: () => <LoadingOverlay />,
+  loading: () => <PageLoadingOverlay />,
 });
 
 export default function ShoppingCartPage() {

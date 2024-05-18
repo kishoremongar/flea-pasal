@@ -1,8 +1,9 @@
 import dynamic from 'next/dynamic';
 import LandingHero from './hero';
+import PageLoadingOverlay from '@/components/common/pageLoadingOverlay';
 
 const Categories = dynamic(() => import('./categories'), {
-  ssr: false,
+  loading: () => <PageLoadingOverlay />,
 });
 
 export default function HomeMainLayout() {

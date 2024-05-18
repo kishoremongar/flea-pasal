@@ -28,6 +28,8 @@ module.exports = {
           "url('https://res.cloudinary.com/fushigina-shinobi/image/upload/f_auto,q_auto/v1/FleaPasal/py9prw3y3jdbzzz1ksf3')",
         heroBooksBg:
           "url('https://res.cloudinary.com/fushigina-shinobi/image/upload/f_auto,q_auto/v1/FleaPasal/dghb82mrn2yi78e3nnyh')",
+        '404Bg':
+          "url('https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif')",
       },
       screens: {
         mobile: '320px',
