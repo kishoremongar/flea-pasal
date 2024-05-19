@@ -8,6 +8,7 @@ const initialState = {
   activeSessionPopup: { status: false, helperdata: null },
   signoutModal: { status: false, helperdata: null },
   sidebarOpened: { status: false, helperdata: null },
+  changePasswordModal: { status: false, helperdata: null },
 };
 
 const authSlice = createSlice({
@@ -45,6 +46,14 @@ const authSlice = createSlice({
     sidebarToggle(state, action) {
       state.sidebarOpened.status = action.payload;
     },
+    openChangePasswordModal(state, action) {
+      state.changePasswordModal.helperdata = action.payload;
+      state.changePasswordModal.status = true;
+    },
+    closeChangePasswordModal(state) {
+      state.changePasswordModal.status = false;
+      state.changePasswordModal.helperdata = null;
+    },
   },
 });
 
@@ -57,5 +66,7 @@ export const {
   openSignoutModal,
   closeSignoutModal,
   sidebarToggle,
+  openChangePasswordModal,
+  closeChangePasswordModal,
 } = authSlice.actions;
 export default authSlice.reducer;

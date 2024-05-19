@@ -20,10 +20,23 @@ import LogoPlain from '@@/assets/icons/logoPlain.svg';
 import SearchIcon from '@@/assets/icons/magnifying-glass.svg';
 import CartIcon from '@@/assets/icons/cart.svg';
 import UserIcon from '@@/assets/icons/user.svg';
+import HomeIcon from '@@/assets/icons/home.svg';
+import PasalIcon from '@@/assets/icons/pasal.svg';
+import HelpIcon from '@@/assets/icons/support.svg';
+import AboutIcon from '@@/assets/icons/about.svg';
+import ApparelIcon from '@@/assets/icons/apparel.svg';
+import ShoeIcon from '@@/assets/icons/shoe.svg';
+import KraftIcon from '@@/assets/icons/kraft.svg';
+import BookIcon from '@@/assets/icons/book.svg';
 import PrimaryButton from './primaryButton';
-import { openSignoutModal, sidebarToggle } from '@/store/slices/auth';
+import {
+  openChangePasswordModal,
+  openSignoutModal,
+  sidebarToggle,
+} from '@/store/slices/auth';
 
 const LogoutModal = dynamic(() => import('./logoutModal'));
+const ChangePasswordModal = dynamic(() => import('./changePasswordModal'));
 
 export default function MainNavbar() {
   const [opened, { toggle }] = useDisclosure();
@@ -136,13 +149,21 @@ export default function MainNavbar() {
                     <Menu.Item>Dashboard</Menu.Item>
                   ) : (
                     <>
-                      <Menu.Item>Orders</Menu.Item>
+                      <Link href='/orders'>
+                        <Menu.Item>Orders</Menu.Item>
+                      </Link>
                       <Menu.Divider />
-                      <Menu.Item>Profile</Menu.Item>
+                      <Link href='/profile'>
+                        <Menu.Item>Profile</Menu.Item>
+                      </Link>
                     </>
                   )}
                   <Menu.Divider />
-                  <Menu.Item>Change Password</Menu.Item>
+                  <Menu.Item
+                    onClick={() => dispatch(openChangePasswordModal())}
+                  >
+                    Change Password
+                  </Menu.Item>
                   <Menu.Divider />
                   <Menu.Item onClick={handleLogout}>Logout</Menu.Item>
                 </Menu.Dropdown>
@@ -163,36 +184,67 @@ export default function MainNavbar() {
         />
       </div>
       <LogoutModal />
+      <ChangePasswordModal />
     </div>
   );
 }
 
 export const NavItem = ({ alterClass, pathName, toggle, mobileScreen }) => {
   const data = [
-    { label: 'Home', navigateTo: '/', activeClassName: 'home' },
+    {
+      label: 'Home',
+      navigateTo: '/',
+      activeClassName: 'home',
+      icon: <HomeIcon className='text-white w-4 h-4' />,
+    },
     {
       label: 'Pasal',
       navigateTo: '/pasal',
       activeClassName: 'pasal',
+      icon: <PasalIcon className='text-white w-4 h-4' />,
       subLabel: [
         {
           id: 1,
           label: 'Apparel',
           linkTo: '/apparel',
           activeClassName: 'apparel',
+          icon: <ApparelIcon className='text-white w-4 h-4' />,
         },
-        { id: 2, label: 'Shoes', linkTo: '/shoes', activeClassName: 'shoes' },
+        {
+          id: 2,
+          label: 'Shoes',
+          linkTo: '/shoes',
+          activeClassName: 'shoes',
+          icon: <ShoeIcon className='text-white w-4 h-4' />,
+        },
         {
           id: 3,
           label: 'Krafts',
           linkTo: '/krafts',
           activeClassName: 'krafts',
+          icon: <KraftIcon className='text-white w-4 h-4' />,
         },
-        { id: 4, label: 'Books', linkTo: '/books', activeClassName: 'books' },
+        {
+          id: 4,
+          label: 'Books',
+          linkTo: '/books',
+          activeClassName: 'books',
+          icon: <BookIcon className='text-white w-4 h-4' />,
+        },
       ],
     },
-    { label: 'About', navigateTo: '/about', activeClassName: 'about' },
-    { label: 'Support', navigateTo: '/support', activeClassName: 'support' },
+    {
+      label: 'About',
+      navigateTo: '/about',
+      activeClassName: 'about',
+      icon: <AboutIcon className='text-white w-4 h-4' />,
+    },
+    {
+      label: 'Support',
+      navigateTo: '/support',
+      activeClassName: 'support',
+      icon: <HelpIcon className='text-white w-4 h-4' />,
+    },
   ];
 
   const closeSidebar = mobileScreen ? () => toggle() : () => {};
@@ -251,12 +303,14 @@ export const NavItem = ({ alterClass, pathName, toggle, mobileScreen }) => {
           classNames={{
             control:
               '!p-0 !text-white active:!bg-secondary !justify-end !w-1/2',
-            label: '!p-0',
+            label: '!p-0 !flex !gap-x-2 !items-center',
+            content: '!pb-0',
           }}
           defaultValue={isPasalActive ? 'pasal' : ''}
         >
           <Accordion.Item value='pasal' className='!border-none'>
             <Accordion.Control>
+              {item?.icon}
               <p
                 className={`cursor-context-menu underline-offset-4 hover:underline relative inline-block transition duration-200 ease-in-out ${
                   isPasalActive && 'underline'
@@ -266,17 +320,18 @@ export const NavItem = ({ alterClass, pathName, toggle, mobileScreen }) => {
               </p>
             </Accordion.Control>
             <Accordion.Panel>
-              <div className='flex flex-col gap-y-2'>
+              <div className='flex flex-col gap-y-2 pl-3'>
                 {item.subLabel?.map((sub) => (
                   <Link
                     key={sub?.id}
                     href={sub?.linkTo}
-                    className={`cursor-pointer underline-offset-4 hover:underline relative inline-block transition duration-200 ease-in-out ${
+                    className={`cursor-pointer flex items-center gap-x-2 text-sm underline-offset-4 hover:underline relative transition duration-200 ease-in-out ${
                       pathName === sub?.activeClassName && 'underline'
                     }`}
                     onClick={closeSidebar}
                   >
-                    {sub.label}
+                    <span className='no-underline'>{sub?.icon}</span>
+                    {sub?.label}
                   </Link>
                 ))}
               </div>
@@ -289,13 +344,14 @@ export const NavItem = ({ alterClass, pathName, toggle, mobileScreen }) => {
       <Link
         href={item?.navigateTo}
         key={item.label}
-        className={`underline-offset-4 hover:underline relative inline-block transition duration-200 ease-in-out ${
+        className={`flex gap-x-2 items-center underline-offset-4 hover:underline relative transition duration-200 ease-in-out ${
           pathName === ''
             ? item?.activeClassName === 'home' && 'underline'
             : pathName?.startsWith(item?.activeClassName) && 'underline'
         }`}
         onClick={closeSidebar}
       >
+        {mobileScreen && item?.icon}
         {item.label}
       </Link>
     );
