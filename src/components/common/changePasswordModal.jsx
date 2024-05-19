@@ -18,9 +18,9 @@ import IconCheck from '@@/assets/icons/correct-success.svg';
 import IconX from '@@/assets/icons/cross-red.svg';
 import PrimaryButton from './primaryButton';
 import { closeChangePasswordModal } from '@/store/slices/auth';
-import usePostPasswordChange from '@/utils/usePostPasswordChange';
+// import usePostPasswordChange from '@/utils/usePostPasswordChange';
 
-export function ChangePasswordModal() {
+export default function ChangePasswordModal() {
   const dispatch = useDispatch();
 
   const isModalOpen = useSelector(
@@ -48,7 +48,7 @@ export function ChangePasswordModal() {
     reset();
   };
 
-  const resetPasswordMutation = usePostPasswordChange(handleClose);
+  // const resetPasswordMutation = usePostPasswordChange(handleClose);
 
   const borderPrimaryColor = '#4CD349';
 
@@ -111,7 +111,7 @@ export function ChangePasswordModal() {
   const handleChangePassword = (data) => {
     delete data.re_enter_password;
     data['id'] = userDetails?.user_id;
-    resetPasswordMutation.mutate(data);
+    // resetPasswordMutation.mutate(data);
   };
 
   return (
@@ -128,12 +128,12 @@ export function ChangePasswordModal() {
       <button
         onClick={handleClose}
         className={`self-end bg-[#F5F6F7] flex justify-center cursor-pointer hover:bg-primary text-dark-gray1 w-8 h-8 hover:text-white ease-in-out transition-all items-center rounded-full`}
-        disabled={resetPasswordMutation?.isPending}
+        // disabled={resetPasswordMutation?.isPending}
       >
         <CloseIcon className='w-4 h-4' />
       </button>
       <div className='flex justify-center items-center gap-x-2 text-center'>
-        <h2 className='text-primary-black text-[1.625rem] font-bold'>
+        <h2 className='text-primary-black text-lg md:text-2xl font-bold'>
           Change Password
         </h2>
         <Tooltip
@@ -142,7 +142,7 @@ export function ChangePasswordModal() {
           withArrow
           transitionProps={{ duration: 200 }}
           className='text-white p-2'
-          color='#fb9032'
+          color='#A69080'
           label='Should contain at least one lowercase, one uppercase, one numeric, one
           special character and minimum 8-16 characters.'
           events={{ touch: true }}
@@ -168,15 +168,15 @@ export function ChangePasswordModal() {
               {...field}
               label='Old password'
               withAsterisk
-              error={
-                errors.current_password?.message ||
-                (resetPasswordMutation?.error?.response?.data?.message ===
-                  'Incorrect old password' &&
-                  'Incorrect old password')
-              }
+              // error={
+              //   errors.current_password?.message ||
+              //   (resetPasswordMutation?.error?.response?.data?.message ===
+              //     'Incorrect old password' &&
+              //     'Incorrect old password')
+              // }
               placeholder='Enter your old password'
               classNames={{
-                label: '!text-base !font-bold',
+                label: '!text-base',
                 input: '!h-[2.875rem] !bg-[#F9F9F9]',
                 visibilityToggle: '!mr-6',
               }}
@@ -219,17 +219,17 @@ export function ChangePasswordModal() {
                     placeholder='Create your new password'
                     label='New password'
                     withAsterisk
-                    error={
-                      errors?.new_password?.message ||
-                      (resetPasswordMutation?.error?.response?.data?.message ===
-                        'New password must be different from old password' &&
-                        'Change your password to something new')
-                    }
+                    // error={
+                    //   errors?.new_password?.message ||
+                    //   (resetPasswordMutation?.error?.response?.data?.message ===
+                    //     'New password must be different from old password' &&
+                    //     'Change your password to something new')
+                    // }
                     visibilityToggleIcon={({ reveal }) =>
                       reveal ? <EyeOpen /> : <EyeClose />
                     }
                     classNames={{
-                      label: '!text-base !font-bold',
+                      label: '!text-base',
                       input: '!h-[2.875rem] !bg-[#F9F9F9]',
                       visibilityToggle: '!mr-6',
                     }}
@@ -260,10 +260,10 @@ export function ChangePasswordModal() {
               {...field}
               label='Confirm password'
               error={errors.re_enter_password?.message}
-              placeholder='Re-enter your new password'
+              placeholder='Confirm your password'
               withAsterisk
               classNames={{
-                label: '!text-base !font-bold',
+                label: '!text-base',
                 input: '!h-[2.875rem] !bg-[#F9F9F9]',
                 visibilityToggle: '!mr-6',
               }}
@@ -278,11 +278,10 @@ export function ChangePasswordModal() {
         />
         <div className='flex justify-center items-center'>
           <PrimaryButton
-            loading={resetPasswordMutation?.isPending}
+            // loading={resetPasswordMutation?.isPending}
             rootClassName='!h-14 !rounded-full'
-            titleClassName='!text-lg'
+            titleClassName='!text-base'
             type='submit'
-            variant='gradient'
           >
             Update Password
           </PrimaryButton>
