@@ -1,71 +1,110 @@
-const Order = require('../models/Order');
-const Product = require('../models/Product');
+const Order = require("../models/Order");
+const Product = require("../models/Product");
 
-const { StatusCodes } = require('http-status-codes');
-const CustomError = require('../errors');
-const { checkPermissions } = require('../utils');
+const { StatusCodes } = require("http-status-codes");
+const CustomError = require("../errors");
+const { checkPermissions } = require("../utils");
 
-const fakeStripeAPI = async ({ amount, currency }) => {
-  const client_secret = 'someRandomValue';
-  return { client_secret, amount };
-};
+// const fakeStripeAPI = async ({ amount, currency }) => {
+//   const client_secret = "someRandomValue";
+//   return { client_secret, amount };
+// };
 
 const createOrder = async (req, res) => {
-  const { items: cartItems, tax, shippingFee } = req.body;
+  const {
+    items: cartItems,
+    shippingFee,
+    clientSecret,
+    paymentIntentId,
+  } = req.body;
 
   if (!cartItems || cartItems.length < 1) {
-    throw new CustomError.BadRequestError('No cart items provided');
+    throw new CustomError.BadRequestError("No cart items provided");
   }
-  if (!tax || !shippingFee) {
-    throw new CustomError.BadRequestError(
-      'Please provide tax and shipping fee'
-    );
+  const existingOrder = await Order.findOne({
+    clientSecret,
+    paymentIntentId,
+  });
+
+  if (existingOrder) {
+    throw new CustomError.BadRequestError("Order already exists");
   }
 
   let orderItems = [];
   let subtotal = 0;
 
   for (const item of cartItems) {
-    const dbProduct = await Product.findOne({ _id: item.product });
+    const dbProduct = await Product.findOne({ _id: item._id });
     if (!dbProduct) {
-      throw new CustomError.NotFoundError(
-        `No product with id : ${item.product}`
-      );
+      throw new CustomError.NotFoundError(`No product with id : ${item._id}`);
     }
-    const { name, price, image, _id } = dbProduct;
+    const {
+      name,
+      price,
+      image,
+      _id,
+      category,
+      subcategory,
+      material,
+      size,
+      genre,
+      tags,
+      condition,
+      company,
+      colors,
+    } = dbProduct;
     const singleOrderItem = {
-      amount: item.amount,
+      quantity: item.quantity,
       name,
       price,
       image,
       product: _id,
+      category,
+      subcategory,
+      material,
+      size,
+      genre,
+      tags,
+      condition,
+      company,
+      colors,
     };
     // add item to order
     orderItems = [...orderItems, singleOrderItem];
     // calculate subtotal
-    subtotal += item.amount * price;
+    subtotal += item.quantity * price;
   }
   // calculate total
-  const total = tax + shippingFee + subtotal;
+  const total = shippingFee + subtotal;
+
+  if (total < 1000 && !shippingFee) {
+    throw new CustomError.BadRequestError("Please provide shipping fee");
+  }
   // get client secret
-  const paymentIntent = await fakeStripeAPI({
-    amount: total,
-    currency: 'usd',
-  });
+  // const paymentIntent = await fakeStripeAPI({
+  //   amount: total,
+  //   currency: "inr",
+  // });
 
   const order = await Order.create({
     orderItems,
     total,
     subtotal,
-    tax,
     shippingFee,
-    clientSecret: paymentIntent.client_secret,
+    clientSecret,
+    paymentIntentId,
     user: req.user.userId,
+    ...(clientSecret &&
+      paymentIntentId && {
+        status: "paid",
+      }),
   });
 
-  res
-    .status(StatusCodes.CREATED)
-    .json({ order, clientSecret: order.clientSecret });
+  res.status(StatusCodes.CREATED).json({
+    order,
+    clientSecret: order.clientSecret,
+    msg: "You placed an order",
+  });
 };
 const getAllOrders = async (req, res) => {
   const orders = await Order.find({});
@@ -95,7 +134,7 @@ const updateOrder = async (req, res) => {
   checkPermissions(req.user, order.user);
 
   order.paymentIntentId = paymentIntentId;
-  order.status = 'paid';
+  order.status = "paid";
   await order.save();
 
   res.status(StatusCodes.OK).json({ order });

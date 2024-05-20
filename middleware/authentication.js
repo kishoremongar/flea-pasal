@@ -5,7 +5,6 @@ const BlacklistedToken = require("../models/BlacklistedToken");
 const authenticateUser = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader?.startsWith("Bearer ")) {
-    console.log("inside bearer");
     throw new CustomError.UnauthenticatedError("Authentication invalid");
   }
 
@@ -19,7 +18,6 @@ const authenticateUser = async (req, res, next) => {
 
     const currentTime = Math.floor(Date.now() / 1000);
     if (payload.exp && payload.exp < currentTime) {
-      console.log("inside exp");
       throw new CustomError.UnauthenticatedError("Token has expired");
     }
 
