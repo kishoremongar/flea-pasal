@@ -34,6 +34,7 @@ import {
   openSignoutModal,
   sidebarToggle,
 } from '@/store/slices/auth';
+import { getTotalCartItems } from '@/store/slices/cart';
 
 const LogoutModal = dynamic(() => import('./logoutModal'));
 const ChangePasswordModal = dynamic(() => import('./changePasswordModal'));
@@ -47,11 +48,8 @@ export default function MainNavbar() {
   const { width, height } = useViewportSize();
   const [mobileScreen, setMobileScreen] = useState(false);
   const [popoverOpened, setPopoverOpened] = useState(false);
-  // const mobileScreen = width < 768;
   const [cartTotal, setCartTotal] = useState(0);
-  const totalCartItems = useSelector(
-    (store) => store?.cartItems?.cartData?.helperData
-  )?.length;
+  const totalCartItems = useSelector(getTotalCartItems);
 
   const handleLogout = () => {
     dispatch(openSignoutModal());

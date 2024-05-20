@@ -6,7 +6,7 @@ const apiEndPoints = {
   USER_VERIFY_EMAIL: 'api/v1/auth/verify-email/',
   GET_ALL_PRODUCTS: 'api/v1/products/',
   POST_STRIPE_PAYMENT: 'api/v1/payment/stripe/',
-  POST_USER_ORDER: 'api/v1/payment/orders/',
+  POST_USER_ORDER: 'api/v1/orders/',
 };
 
 export default apiEndPoints;
