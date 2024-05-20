@@ -8,13 +8,14 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import CartProduct from './cartProduct';
 import PrimaryButton from '@/components/common/primaryButton';
+import { getShippingFee } from '@/utils/getShippingFee';
 
 export default function ShoppingCartMain() {
   const cartData = useSelector((store) => store?.cartItems?.cartData);
   const [cartItemData, setCartItemData] = useState({});
   const { data: userData, status } = useSession();
   const router = useRouter();
-  const deliveryFee = cartItemData?.itemTotalAmount > 1000 ? 0 : 149;
+  const deliveryFee = getShippingFee(cartItemData?.itemTotalAmount);
   const itemTotalAmount = cartItemData?.itemTotalAmount?.toFixed(2);
   const totalAmount =
     itemTotalAmount > 1000

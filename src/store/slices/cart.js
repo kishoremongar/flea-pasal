@@ -61,7 +61,7 @@ const handleItemTotalAmount = (cartItems) => {
 };
 
 const cartSlice = createSlice({
-  name: 'cart',
+  name: 'cartItems',
   initialState: {
     ...initialState,
     cartData: {
@@ -127,9 +127,17 @@ const cartSlice = createSlice({
       );
       saveCartDataToLocalStorage(state.cartData.helperData);
     },
+    resetCartData(state) {
+      state.cartData = initialState.cartData;
+      localStorage.clear();
+    },
+  },
+  selectors: {
+    getTotalCartItems: (state) => state.cartData.helperData.length,
   },
 });
 
-export const { setCartItem, removeCartItem, decrementCartItem } =
+export const { setCartItem, removeCartItem, decrementCartItem, resetCartData } =
   cartSlice.actions;
+export const getTotalCartItems = cartSlice.selectors.getTotalCartItems;
 export default cartSlice.reducer;
