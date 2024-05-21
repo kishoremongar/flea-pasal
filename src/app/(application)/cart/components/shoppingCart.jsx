@@ -54,13 +54,6 @@ export default function ShoppingCartMain() {
             </div>
           ) : (
             <>
-              <div className='w-full bg-off-white text-yellow-900 px-4 py-2 flex items-center gap-x-2'>
-                <BasketIcon className='w-8 h-8' />
-                <div className='text-sm'>
-                  Congrats you&apos;re eligible for a <b>Coupon Code</b> in this
-                  order{' '}
-                </div>
-              </div>
               <div className='mb-4'>
                 <h3 className='text-primary-black text-xl mt-4 font-bold'>
                   Order Summary
