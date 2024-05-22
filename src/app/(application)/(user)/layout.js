@@ -9,7 +9,7 @@ const UserMainLayout = dynamic(() => import('./_components/userMainLayout'), {
 
 export default function UserLayout({ children }) {
   return (
-    <div className='flex flex-auto h-full w-full'>
+    <div className='flex w-full flex-auto rounded-md bg-white shadow-card'>
       <UserMainLayout />
       {children}
     </div>
