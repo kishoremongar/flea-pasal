@@ -10,10 +10,12 @@ import DeleteIcon from '@@/assets/icons/delete-trash-can.svg';
 import HelpIcon from '@@/assets/icons/support.svg';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 
 export default function UserMainLayout() {
   const iconClass = 'w-4 h-4 text-primary';
   const { data: userData } = useSession();
+  const pathName = usePathname();
 
   const accountNavItems = [
     {
@@ -72,7 +74,7 @@ export default function UserMainLayout() {
   ];
 
   return (
-    <div className='hidden md:flex flex-col w-1/4 rounded-md shadow-card'>
+    <div className='hidden md:flex flex-col min-w-1/4 rounded-md shadow-card'>
       <div className='py-4 px-6'>
         <p className='text-primary capitalize'>
           Namaste! {userData?.user?.name}
@@ -88,7 +90,9 @@ export default function UserMainLayout() {
               <Link
                 key={index}
                 href={item?.href}
-                className='flex gap-x-2 items-center px-6 py-2.5 text-gray-500 hover:underline group'
+                className={`flex gap-x-2 items-center px-6 py-2.5 text-gray-500 hover:underline group ${
+                  pathName === item?.href && 'underline'
+                }`}
               >
                 {item?.icon}
                 {item?.text}
