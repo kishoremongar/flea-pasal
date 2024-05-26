@@ -79,7 +79,6 @@ const updateUser = async (req, res) => {
         folder: "FleaPasal/profile",
       }
     );
-    console.log("result", result);
     fs.unlinkSync(req.files.profile_picture.tempFilePath);
     user.profilePicture = result.secure_url;
   }
@@ -101,14 +100,26 @@ const updateUser = async (req, res) => {
   };
 
   const existingAddresses = user.addresses;
-  if (existingAddresses.length > 0) {
-    // Update the existing addresses to set isPrimary to false
-    existingAddresses.forEach((address) => {
-      address.isPrimary = false;
-    });
-  }
+  let primaryAddress = null;
 
-  user.addresses = [...existingAddresses, addressObj];
+  existingAddresses.forEach((address) => {
+    if (address.isPrimary) {
+      primaryAddress = address;
+      address.isPrimary = false;
+    }
+  });
+
+  addressObj.isPrimary = true;
+
+  if (primaryAddress) {
+    user.addresses = existingAddresses.map((address) =>
+      address._id.toString() === primaryAddress._id.toString()
+        ? addressObj
+        : address
+    );
+  } else {
+    user.addresses = [...existingAddresses, addressObj];
+  }
 
   await user.save();
   res.status(StatusCodes.OK).json({ msg: "User updated successfully" });
