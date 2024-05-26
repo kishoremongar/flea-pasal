@@ -22,7 +22,7 @@ export default function UserMainLayout() {
       icon: <ProfileIcon className={iconClass} />,
       text: 'Profile',
       href: '/profile',
-      isActive: false,
+      isActive: true,
     },
     {
       icon: <OrderIcon className={iconClass} />,
@@ -74,7 +74,7 @@ export default function UserMainLayout() {
   ];
 
   return (
-    <div className='hidden md:flex flex-col min-w-1/4 rounded-md shadow-card'>
+    <div className='hidden md:flex flex-col min-w-[20%] rounded-md shadow-card'>
       <div className='py-4 px-6'>
         <p className='text-primary capitalize'>
           Namaste! {userData?.user?.name}

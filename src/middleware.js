@@ -11,6 +11,14 @@ export default withAuth(
       const loginUrl = `${process.env.NEXT_PUBLIC_BASE_URL}auth/login`;
       return NextResponse.redirect(new URL(loginUrl, request.url));
     }
+    //NOT ALLOWING ADMIN TO ACCESS THE ROUTE
+    if (
+      ['/profile', '/orders'].includes(request.nextUrl.pathname) &&
+      !request.nextauth.token.role === 'admin'
+    ) {
+      const loginUrl = `${process.env.NEXT_PUBLIC_BASE_URL}dashboard`;
+      return NextResponse.redirect(new URL(loginUrl, request.url));
+    }
   },
   {
     callbacks: {
@@ -22,7 +30,7 @@ export default withAuth(
 // Applies next-auth only to matching routes - can be regex
 // Ref: https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
 export const config = {
-  matcher: ['/dashboard', '/dashboard:path*'],
+  matcher: ['/dashboard', '/dashboard:path*', '/profile', '/orders'],
   // matcher: [
   //   /*
   //    * Match all request paths except for the ones starting with:
