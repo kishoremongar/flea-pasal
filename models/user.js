@@ -53,29 +53,31 @@ const UserSchema = new mongoose.Schema({
     {
       street: {
         type: String,
-        required: true,
+        required: [true, "Please provide street"],
       },
       apartmentNo: {
         type: String,
+        required: [true, "Please provide pincode"],
       },
       pincode: {
         type: String,
-        required: true,
+        required: [true, "Please provide pincode"],
       },
       landmark: {
         type: String,
+        required: [true, "Please provide pincode"],
       },
       city: {
         type: String,
-        required: true,
+        required: [true, "Please provide city"],
       },
       state: {
         type: String,
-        required: true,
+        required: [true, "Please provide state"],
       },
       country: {
         type: String,
-        required: true,
+        required: [true, "Please provide country"],
       },
       isPrimary: {
         type: Boolean,
@@ -83,19 +85,10 @@ const UserSchema = new mongoose.Schema({
       },
     },
   ],
-  socialLinks: {
-    facebook: {
-      type: String,
-      maxlength: 100,
-    },
-    twitter: {
-      type: String,
-      maxlength: 100,
-    },
-    instagram: {
-      type: String,
-      maxlength: 100,
-    },
+  phoneNumber: {
+    type: Number,
+    required: [true, "Please provide phone number"],
+    unique: true,
   },
 });
 
