@@ -8,6 +8,7 @@ const apiEndPoints = {
   POST_STRIPE_PAYMENT: 'api/v1/payment/stripe/',
   POST_USER_ORDER: 'api/v1/orders/',
   GET_USER_ORDER_LIST: 'api/v1/orders/showAllMyOrders',
+  USER_DETAILS: 'api/v1/users/profile',
 };
 
 export default apiEndPoints;

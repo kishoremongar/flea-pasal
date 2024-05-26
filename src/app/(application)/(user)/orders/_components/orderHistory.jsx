@@ -7,7 +7,7 @@ export default function OrderHistory() {
   const { data: userOrderList } = useGetUserOrders();
 
   return (
-    <div className='flex flex-auto w-full flex-col gap-y-4 px-8 py-4'>
+    <div className='flex flex-auto w-full flex-col gap-y-4'>
       <h2 className='text-olive text-xl font-medium'>My Orders #</h2>
       {userOrderList?.orders?.map((item, idx) => (
         <div
