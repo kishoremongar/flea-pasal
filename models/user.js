@@ -110,4 +110,9 @@ UserSchema.methods.comparePassword = async function (canditatePassword) {
   return isMatch;
 };
 
+UserSchema.methods.checkSamePassword = async function (userNewPassword) {
+  const isMatch = await bcrypt.compare(userNewPassword, this.password);
+  return isMatch;
+};
+
 module.exports = mongoose.model("User", UserSchema);

@@ -169,8 +169,8 @@ const forgotPassword = async (req, res) => {
       origin,
     });
 
-    const tenMinutes = 1000 * 60 * 10;
-    const passwordTokenExpirationDate = new Date(Date.now() + tenMinutes);
+    const thirtyMinutes = 1000 * 60 * 30;
+    const passwordTokenExpirationDate = new Date(Date.now() + thirtyMinutes);
 
     await user.updateOne({
       passwordToken: createHash(passwordToken),
@@ -204,7 +204,48 @@ const resetPassword = async (req, res) => {
     }
   }
 
-  res.send("Password reset successfully.");
+  res.status(StatusCodes.OK).json({ msg: "Password reset successfully." });
+};
+
+const changePassword = async (req, res) => {
+  const { old_password: oldPassword, new_password: newPassword } = req.body;
+
+  try {
+    if (!oldPassword || !newPassword) {
+      throw new CustomError.BadRequestError("Please provide all values");
+    }
+
+    const user = await User.findOne({ _id: req.user.userId });
+    if (!user) {
+      throw new CustomError.UnauthenticatedError("User not found");
+    }
+
+    const isPasswordCorrect = await user.comparePassword(oldPassword);
+    if (!isPasswordCorrect) {
+      throw new CustomError.BadRequestError("Wrong password provided.");
+    }
+
+    const isSamePassword = await user.checkSamePassword(newPassword);
+    if (isSamePassword) {
+      throw new CustomError.BadRequestError(
+        "New password cannot be the same as the old password"
+      );
+    }
+
+    const hashedPassword = createHash(newPassword);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    res.status(StatusCodes.OK).json({ msg: "Password changed successfully" });
+  } catch (error) {
+    if (error instanceof CustomError.CustomAPIError) {
+      return res.status(error.statusCode).json({ msg: error.message });
+    }
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong" });
+  }
 };
 
 module.exports = {
@@ -214,6 +255,7 @@ module.exports = {
   verifyEmail,
   forgotPassword,
   resetPassword,
+  changePassword,
 };
 
 // Logging out based on cookies
