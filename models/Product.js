@@ -173,4 +173,6 @@ ProductSchema.pre("deleteOne", async function (next) {
   await this.model("Review").deleteMany({ product: this._id });
 });
 
+ProductSchema.index({ name: "text", description: "text" });
+
 module.exports = mongoose.model("Product", ProductSchema);
