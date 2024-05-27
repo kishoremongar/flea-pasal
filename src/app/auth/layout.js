@@ -16,7 +16,7 @@ export default function AuthLayout({ children }) {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      if (pathName === '/auth/verify-email') {
+      if (['/auth/verify-email', '/auth/change-password'].includes(pathName)) {
         router.push(`${pathName}?token=${verifyToken}&email=${verifyEmail}`);
       } else {
         router.push(pathName === '/auth' ? '/auth/login' : pathName);

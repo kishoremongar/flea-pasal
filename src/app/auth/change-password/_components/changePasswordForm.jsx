@@ -11,8 +11,9 @@ import { useState } from 'react';
 import EyeClose from '@@/assets/icons/eyeCloseSecondary.svg';
 import EyeOpen from '@@/assets/icons/eyeOpenSecondary.svg';
 import IconCheck from '@@/assets/icons/correct-success.svg';
+import { useSearchParams } from 'next/navigation';
 import IconX from '@@/assets/icons/cross-red.svg';
-import usePostChangePassword from '../_hooks/usePostChangePassword';
+import usePostResetPassword from '../_hooks/usePostChangePassword';
 import PrimaryButton from '@/components/common/primaryButton';
 
 export default function ChangePasswordForm() {
@@ -27,7 +28,8 @@ export default function ChangePasswordForm() {
   });
 
   const [popoverOpened, setPopoverOpened] = useState(false);
-  const resetPasswordMutation = usePostChangePassword();
+  const resetPasswordMutation = usePostResetPassword(reset);
+  const searchParams = useSearchParams();
 
   const borderPrimaryColor = '#4CD349';
 
@@ -57,7 +59,7 @@ export default function ChangePasswordForm() {
   ];
 
   function getStrength(password) {
-    let multiplier = password?.length > 5 ? 0 : 1;
+    let multiplier = password?.length > 7 ? 0 : 1;
 
     requirements.forEach((requirement) => {
       if (!requirement.re.test(password)) {
@@ -89,16 +91,14 @@ export default function ChangePasswordForm() {
 
   const handleChangePassword = (data) => {
     const { new_password: newPassword } = data;
-    const getOtp = typeof window !== 'undefined' && localStorage.getItem('otp');
-    const getEmail =
-      typeof window !== 'undefined' && localStorage.getItem('email');
+    const email = searchParams.get('email');
+    const token = searchParams.get('token');
     const mainData = {
-      email: getEmail,
-      otp: getOtp,
+      email,
+      token,
       password: newPassword,
     };
     resetPasswordMutation.mutate(mainData);
-    reset();
   };
 
   return (
@@ -131,6 +131,27 @@ export default function ChangePasswordForm() {
                 control={control}
                 rules={{
                   required: 'New password is required',
+                  minLength: {
+                    value: 8,
+                    message: 'Password must be at least 8 characters',
+                  },
+                  validate: {
+                    hasNumber: (value) => {
+                      return /\d/.test(value) || 'Number required';
+                    },
+                    hasLowercase: (value) => {
+                      return /[a-z]/.test(value) || 'Lowercase letter required';
+                    },
+                    hasUppercase: (value) => {
+                      return /[A-Z]/.test(value) || 'Uppercase letter required';
+                    },
+                    hasSpecialChar: (value) => {
+                      return (
+                        /[$&+,:;=?@#|'<>.^*()%!-]/.test(value) ||
+                        'Special symbol required'
+                      );
+                    },
+                  },
                 }}
                 render={({ field }) => (
                   <PasswordInput

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation';
-import PrimaryButton from '../../../../components/common/primaryButton';
-import SuccessHero from '../../../../../public/assets/icons/passwordSuccess.svg';
+import SuccessHero from '@@/assets/icons/passwordSuccess.svg';
+import PrimaryButton from '@/components/common/primaryButton';
 
 export default function ResetSuccess() {
   const router = useRouter();
@@ -14,8 +14,7 @@ export default function ResetSuccess() {
       </section>
       <div className='flex flex-col gap-y-3 items-center'>
         <PrimaryButton
-          variant='gradient'
-          rootClassName='!h-14'
+          rootClassName='!h-14 !font-normal'
           titleClassName='!text-xl'
           onClick={() => router.push('/auth/login')}
           size='lg'

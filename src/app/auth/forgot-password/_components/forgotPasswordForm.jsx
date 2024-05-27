@@ -3,18 +3,21 @@
 import { TextInput } from '@mantine/core';
 import { Controller, useForm } from 'react-hook-form';
 import Link from 'next/link';
-import usePostCreateOTP from '../_hooks/usePostCreateOTP';
+import usePostForgotPassword from '../_hooks/usePostForgotPassword';
 import PrimaryButton from '@/components/common/primaryButton';
 
 export default function ForgotPasswordForm() {
   const {
     control,
     handleSubmit,
-    watch,
+    reset,
     formState: { errors },
   } = useForm({ defaultValues: { email: '' } });
 
-  const createOTPMutate = usePostCreateOTP({ email: watch('email') });
+  const handleResetForm = () => {
+    reset();
+  };
+  const forgotPasswordMutate = usePostForgotPassword(handleResetForm);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -22,7 +25,7 @@ export default function ForgotPasswordForm() {
   };
 
   const handleResetPassword = (data) => {
-    createOTPMutate.mutate({ email: data.email });
+    forgotPasswordMutate.mutate({ email: data.email });
   };
 
   return (
@@ -31,8 +34,10 @@ export default function ForgotPasswordForm() {
         <h2 className='text-tertiary text-[1.625rem] font-bold'>
           Forgot Password?
         </h2>
-        <h3 className='text-olive text-lg font-semibold'>
-          Enter your email, get a password reset link
+        <h3 className='text-olive font-semibold'>
+          {forgotPasswordMutate.isSuccess
+            ? 'Please check your email to reset your password'
+            : `Enter your email, get a password reset link`}
         </h3>
       </div>
       <form
@@ -65,7 +70,7 @@ export default function ForgotPasswordForm() {
           )}
         />
         <PrimaryButton
-          loading={createOTPMutate.isPending}
+          loading={forgotPasswordMutate?.isPending}
           rootClassName='!h-14'
           titleClassName='!text-lg'
           type='submit'

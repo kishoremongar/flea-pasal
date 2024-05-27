@@ -18,7 +18,7 @@ import IconCheck from '@@/assets/icons/correct-success.svg';
 import IconX from '@@/assets/icons/cross-red.svg';
 import PrimaryButton from './primaryButton';
 import { closeChangePasswordModal } from '@/store/slices/auth';
-// import usePostPasswordChange from '@/utils/usePostPasswordChange';
+import usePostChangePassword from '@/utils/usePostChangePassword';
 
 export default function ChangePasswordModal() {
   const dispatch = useDispatch();
@@ -36,19 +36,18 @@ export default function ChangePasswordModal() {
     defaultValues: {
       new_password: '',
       re_enter_password: '',
-      current_password: '',
+      old_password: '',
     },
   });
 
   const [popoverOpened, setPopoverOpened] = useState(false);
-  const userDetails = useSelector((state) => state.auth.user);
 
   const handleClose = () => {
     dispatch(closeChangePasswordModal());
     reset();
   };
 
-  // const resetPasswordMutation = usePostPasswordChange(handleClose);
+  const resetPasswordMutation = usePostChangePassword(handleClose);
 
   const borderPrimaryColor = '#4CD349';
 
@@ -110,8 +109,7 @@ export default function ChangePasswordModal() {
 
   const handleChangePassword = (data) => {
     delete data.re_enter_password;
-    data['id'] = userDetails?.user_id;
-    // resetPasswordMutation.mutate(data);
+    resetPasswordMutation.mutate(data);
   };
 
   return (
@@ -158,22 +156,43 @@ export default function ChangePasswordModal() {
         className='flex flex-col gap-y-6'
       >
         <Controller
-          name='current_password'
+          name='old_password'
           control={control}
           rules={{
             required: 'Password is required',
+            minLength: {
+              value: 8,
+              message: 'Password must be at least 8 characters',
+            },
+            validate: {
+              hasNumber: (value) => {
+                return /\d/.test(value) || 'Number required';
+              },
+              hasLowercase: (value) => {
+                return /[a-z]/.test(value) || 'Lowercase letter required';
+              },
+              hasUppercase: (value) => {
+                return /[A-Z]/.test(value) || 'Uppercase letter required';
+              },
+              hasSpecialChar: (value) => {
+                return (
+                  /[$&+,:;=?@#|'<>.^*()%!-]/.test(value) ||
+                  'Special symbol required'
+                );
+              },
+            },
           }}
           render={({ field }) => (
             <PasswordInput
               {...field}
               label='Old password'
               withAsterisk
-              // error={
-              //   errors.current_password?.message ||
-              //   (resetPasswordMutation?.error?.response?.data?.message ===
-              //     'Incorrect old password' &&
-              //     'Incorrect old password')
-              // }
+              error={
+                errors.old_password?.message ||
+                (resetPasswordMutation?.error?.response?.data?.msg ===
+                  'Wrong password provided.' &&
+                  'Wrong password provided.')
+              }
               placeholder='Enter your old password'
               classNames={{
                 label: '!text-base',
@@ -210,7 +229,7 @@ export default function ChangePasswordModal() {
                     message: 'Password must be at least 8 characters',
                   },
                   validate: (value) =>
-                    value !== watch('current_password') ||
+                    value !== watch('old_password') ||
                     'New password must differ from the old password',
                 }}
                 render={({ field }) => (
@@ -219,12 +238,12 @@ export default function ChangePasswordModal() {
                     placeholder='Create your new password'
                     label='New password'
                     withAsterisk
-                    // error={
-                    //   errors?.new_password?.message ||
-                    //   (resetPasswordMutation?.error?.response?.data?.message ===
-                    //     'New password must be different from old password' &&
-                    //     'Change your password to something new')
-                    // }
+                    error={
+                      errors?.new_password?.message ||
+                      (resetPasswordMutation?.error?.response?.data?.msg ===
+                        'New password cannot be the same as the old password' &&
+                        'Change your password to something new')
+                    }
                     visibilityToggleIcon={({ reveal }) =>
                       reveal ? <EyeOpen /> : <EyeClose />
                     }
