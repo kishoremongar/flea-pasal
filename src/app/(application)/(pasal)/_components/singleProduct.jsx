@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AddBag from '@@/assets/icons/addBag.svg';
 import ArrowRightIcon from '@@/assets/icons/arrow-right.svg';
-import useGetSingleProduct from '../_hooks/getSingleProduct';
+import useGetSingleProduct from '../_hooks/useGetSingleProduct';
 import GalleryCarousel from './galleryCarousel';
 import PrimaryButton from '@/components/common/primaryButton';
 import { decrementCartItem, setCartItem } from '@/store/slices/cart';
