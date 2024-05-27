@@ -12,6 +12,7 @@ const apiEndPoints = {
   POST_USER_ORDER: 'api/v1/orders/',
   GET_USER_ORDER_LIST: 'api/v1/orders/showAllMyOrders',
   USER_DETAILS: 'api/v1/users/profile',
+  SEARCH_PRODUCT_LIST: 'api/v1/products/findProducts/',
 };
 
 export default apiEndPoints;
