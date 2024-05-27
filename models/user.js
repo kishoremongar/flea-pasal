@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
+const logger = require("../utils/logger");
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -98,8 +99,9 @@ UserSchema.path("addresses").validate(function (addresses) {
 }, "Only one address can be marked as primary");
 
 UserSchema.pre("save", async function () {
-  // console.log(this.modifiedPaths());
-  // console.log(this.isModified('name'));
+  logger.info(`UserSchema.pre save ${this.modifiedPaths()}`);
+  // console.log("check modified", this.modifiedPaths());
+  // console.log("check 1", this.isModified("password"));
   if (!this.isModified("password")) return;
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);

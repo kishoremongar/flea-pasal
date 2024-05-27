@@ -232,9 +232,7 @@ const changePassword = async (req, res) => {
       );
     }
 
-    const hashedPassword = createHash(newPassword);
-
-    user.password = hashedPassword;
+    user.password = newPassword;
     await user.save();
 
     res.status(StatusCodes.OK).json({ msg: "Password changed successfully" });
