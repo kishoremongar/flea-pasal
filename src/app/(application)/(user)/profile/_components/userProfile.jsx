@@ -190,8 +190,8 @@ export default function UserProfileLayout() {
                 error={errors?.name?.message}
                 withAsterisk
                 classNames={{
-                  input: '!h-[2.75rem]',
-                  label: '!mb-1 !text-artists-charcoal !text-olive ',
+                  input: '!h-[2.75rem] !text-secondary',
+                  label: '!text-olive',
                 }}
               />
             )}
@@ -220,8 +220,8 @@ export default function UserProfileLayout() {
                 readOnly
                 withAsterisk
                 classNames={{
-                  input: '!h-[2.75rem]',
-                  label: '!mb-1 !text-artists-charcoal !text-olive ',
+                  input: '!h-[2.75rem] !text-secondary',
+                  label: '!text-olive',
                 }}
               />
             )}
@@ -237,9 +237,8 @@ export default function UserProfileLayout() {
                 label='Birth Date'
                 rightSection={<CalenderIcon className='w-5 h-5 text-olive' />}
                 classNames={{
-                  input: '!h-[2.75rem]',
-                  label: '!mb-1 !text-artists-charcoal !text-olive ',
-                  rightSection: 'pointer-events-none',
+                  input: '!h-[2.75rem] !text-secondary',
+                  label: '!text-olive',
                 }}
                 placeholder='Enter your birthday'
                 maxDate={new Date()}
@@ -273,8 +272,8 @@ export default function UserProfileLayout() {
                 error={errors?.phone_number?.message}
                 withAsterisk
                 classNames={{
-                  input: '!h-[2.75rem]',
-                  label: '!mb-1 !text-artists-charcoal !text-olive ',
+                  input: '!h-[2.75rem] !text-secondary',
+                  label: '!text-olive',
                 }}
               />
             )}
@@ -303,13 +302,13 @@ export default function UserProfileLayout() {
                 ]}
                 placeholder='Select your gender'
                 label='Gender'
+                allowDeselect={false}
                 rightSection={
                   <DownArrowIcon className='cursor-pointer text-rough-asphalt hover:text-primary w-4 h-4' />
                 }
                 classNames={{
-                  input: '!h-[2.75rem]',
-                  label: '!mb-1 !text-artists-charcoal !text-olive ',
-                  rightSection: 'pointer-events-none w-8 h-8',
+                  input: '!h-[2.75rem] !text-secondary',
+                  label: '!text-olive',
                 }}
               />
             )}
@@ -337,8 +336,8 @@ export default function UserProfileLayout() {
                 error={errors?.apartmentNo?.message}
                 withAsterisk
                 classNames={{
-                  input: '!h-[2.75rem]',
-                  label: '!mb-1 !text-artists-charcoal !text-olive ',
+                  input: '!h-[2.75rem] !text-secondary',
+                  label: '!text-olive',
                 }}
               />
             )}
@@ -369,8 +368,8 @@ export default function UserProfileLayout() {
                 error={errors?.pincode?.message}
                 type='number'
                 classNames={{
-                  input: '!h-[2.75rem]',
-                  label: '!mb-1 !text-artists-charcoal !text-olive',
+                  input: '!h-[2.75rem] !text-secondary',
+                  label: '!text-olive',
                 }}
               />
             )}
@@ -398,8 +397,8 @@ export default function UserProfileLayout() {
                 withAsterisk
                 error={errors?.landmark?.message}
                 classNames={{
-                  input: '!h-[2.75rem]',
-                  label: '!mb-1 !text-artists-charcoal !text-olive',
+                  input: '!h-[2.75rem] !text-secondary',
+                  label: '!text-olive',
                 }}
               />
             )}
@@ -427,8 +426,8 @@ export default function UserProfileLayout() {
                 withAsterisk
                 error={errors?.street?.message}
                 classNames={{
-                  input: '!h-[2.75rem]',
-                  label: '!mb-1 !text-artists-charcoal !text-olive ',
+                  input: '!h-[2.75rem] !text-secondary',
+                  label: '!text-olive',
                 }}
               />
             )}
@@ -458,8 +457,8 @@ export default function UserProfileLayout() {
                 withAsterisk
                 error={errors?.city?.message}
                 classNames={{
-                  input: '!h-[2.75rem]',
-                  label: '!mb-1 !text-artists-charcoal !text-olive',
+                  input: '!h-[2.75rem] !text-secondary',
+                  label: '!text-olive',
                 }}
               />
             )}
@@ -487,8 +486,8 @@ export default function UserProfileLayout() {
                 withAsterisk
                 error={errors?.state?.message}
                 classNames={{
-                  input: '!h-[2.75rem]',
-                  label: '!mb-1 !text-artists-charcoal !text-olive',
+                  input: '!h-[2.75rem] !text-secondary',
+                  label: '!text-olive',
                 }}
               />
             )}
@@ -516,8 +515,8 @@ export default function UserProfileLayout() {
                 withAsterisk
                 error={errors?.country?.message}
                 classNames={{
-                  input: '!h-[2.75rem]',
-                  label: '!mb-1 !text-artists-charcoal !text-olive',
+                  input: '!h-[2.75rem] !text-secondary',
+                  label: '!text-olive',
                 }}
               />
             )}
@@ -525,7 +524,11 @@ export default function UserProfileLayout() {
         </div>
       </div>
       <div className='flex justify-center w-full items-center'>
-        <PrimaryButton rootClassName='!w-fit' type='submit'>
+        <PrimaryButton
+          rootClassName='!w-fit'
+          type='submit'
+          loading={profileMutate?.isPending}
+        >
           Save
         </PrimaryButton>
       </div>

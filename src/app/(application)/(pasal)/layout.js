@@ -2,6 +2,7 @@
 
 import { Breadcrumbs } from '@mantine/core';
 import Link from 'next/link';
+import FilterIcon from '@@/assets/icons/mobileFilterSlider.svg';
 import { useParams, usePathname } from 'next/navigation';
 import SidebarFilter from './_components/sidebarFilter';
 
@@ -37,20 +38,25 @@ export default function PasalLayout({ children }) {
       >
         {breadCrumbItems}
       </Breadcrumbs>
-      <div className='grid grid-cols-1 sm:grid-cols-12 p-0 md:p-6 sm:gap-x-4'>
+      <div className='grid grid-cols-1 md:grid-cols-12 p-0 lg:p-6 md:gap-x-4'>
         {!params?.productId && (
-          <div className='sm:block hidden col-span-3'>
+          <div className='md:block hidden col-span-3 px-4 lg:px-10 bg-white shadow-card rounded-md max-h-[78dvh]'>
             <SidebarFilter />
           </div>
         )}
         <div
           className={`${
-            params?.productId ? 'sm:col-span-12' : 'sm:col-span-9'
+            params?.productId ? 'md:col-span-12' : 'md:col-span-9'
           }`}
         >
           {children}
         </div>
       </div>
+      {!params?.productId && (
+        <div className='md:hidden fixed z-10 bottom-10 right-10 w-10 h-10 flex justify-center items-center bg-white shadow-catShadow rounded-full'>
+          <FilterIcon className='w-4 h-4 text-olive' />
+        </div>
+      )}
     </div>
   );
 }
