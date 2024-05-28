@@ -15,7 +15,7 @@ const insertData = async () => {
 
     // Insert data into MongoDB using insertMany
     await Product.insertMany(productsData);
-    console.log("Data inserted successfully");
+    // console.log("Data inserted successfully");
   } catch (err) {
     console.error(err);
   } finally {

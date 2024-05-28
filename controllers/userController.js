@@ -1,11 +1,7 @@
 const User = require("../models/user");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
-const {
-  createTokenUser,
-  attachCookiesToResponse,
-  checkPermissions,
-} = require("../utils");
+const { checkPermissions } = require("../utils");
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
 
