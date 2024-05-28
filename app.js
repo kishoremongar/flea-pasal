@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 require("dotenv").config();
 require("express-async-errors");
+const logger = require("./utils/logger");
 
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
@@ -80,10 +81,10 @@ const startServer = async () => {
   try {
     await connectDB(process.env.DB_URL);
     app.listen(port, () => {
-      console.log(`Server listening on port ${port}...`);
+      logger.info(`Server listening on port ${port}...`);
     });
   } catch (error) {
-    console.error("Error starting server:", error);
+    logger.error(`Error starting server: ${error.message}`);
   }
 };
 
