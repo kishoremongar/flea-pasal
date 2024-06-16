@@ -13,6 +13,7 @@ const apiEndPoints = {
   GET_USER_ORDER_LIST: 'api/v1/orders/showAllMyOrders',
   USER_DETAILS: 'api/v1/users/profile',
   SEARCH_PRODUCT_LIST: 'api/v1/products/findProducts/',
+  GET_PRODUCTS_FILTER_DATA: 'api/v1/products/product-filter-helper/',
 };
 
 export default apiEndPoints;
