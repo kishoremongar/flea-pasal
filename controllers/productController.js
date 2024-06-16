@@ -8,15 +8,48 @@ const createProduct = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ product });
 };
 const getAllProducts = async (req, res) => {
-  const { category } = req.query;
+  const { category, minPrice, maxPrice, sort, selectedCategory, company } =
+    req.query;
   let queryObject = {};
+
   if (category) {
     queryObject.category = category;
   }
 
-  const products = await Product.find(queryObject);
+  if (minPrice && maxPrice) {
+    queryObject.price = { $gte: minPrice, $lte: maxPrice };
+  }
+
+  if (selectedCategory) {
+    queryObject.subcategory = selectedCategory;
+  }
+
+  if (company) {
+    queryObject.company = company;
+  }
+
+  let sortObject = {};
+  switch (sort) {
+    case "a-z":
+      sortObject = { name: 1 };
+      break;
+    case "z-a":
+      sortObject = { name: -1 };
+      break;
+    case "high":
+      sortObject = { price: -1 };
+      break;
+    case "low":
+      sortObject = { price: 1 };
+      break;
+    default:
+      break;
+  }
+
+  const products = await Product.find(queryObject).sort(sortObject);
   res.status(StatusCodes.OK).json({ products, count: products.length });
 };
+
 const getSingleProduct = async (req, res) => {
   const { id: productId } = req.params;
   const product = await Product.findOne({ _id: productId }).populate("reviews");
@@ -126,6 +159,26 @@ const searchProducts = async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 };
+const getProductsFilterHelper = async (req, res) => {
+  const { category } = req.query;
+  try {
+    const subcategories = await Product.distinct("subcategory", { category });
+    const companies = await Product.distinct("company", { category });
+    const highestPrice = await Product.findOne(
+      { category },
+      {},
+      { sort: { price: -1 }, select: "price" }
+    );
+
+    res.status(StatusCodes.OK).json({
+      subcategories,
+      companies,
+      highestPrice: highestPrice.price,
+    });
+  } catch (error) {
+    throw new CustomError.BadRequestError("Error fetching category details");
+  }
+};
 
 module.exports = {
   createProduct,
@@ -135,4 +188,5 @@ module.exports = {
   deleteProduct,
   uploadImage,
   searchProducts,
+  getProductsFilterHelper,
 };

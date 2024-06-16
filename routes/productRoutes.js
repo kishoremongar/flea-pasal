@@ -13,6 +13,7 @@ const {
   deleteProduct,
   uploadImage,
   searchProducts,
+  getProductsFilterHelper,
 } = require("../controllers/productController");
 
 const { getSingleProductReviews } = require("../controllers/reviewController");
@@ -21,6 +22,7 @@ router
   .route("/")
   .post([authenticateUser, authorizePermissions("admin")], createProduct)
   .get(getAllProducts);
+router.route("/product-filter-helper").get(getProductsFilterHelper);
 
 router
   .route("/uploadImage")
