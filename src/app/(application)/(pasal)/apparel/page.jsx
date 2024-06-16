@@ -1,13 +1,15 @@
 'use client';
 
+import { useSearchParams } from 'next/navigation';
 import useGetAllProducts from '@/app/home/_hooks/getAllProducts';
 import PageLoadingOverlay from '@/components/common/pageLoadingOverlay';
 import ProductCards from '@/components/common/productCards';
+import { filterParams } from '@/utils/filterParams';
 
 export default function ApparelPage() {
-  const { data: getAllApparel, isLoading } = useGetAllProducts({
-    category: 'apparel',
-  });
+  const searchParams = useSearchParams();
+  const queryParams = filterParams('apparel', searchParams);
+  const { data: getAllApparel, isLoading } = useGetAllProducts(queryParams);
 
   return (
     <div

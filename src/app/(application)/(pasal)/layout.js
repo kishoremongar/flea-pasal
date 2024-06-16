@@ -1,14 +1,17 @@
 'use client';
 
 import { Breadcrumbs } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import Link from 'next/link';
 import FilterIcon from '@@/assets/icons/mobileFilterSlider.svg';
 import { useParams, usePathname } from 'next/navigation';
 import SidebarFilter from './_components/sidebarFilter';
+import FilterModal from './_components/filterModal';
 
 export default function PasalLayout({ children }) {
   const pathName = usePathname();
   const params = useParams();
+  const [opened, { toggle }] = useDisclosure(false);
 
   const breadCrumbItems = [
     { id: 1, title: 'Home', href: '/' },
@@ -54,9 +57,10 @@ export default function PasalLayout({ children }) {
       </div>
       {!params?.productId && (
         <div className='md:hidden fixed z-10 bottom-10 right-10 w-10 h-10 flex justify-center items-center bg-white shadow-catShadow rounded-full'>
-          <FilterIcon className='w-4 h-4 text-olive' />
+          <FilterIcon className='w-4 h-4 text-olive' onClick={toggle} />
         </div>
       )}
+      <FilterModal opened={opened} toggle={toggle} />
     </div>
   );
 }
