@@ -2,8 +2,21 @@ const User = require("../models/user");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
 const { checkPermissions } = require("../utils");
+const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
-const fs = require("fs");
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 2 * 1024 * 1024,
+  },
+  fileFilter: (req, file, cb) => {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      return cb(new Error("Only JPG and PNG files are allowed!"));
+    }
+    cb(null, true);
+  },
+});
 
 const getAllUsers = async (req, res) => {
   const users = await User.find({ role: "user" }).select("-password");
@@ -67,17 +80,32 @@ const updateUser = async (req, res) => {
   }
 
   const user = await User.findOne({ _id: req.user.userId });
-  if (req?.files?.profile_picture) {
-    const result = await cloudinary.uploader.upload(
-      req.files.profile_picture.tempFilePath,
-      {
-        use_filename: true,
-        folder: "FleaPasal/profile",
-      }
-    );
-    fs.unlinkSync(req.files.profile_picture.tempFilePath);
+  console.log("profile", req.files);
+  if (req.file) {
+    const profilePicture = req.file;
+
+    // Upload the buffer directly to Cloudinary
+    const result = await new Promise((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream(
+          {
+            folder: "FleaPasal/profile",
+            use_filename: true,
+          },
+          (error, result) => {
+            if (error) {
+              throw new CustomError.BadRequestError(error);
+            }
+            resolve(result);
+          }
+        )
+        .end(profilePicture.buffer);
+    });
+
+    // Update the user's profilePicture field with the Cloudinary URL
     user.profilePicture = result.secure_url;
   }
+
   user.email = email;
   user.name = name;
   user.birthday = birthday || user.birthday;
@@ -121,6 +149,9 @@ const updateUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "User updated successfully" });
 };
 
+// Middleware to handle multipart form data
+const handleMultipartFormData = upload.single("profile_picture");
+
 const updateUserPassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
   if (!oldPassword || !newPassword) {
@@ -144,6 +175,7 @@ module.exports = {
   showCurrentUser,
   updateUser,
   updateUserPassword,
+  handleMultipartFormData,
 };
 
 // update user with findOneAndUpdate

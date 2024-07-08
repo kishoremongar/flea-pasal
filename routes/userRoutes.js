@@ -10,6 +10,7 @@ const {
   showCurrentUser,
   updateUser,
   updateUserPassword,
+  handleMultipartFormData,
 } = require("../controllers/userController");
 
 router
@@ -19,7 +20,7 @@ router
 router
   .route("/profile")
   .get(authenticateUser, showCurrentUser)
-  .patch(authenticateUser, updateUser);
+  .patch(authenticateUser, handleMultipartFormData, updateUser);
 router.route("/updateUserPassword").patch(authenticateUser, updateUserPassword);
 
 router.route("/:id").get(authenticateUser, getSingleUser);

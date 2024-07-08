@@ -3,10 +3,8 @@ const app = express();
 require("dotenv").config();
 require("express-async-errors");
 const logger = require("./utils/logger");
-
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
-const fileUpload = require("express-fileupload");
 const rateLimiter = require("express-rate-limit");
 const helmet = require("helmet");
 const xss = require("xss-clean");
@@ -57,7 +55,6 @@ app.use(cookieParser(process.env.JWT_SECRET));
 
 // Static files middleware
 app.use(express.static("./public"));
-app.use(fileUpload({ useTempFiles: true }));
 
 // Routes setup
 app.get("/", (req, res) => {
