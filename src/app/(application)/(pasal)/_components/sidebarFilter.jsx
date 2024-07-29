@@ -68,7 +68,8 @@ export default function SidebarFilter({ handleClose = () => {} }) {
         <>
           <div className='flex flex-auto flex-col gap-y-4'>
             <p className='text-olive'>
-              Select pricing range ${endValue[0]}-${endValue[1]}
+              Select pricing range{' '}
+              {`\u{20B9}${endValue[0]}-\u{20B9}${endValue[1]}`}
             </p>
             <RangeSlider
               value={value}
