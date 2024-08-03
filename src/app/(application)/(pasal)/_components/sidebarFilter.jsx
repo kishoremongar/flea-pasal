@@ -4,6 +4,7 @@ import { RangeSlider, Select } from '@mantine/core';
 import { useCallback, useEffect, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import DownArrowIcon from '@@/assets/icons/selectArrow.svg';
+import { useViewportSize } from '@mantine/hooks';
 import useGetFilterData from '../_hooks/useGetFilterData';
 import PrimaryButton from '@/components/common/primaryButton';
 import PageLoadingOverlay from '@/components/common/pageLoadingOverlay';
@@ -17,6 +18,8 @@ export default function SidebarFilter({ handleClose = () => {} }) {
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const router = useRouter();
+  const { width: screenWidth } = useViewportSize();
+  const isMobileView = screenWidth <= 768;
 
   const { data: getFilterData, isPending: filterFetching } = useGetFilterData({
     category: pathName.split('/')[1],
@@ -48,14 +51,70 @@ export default function SidebarFilter({ handleClose = () => {} }) {
     setSelectCategory('All');
     setSortBy('All');
     router.push(pathName);
+    handleClose();
+  };
+
+  const handleApplyFilter = () => {
+    const queryParams = new URLSearchParams();
+
+    if (selectCategory !== 'All') {
+      queryParams.set('selectedCategory', selectCategory);
+    }
+
+    if (sortBy !== 'All') {
+      queryParams.set('sort', sortBy);
+    }
+
+    if (selectCompany !== 'All') {
+      queryParams.set('company', selectCompany);
+    }
+
+    queryParams.set('price', endValue);
+
+    const newPath = `${pathName}?${queryParams.toString()}`;
+    router.push(newPath);
+
+    handleClose();
   };
 
   useEffect(() => {
     if (!getFilterData?.highestPrice) return;
+    if (isMobileView) {
+      const params = {
+        price: 'price',
+        sort: 'sort',
+        selectedCategory: 'selectedCategory',
+        company: 'company',
+      };
+
+      Object.entries(params).forEach(([key, value]) => {
+        const param = searchParams.get(value);
+        if (param) {
+          switch (key) {
+            case 'price': {
+              const [min, max] = param.split(',').map(Number);
+              setValue([min, max]);
+              setEndValue([min, max]);
+              break;
+            }
+            case 'sort':
+              setSortBy(param);
+              break;
+            case 'selectedCategory':
+              setSelectCategory(param);
+              break;
+            case 'company':
+              setSelectCompany(param);
+              break;
+          }
+        }
+      });
+
+      return;
+    }
     handleResetAll();
-    const roundedHighestValue = Math.round(getFilterData?.highestPrice);
-    setValue([0, roundedHighestValue]);
-    setEndValue([0, roundedHighestValue]);
+    setValue([0, maxPrice]);
+    setEndValue([0, maxPrice]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getFilterData?.highestPrice]);
 
@@ -94,7 +153,9 @@ export default function SidebarFilter({ handleClose = () => {} }) {
               classNames={{ label: '!bg-olive' }}
               onChangeEnd={(e) => {
                 setEndValue(e);
-                router.push(`${pathName}?${createQueryString('price', e)}`);
+                if (!isMobileView) {
+                  router.push(`${pathName}?${createQueryString('price', e)}`);
+                }
               }}
             />
           </div>
@@ -104,7 +165,9 @@ export default function SidebarFilter({ handleClose = () => {} }) {
               data={['All', 'a-z', 'z-a', 'high', 'low']}
               onChange={(e) => {
                 setSortBy(e);
-                router.push(`${pathName}?${createQueryString('sort', e)}`);
+                if (!isMobileView) {
+                  router.push(`${pathName}?${createQueryString('sort', e)}`);
+                }
               }}
               value={sortBy}
               allowDeselect={false}
@@ -126,9 +189,11 @@ export default function SidebarFilter({ handleClose = () => {} }) {
               value={selectCategory}
               onChange={(e) => {
                 setSelectCategory(e);
-                router.push(
-                  `${pathName}?${createQueryString('selectedCategory', e)}`
-                );
+                if (!isMobileView) {
+                  router.push(
+                    `${pathName}?${createQueryString('selectedCategory', e)}`
+                  );
+                }
               }}
               label='Select category'
               rightSection={
@@ -148,7 +213,9 @@ export default function SidebarFilter({ handleClose = () => {} }) {
               value={selectCompany}
               onChange={(e) => {
                 setSelectCompany(e);
-                router.push(`${pathName}?${createQueryString('company', e)}`);
+                if (!isMobileView) {
+                  router.push(`${pathName}?${createQueryString('company', e)}`);
+                }
               }}
               label='Select company'
               rightSection={
@@ -162,24 +229,24 @@ export default function SidebarFilter({ handleClose = () => {} }) {
           </div>
         </>
       )}
-      <div className='w-full py-5 md:block flex gap-x-4 md:gap-x-0 md:py-10'>
+      <div className='w-full py-5 md:block flex gap-x-4 md:gap-x-0 md:py-10 justify-center items-center'>
         <div className='flex gap-x-4 md:gap-x-0 md:hidden'>
           <PrimaryButton
             rootClassName='!w-full'
             titleClassName='!text-base !font-normal'
             type='button'
             variant='outline'
-            onClick={handleClose}
+            onClick={handleResetAll}
           >
-            Close
+            Reset
           </PrimaryButton>
           <PrimaryButton
             rootClassName='!w-full'
             titleClassName='!text-base !font-normal'
             type='button'
-            onClick={handleResetAll}
+            onClick={handleApplyFilter}
           >
-            Reset
+            Apply
           </PrimaryButton>
         </div>
         <div className='md:block hidden'>
